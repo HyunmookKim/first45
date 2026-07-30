@@ -383,7 +383,7 @@ function save(){
 }
 
 // ===== 잠금(수정 권한) =====
-const EDIT_PW_HASH = '63b417bb797146245a441f9539e1378ad6550001710134d1fb2a1aaa72cfb385';
+const EDIT_PW_HASH = 'ead595aca2c885235eead796972e0c3a94f8b3e45aa0fb916638f0a8fe6d292c';
 let unlocked = localStorage.getItem('f45_unlocked')==='1';
 async function sha256hex(s){
   const b = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(s));
