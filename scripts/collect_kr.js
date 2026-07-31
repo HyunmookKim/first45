@@ -1,4 +1,4 @@
-// First45 운용 — 한국 해양 소식 + 해상 특보 수집 (3시간마다)
+// First45 운용 — 한국 해양 소식 + 해상 특보 수집
 const Parser = require('rss-parser');
 const fs = require('fs');
 const UA = {
@@ -80,8 +80,9 @@ ${JSON.stringify(payload)}`;
   }catch(e){ console.warn('AI 선별 실패 — 최신순 대체:', e.message); return items.slice(0, GOV_MAX); }
 }
 
-// ── 해상 특보: 기상청 후보 2곳 → 실패 시 구글뉴스 속보 폴백
-const MY_SEA = /(남해서부|서해남부|전남|여수|제주)/;
+// ── 해상 특보
+// 우리 해역: 여수·남해서부 일대 (구역명 기준)
+const MY_SEA = /(남해서부|남해동부|서해남부|전남|여수|거문도|초도|제주)/;
 
 async function fetchText(url){
   const r = await fetch(url, { headers: UA, redirect:'follow' });
@@ -100,39 +101,62 @@ function parseWarnText(body){
   return [...new Set(lines)];
 }
 
-// 기상청 API허브 특보 현황 (apihub.kma.go.kr — 키 필요, 최우선)
-const WRN_TYPE = { W:'강풍', R:'호우', C:'한파', D:'건조', O:'폭풍해일', V:'풍랑', T:'태풍', S:'대설', Y:'황사', H:'폭염', F:'안개' };
-const WRN_LVL  = { '1':'예비특보', '2':'주의보', '3':'경보' };
+// ── 기상청 API허브 특보현황 조회 (wrn_now_data.php)
+// 실제 응답 형식 (2026-07-31 확인):
+//   주석행은 '#'로 시작, 데이터행은 콤마 구분, 끝에 '=' 붙음
+//   REG_UP, REG_UP_KO, REG_ID, REG_KO, TM_FC, TM_EF, WRN, LVL, CMD, ED_TM
+//   WRN/LVL은 영문코드·숫자가 아니라 한글 (예: 폭염 / 중대경보, 풍랑 / 주의)
+function parseHub(txt){
+  const rows = [];
+  for(const raw of txt.split(/\r?\n/)){
+    const line = raw.trim();
+    if(!line || line.startsWith('#')) continue;
+    const c = line.replace(/=\s*$/,'').split(',').map(s=>s.trim());
+    if(c.length < 9) continue;
+    const REG_ID = c[2], REG_KO = c[3], TM_EF = c[5], WRN = c[6], LVL = c[7], CMD = c[8];
+    if(!WRN || !REG_KO) continue;
+    if(CMD === '해제') continue;
+    // 해상 구역: 구역코드 S로 시작 또는 구역명에 바다/해상/해역 포함 (앞바다·먼바다)
+    const marine = /^S/i.test(REG_ID) || /바다|해상|해역/.test(REG_KO);
+    const lvl = LVL === '주의' ? '주의보' : (LVL || '특보');
+    rows.push({ kind: WRN + lvl, reg: REG_KO, marine, tmEf: TM_EF });
+  }
+  return rows;
+}
+
+function groupWarn(rows){
+  const m = new Map();
+  rows.forEach(r=>{
+    if(!m.has(r.kind)) m.set(r.kind, []);
+    const a = m.get(r.kind);
+    if(!a.includes(r.reg)) a.push(r.reg);
+  });
+  return [...m].map(([k,v])=> k + ': ' + v.join(', '));
+}
+
 async function collectWxHub(){
   const key = process.env.KMA_HUB_KEY;
-  if(!key) { console.log('WX HUB 키 없음 — 건너뜀'); return null; }
+  if(!key){ console.log('WX HUB 키 없음 — 건너뜀'); return null; }
   try{
     const url = 'https://apihub.kma.go.kr/api/typ01/url/wrn_now_data.php?fe=f&disp=0&help=1&authKey=' + key;
     const txt = await fetchText(url);
-    if(/401|Unauthorized|인증/i.test(txt.slice(0,200)) && txt.length < 400) throw new Error('인증 실패(키 확인)');
-    const lines = txt.split(/\r?\n/).filter(l => l.trim() && !l.trim().startsWith('#'));
-    const found = [];
-    for(const line of lines){
-      const toks = line.split(/[,\s]+/).filter(Boolean);
-      // 행 안에서 특보종류 1글자 코드 + 등급 숫자 + 한글 구역명을 유연하게 탐색
-      let typ=null, lvl=null, name=null;
-      toks.forEach(t=>{
-        if(WRN_TYPE[t]) typ = WRN_TYPE[t];
-        else if(/^[123]$/.test(t) && lvl===null && typ!==null) lvl = WRN_LVL[t];
-        else if(/[가-힣]/.test(t)) name = (name? name+' ' : '') + t;
-      });
-      if(typ && name) found.push({ text: typ + (lvl||'특보') + ': ' + name, marine: /바다|해상|해역|도서/.test(name) });
-    }
-    if(!found.length){
-      console.warn('WX HUB 파싱 0건 — 응답 형식 확인용 원문 앞부분:');
-      console.warn(txt.replace(key,'***').slice(0, 400));
+    if(txt.length < 400 && /401|403|Unauthorized|인증|권한/i.test(txt))
+      throw new Error('인증/권한 실패 — 활용신청 상태 확인');
+    const all = parseHub(txt);
+    if(!all.length){
+      console.warn('WX HUB 파싱 0건 — 응답 원문 앞부분:');
+      console.warn(txt.replace(key,'***').slice(0, 600));
       return null;
     }
-    const marine = found.filter(f=>f.marine).map(f=>f.text);
-    const mine = marine.filter(t=>MY_SEA.test(t));
-    console.log('WX HUB 성공: 전체', found.length, '· 해상', marine.length, '· 우리해역', mine.length);
-    if(mine.length)   return { src:'KMA', active: mine, summary:'' };
-    if(marine.length) return { src:'KMA', active: [], summary:'우리 해역 특보 없음 · 타 해역 '+marine.length+'건', others: marine.slice(0,6) };
+    const marine = all.filter(r=>r.marine);
+    const mine   = marine.filter(r=>MY_SEA.test(r.reg));
+    const others = marine.filter(r=>!MY_SEA.test(r.reg));
+    console.log('WX HUB 성공: 전체', all.length, '· 해상', marine.length, '· 우리해역', mine.length);
+    if(mine.length)
+      return { src:'KMA', active: groupWarn(mine), summary:'' };
+    if(marine.length)
+      return { src:'KMA', active: [], summary:'우리 해역 특보 없음 · 타 해역 '+marine.length+'건',
+               others: groupWarn(others).slice(0,6) };
     return { src:'KMA', active: [], summary:'발효 중인 해상 특보 없음' };
   }catch(e){ console.warn('WX HUB FAIL', e.message); return null; }
 }
@@ -158,7 +182,7 @@ async function collectWx(){
         return { src:'KMA', active: [], summary:'발효 중인 해상 특보 없음' };
     }catch(e){ console.warn('WX FAIL', url, e.message); }
   }
-  // 폴백: 구글뉴스 최근 24시간 특보 보도
+  // 폴백: 구글뉴스 최근 36시간 특보 보도
   try{
     const parser = new Parser({ timeout: 20000, headers: UA });
     const feed = await parser.parseURL(gn('풍랑주의보 OR 풍랑경보 OR 해상특보 OR "강풍·풍랑"'));
@@ -169,7 +193,7 @@ async function collectWx(){
     console.log('WX NEWS 폴백', items.length, '건');
     const mine = items.filter(t=>MY_SEA.test(t));
     if(mine.length) return { src:'NEWS', active: mine.slice(0,3), summary:'※ 언론 보도 기준 — 기상청 실시간 확인 필수' };
-    if(items.length) return { src:'NEWS', active: [], summary:'우리 해역 특보 보도 없음 (최근 24시간)' };
+    if(items.length) return { src:'NEWS', active: [], summary:'우리 해역 특보 보도 없음 (최근 36시간)' };
     return { src:'NEWS', active: [], summary:'발효 중인 해상 특보 없음' };
   }catch(e){ console.warn('WX NEWS FAIL', e.message); }
   return { src:'NONE', active: [], summary:'자동 확인 불가 — 아래 기상청 링크로 직접 확인' };
