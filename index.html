@@ -223,6 +223,7 @@ h1{font-size:20px;font-weight:800;color:var(--th);letter-spacing:-.02em}
 .cklbl{flex:1;font-size:14px;font-weight:650;color:var(--tx)}
 .ckrow.on .cklbl{text-decoration:line-through;color:var(--tm)}
 .ckdel{background:none;border:none;color:var(--td);font-size:12px;padding:4px;cursor:pointer}
+#errbar{display:none;position:fixed;left:10px;right:10px;bottom:74px;z-index:99;background:#3A1512;border:1px solid #7A3A30;color:#FF9A8A;font-size:12px;font-weight:600;padding:10px 13px;border-radius:11px;line-height:1.5;word-break:break-all}
 .wxbar{padding:10px 16px 2px}
 .wxspots{display:flex;gap:7px;overflow-x:auto;padding-bottom:4px}
 .wxspots .tab{white-space:nowrap;flex-shrink:0}
@@ -1389,7 +1390,11 @@ function switchTab(t){
   [['tabStow','stow'],['tabMaint','maint'],['tabWeather','weather'],['tabVoyage','voyage']].forEach(([id,k])=>{
     const el=document.getElementById(id); if(el) el.classList.toggle('on', t===k);
   });
-  if(t==='maint'||t==='repair') renderMR();
+  if(t==='maint'){
+    document.getElementById('hTitle').textContent = mrSub==='maint'?'정기점검':'수리목록';
+    renderMR();
+  }
+  else if(t==='weather') renderWeather();
   else if(t==='voyage') renderVoyage();
   else if(t==='fuel') renderFuel();
   else if(t==='news') renderNews();
@@ -1404,8 +1409,8 @@ function mrToggleView(t){
   renderMR();
 }
 function renderMR(){
-  if(curTab==='maint'){ renderMaintList(); renderRepairList(); return; }
-  const t = curTab; if(t!=='maint' && t!=='repair') return;
+  const t = (curTab==='maint') ? mrSub : curTab;
+  if(t!=='maint' && t!=='repair') return;
   const isMap = (t==='maint'?maintView:repairView)==='map';
   document.getElementById('mrMapWrap').style.display = isMap?'':'none';
   document.getElementById('maintList').style.display  = (t==='maint' && !isMap)?'':'none';
@@ -1706,8 +1711,10 @@ function pinRemove(){
 function pinShow(){
   const it=getMR(mrOpenType,mrOpenId); if(!it||!it.pin) return;
   mrMapKind = it.pin.map;
-  if(curTab==='maint') maintView='map'; else repairView='map';
-  closeMR(); renderMR();
+  if(mrOpenType==='maint') maintView='map'; else repairView='map';
+  closeMR();
+  if(curTab==='maint' && mrSub!==mrOpenType) setMrSub(mrOpenType);
+  else renderMR();
 }
 function mrMapClick(e){
   if(!pinTarget) return;
@@ -1906,7 +1913,31 @@ function delCheckItem(id){
 }
 
 // ----- 요트 뉴스 -----
-let krCache=null;
+let krCache=null, krLoaded=false;
+async function loadKr(force){
+  if(krLoaded && !force) return krCache;
+  krLoaded = true;
+  try{ const r = await fetch('kr.json?v='+Date.now(), {cache:'no-store'}); krCache = r.ok ? await r.json() : krCache; }catch(e){}
+  return krCache;
+}
+function wxAlertBox(){
+  const wx = krCache && krCache.wx;
+  if(wx && wx.active && wx.active.length){
+    return `<div class="wxbox warn"><b>해상 특보 발효 중</b>${wx.active.map(w=>`<div>${esc(w)}</div>`).join('')}
+      <div class="wxfoot">수집 ${krCache.updated?String(krCache.updated).slice(5,16).replace('T',' '):''} ·
+      <a href="https://www.weather.go.kr/w/special-report/overall.do" target="_blank" rel="noopener">기상청 실시간 확인</a></div></div>`;
+  }
+  return `<div class="wxbox"><b>해상 특보</b><div>${wx?esc(wx.summary||'수집된 특보 없음'):'특보 수집 대기 중'}</div>
+    <div class="wxfoot"><a href="https://www.weather.go.kr/w/special-report/overall.do" target="_blank" rel="noopener">기상청 실시간 특보 확인</a> · 출항 판단은 실시간 페이지 기준</div></div>`;
+}
+function markWxSeen(){
+  try{
+    const s = lastSeen();
+    s.wxKey = (krCache&&krCache.wx&&krCache.wx.active) ? krCache.wx.active.join('|') : '';
+    localStorage.setItem('f45_seen', JSON.stringify(s));
+  }catch(e){}
+  badgeState.wx = false; updateBadge();
+}
 function lastSeen(){ try{ return JSON.parse(localStorage.getItem('f45_seen')||'{}'); }catch(e){ return {}; } }
 function markSeen(){
   const s = { news: newsCache&&newsCache.updated || lastSeen().news || '',
@@ -1947,21 +1978,11 @@ async function renderNews(force){
   const L = document.getElementById('newsList');
   if(!newsCache || !krCache || force){
     L.innerHTML = '<div class="mrnone">뉴스 불러오는 중…</div>';
-    try{ const r = await fetch('kr.json?v='+Date.now(), {cache:'no-store'}); krCache = r.ok ? await r.json() : null; }catch(e){ krCache = null; }
+    await loadKr(force);
     try{ const r = await fetch('news.json?v='+Date.now(), {cache:'no-store'}); newsCache = r.ok ? await r.json() : null; }catch(e){ newsCache = null; }
   }
   let html = '';
-  // ── 해상 특보 (매일 수집)
-  const wx = krCache && krCache.wx;
-  if(wx && wx.active && wx.active.length){
-    html += `<div class="wxbox warn"><b>해상 특보 발효 중</b>${wx.active.map(w=>`<div>${esc(w)}</div>`).join('')}
-      <div class="wxfoot">수집 ${krCache.updated?String(krCache.updated).slice(5,16).replace('T',' '):''} ·
-      <a href="https://www.weather.go.kr/w/special-report/overall.do" target="_blank" rel="noopener">기상청 실시간 확인</a></div></div>`;
-  } else {
-    html += `<div class="wxbox"><b>해상 특보</b><div>${wx?esc(wx.summary||'수집된 특보 없음'):'특보 수집 대기 중'}</div>
-      <div class="wxfoot"><a href="https://www.weather.go.kr/w/special-report/overall.do" target="_blank" rel="noopener">기상청 실시간 특보 확인</a> · 출항 판단은 실시간 페이지 기준</div></div>`;
-  }
-  // ── 한국 해양 소식
+  // ── 한국 해양 소식 (특보는 날씨탭으로 이동)
   const gov = (krCache && krCache.gov) || [];
   if(gov.length){
     html += '<div class="secl">한국 해양 소식</div>' + gov.slice(0,6).map(n=>
@@ -2043,6 +2064,12 @@ function wxWaveColor(m){
 }
 
 // ---------- 데이터 취득 ----------
+function fetchTimeout(url, ms){
+  return Promise.race([
+    fetch(url),
+    new Promise((_,rej)=>setTimeout(()=>rej(new Error('시간 초과')), ms||12000))
+  ]);
+}
 async function wxFetch(lat, lon){
   const base = 'https://api.open-meteo.com/v1/forecast?latitude='+lat.toFixed(4)+'&longitude='+lon.toFixed(4)
     + '&hourly=temperature_2m,apparent_temperature,precipitation,weather_code,wind_speed_10m,wind_direction_10m,wind_gusts_10m,visibility'
@@ -2050,8 +2077,8 @@ async function wxFetch(lat, lon){
   const mar = 'https://marine-api.open-meteo.com/v1/marine?latitude='+lat.toFixed(4)+'&longitude='+lon.toFixed(4)
     + '&hourly=wave_height,wave_period,wave_direction&timezone=Asia%2FSeoul&forecast_days=5';
   const [a, b] = await Promise.all([
-    fetch(base).then(r=>r.ok?r.json():null).catch(()=>null),
-    fetch(mar).then(r=>r.ok?r.json():null).catch(()=>null),
+    fetchTimeout(base).then(r=>r.ok?r.json():null).catch(()=>null),
+    fetchTimeout(mar).then(r=>r.ok?r.json():null).catch(()=>null),
   ]);
   if(!a) throw new Error('날씨 데이터를 받지 못했다');
   return { w:a, m:b };
@@ -2077,9 +2104,9 @@ async function loadTide(){
   tideLoaded = true;
   try{
     const r = await fetch('tide.json?v='+Date.now(), {cache:'no-store'});
-    if(r.ok){ tideCache = await r.json(); try{ localStorage.setItem('f45_tide_cache', JSON.stringify(tideCache)); }catch(e){} }
+    if(r.ok){ tideCache = await r.json(); idbSet('tidecache', tideCache).catch(e=>{}); }
   }catch(e){}
-  if(!tideCache){ try{ tideCache = JSON.parse(localStorage.getItem('f45_tide_cache')||'null'); }catch(e){} }
+  if(!tideCache){ try{ tideCache = await idbGet('tidecache'); }catch(e){} }
   return tideCache;
 }
 function hav(a,b,c,d){
@@ -2248,6 +2275,7 @@ async function renderWeather(){
   const L = document.getElementById('weatherList');
   if(!wxCur){ wxInit(); }
   await loadTide();
+  await loadKr();
   if(!wxCur){ L.innerHTML = '<div class="mrnone">지점이 없다 — + 지점으로 추가해라</div>'; return; }
 
   const head = `<div class="wxbar">
@@ -2269,7 +2297,9 @@ async function renderWeather(){
     }
   }
 
+  try{
   const W = wxData.w, M = wxData.m;
+  if(!W || !W.hourly || !W.hourly.time) throw new Error('날씨 응답 형식 이상');
   const H = W.hourly, times = H.time;
   const now = Date.now();
   let i0 = times.findIndex(t=> new Date(t+'+09:00').getTime() >= now - 3600e3);
@@ -2314,7 +2344,11 @@ async function renderWeather(){
       <span class="wxv">풍속</span><span class="wxv">돌풍</span><span class="wxv">파고</span><span class="wxv">기온</span></div>
     <div class="wxtl">${rows}</div>`;
 
-  L.innerHTML = head + nowCard + tideSection() + timeline;
+  L.innerHTML = head + wxAlertBox() + nowCard + tideSection() + timeline;
+  markWxSeen();
+  }catch(e){
+    L.innerHTML = head + `<div class="mrnone">날씨 표시 중 오류가 났다.<br>${esc(e.message)}<br><br><button class="tab" onclick="wxData=null;renderWeather()">다시 시도</button></div>`;
+  }
 }
 
 function tideSection(){
@@ -2331,12 +2365,15 @@ function tideSection(){
       <div class="wxfoot">${T&&T.stale?`마지막 입력: ${T.date} (지난 날짜)`:''}</div></div>`;
   }
 
-  // 조위 곡선
+  // 조위 곡선 — 표시·계산은 오늘 00~24시, 보간은 전후 극값까지 사용
   const pts = T.pts;
-  const t0 = pts[0].t, t1 = pts[pts.length-1].t;
+  const dayS = new Date(today()+'T00:00:00+09:00').getTime();
+  const dayE = dayS + 24*3600e3;
+  const t0 = Math.max(pts[0].t, dayS), t1 = Math.min(pts[pts.length-1].t, dayE);
   const vals = [];
   for(let t=t0; t<=t1; t+=1800e3){ const v = tideAt(t, pts); if(v!=null) vals.push({t, v}); }
-  const vmin = Math.min(...pts.map(p=>p.v)), vmax = Math.max(...pts.map(p=>p.v));
+  const inPts = pts.filter(p=>p.t>=t0-1 && p.t<=t1+1);
+  const vmin = Math.min(...(inPts.length?inPts:pts).map(p=>p.v)), vmax = Math.max(...(inPts.length?inPts:pts).map(p=>p.v));
   const W_=320, Hh=70, pad=4;
   const px = t => pad + (t-t0)/(t1-t0)*(W_-pad*2);
   const py = v => Hh-pad - (v-vmin)/((vmax-vmin)||1)*(Hh-pad*2);
@@ -2346,7 +2383,7 @@ function tideSection(){
   const nowMark = (nowT>t0 && nowT<t1 && nowV!=null)
     ? `<line x1="${px(nowT).toFixed(1)}" y1="0" x2="${px(nowT).toFixed(1)}" y2="${Hh}" stroke="#FF7A45" stroke-width="1.5"/>
        <circle cx="${px(nowT).toFixed(1)}" cy="${py(nowV).toFixed(1)}" r="3.5" fill="#FF7A45"/>` : '';
-  const labels = pts.map(p=>{
+  const labels = pts.filter(p=>p.t>=t0 && p.t<=t1).map(p=>{
     const d = new Date(p.t);
     return `<text x="${px(p.t).toFixed(1)}" y="${(py(p.v)-6).toFixed(1)}" fill="#84898F" font-size="9" text-anchor="middle">${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}</text>`;
   }).join('');
@@ -2408,6 +2445,17 @@ function tideSection(){
      실제 통과 전에는 반드시 여수 VTS에 확인하고, 안테나 포함 실측 높이를 기준으로 판단해라.</div>`;
 }
 
+function showErr(msg){
+  try{
+    let d = document.getElementById('errbar');
+    if(!d){ d = document.createElement('div'); d.id='errbar'; document.body.appendChild(d); }
+    d.textContent = '오류: ' + msg;
+    d.style.display = 'block';
+    clearTimeout(d._t); d._t = setTimeout(()=>{ d.style.display='none'; }, 10000);
+  }catch(e){}
+}
+window.addEventListener('error', e=>showErr(e.message||'알 수 없는 오류'));
+window.addEventListener('unhandledrejection', e=>showErr((e.reason&&e.reason.message)||String(e.reason||'비동기 오류')));
 wxInit();
 applyLock();
 initStorage().then(()=>storageReadyResolve());
