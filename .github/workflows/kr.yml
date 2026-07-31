@@ -17,6 +17,7 @@ jobs:
       - run: node scripts/collect_kr.js
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          KMA_HUB_KEY: ${{ secrets.KMA_HUB_KEY }}
       - name: commit kr.json
         run: |
           git config user.name "news-bot"
