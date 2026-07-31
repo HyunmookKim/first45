@@ -60,6 +60,33 @@ async function collectYR(){
   return out;
 }
 
+// 기사 본문 일부를 실제로 받아와 요약 재료로 사용 (RSS 요약이 부실한 문제 해결)
+async function enrich(items){
+  const LIMIT = 8;   // 동시 요청 수
+  let idx = 0;
+  async function worker(){
+    while(idx < items.length){
+      const it = items[idx++];
+      if((it.desc||'').length > 400) continue;   // 이미 충분하면 skip
+      try{
+        const r = await fetch(it.link, { headers: UA, redirect:'follow', signal: AbortSignal.timeout(12000) });
+        if(!r.ok) continue;
+        let html = await r.text();
+        html = html.replace(/<script[\s\S]*?<\/script>/gi,' ').replace(/<style[\s\S]*?<\/style>/gi,' ');
+        // 본문 후보: <p> 태그들 중 긴 것 우선
+        const ps = [...html.matchAll(/<p[^>]*>([\s\S]{40,}?)<\/p>/gi)]
+          .map(m=>strip(m[1])).filter(t=>t.length>60 && !/cookie|subscribe|newsletter|copyright/i.test(t));
+        const body = ps.slice(0,6).join(' ');
+        if(body.length > (it.desc||'').length) it.desc = body.slice(0,1400);
+      }catch(e){ /* 개별 실패 무시 */ }
+    }
+  }
+  await Promise.all(Array.from({length:LIMIT}, worker));
+  const got = items.filter(x=>(x.desc||'').length>400).length;
+  console.log('본문 확보', got, '/', items.length);
+  return items;
+}
+
 function dedupe(items){
   const seen = new Set();
   return items.filter(x=>{
@@ -74,7 +101,7 @@ async function selectAndTranslate(items){
   const fallback = () => items.slice(0, PICK).map(x=>({ ...x, t_ko:x.title, s_ko:'', cat:'' }));
   if(!key){ console.warn('API 키 없음 — 선별·번역 생략'); return fallback(); }
   if(!items.length) return [];
-  const payload = items.map((x,i)=>({ i, source:x.source, title:x.title, desc:x.desc.slice(0,300) }));
+  const payload = items.map((x,i)=>({ i, source:x.source, title:x.title, desc:(x.desc||'').slice(0,900) }));
   const prompt = `아래는 최근 요트·세일링 뉴스 후보 목록이다(영어·러시아어 혼재).
 너는 45피트 세일링 요트를 직접 소유·정비하며 운항하는 한국인 선주를 위해 뉴스를 고르는 편집자다.
 
@@ -84,7 +111,10 @@ async function selectAndTranslate(items){
    후순위(웬만하면 제외): 레이스 결과 자체, 신형 요트 홍보성 리뷰, 럭셔리 슈퍼요트, 유명인 가십
 2) 각 선정 기사에:
    t_ko: 자연스러운 한국어 제목 (요트 용어는 통용 표기)
-   s_ko: 한국어 3줄 요약(짧은 문장 3개, \\n 구분). 원문 desc가 비어 있으면 추측하지 말고 제목이 말하는 것만 1줄로.
+   s_ko: 한국어 3줄 요약(\\n 구분). 제목을 바꿔 말하지 말고, 본문에만 있는 구체적 정보를 담아라 —
+        무엇이 언제 어디서 일어났는지, 원인/수치/조치, 선주가 취할 행동이나 시사점.
+        "~에 대해 다룬다", "~을 설명한다" 같은 메타 서술 금지. 사실을 그대로 써라.
+        본문 정보가 부족하면 아는 것만 1~2줄로 쓰고 지어내지 마라.
    cat: 다음 중 하나 — 안전, 정비, 규정, 기상, 러시아, 산업, 레이스, 기타
 JSON 배열만 출력. 마크다운 금지.
 형식: [{"i":3,"t_ko":"...","s_ko":"...\\n...\\n...","cat":"정비"}]
@@ -117,7 +147,10 @@ ${JSON.stringify(payload)}`;
     .filter(x => x.date && new Date(x.date).getTime() > cutoff)
     .sort((a,b)=> new Date(b.date) - new Date(a.date));
   console.log('후보', all.length, '건 (최근 '+MAX_AGE_DAYS+'일)');
-  const picked = await selectAndTranslate(all);
+  // 1차: 제목만으로 후보 압축 → 2차: 본문 확보 → 3차: 선별·요약
+  const shortlist = all.slice(0, 45);
+  await enrich(shortlist);
+  const picked = await selectAndTranslate(shortlist);
   const news = { updated: new Date().toISOString(), candidates: all.length,
     items: picked.map(x=>({ title:x.title, t_ko:x.t_ko, s_ko:x.s_ko, cat:x.cat, link:x.link, source:x.source, date:x.date })) };
   fs.writeFileSync('news.json', JSON.stringify(news, null, 1));
