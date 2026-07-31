@@ -150,6 +150,97 @@ body{padding-bottom:62px}
 .mrph img{width:52px;height:52px;object-fit:cover;border-radius:6px;border:1px solid #2a5a8a}
 .mhist{font-size:11px;color:#4a789e;margin:4px 0}
 body.locked .edt{display:none!important}
+
+/* ============ C테마 : Field Tool ============ */
+:root{--bg:#101214;--sf:#181B1F;--sf2:#1B1E22;--bd:#2B2F35;--tx:#D7D9DC;--th:#F2F3F5;--tm:#84898F;--td:#5A5F66;--ac:#FF7A45;--acd:#17130F;--red:#F05B52;--yel:#E8B33C;--grn:#46B87C}
+body{background:var(--bg);color:var(--tx);padding-bottom:66px}
+header{background:var(--bg);border-bottom:1px solid #1F2226}
+.sub{font-size:10px;letter-spacing:.18em;color:var(--td);font-weight:600}
+h1{font-size:20px;font-weight:800;color:var(--th);letter-spacing:-.02em}
+#syncState{font-size:10.5px;font-weight:600;color:var(--tm);letter-spacing:.02em}
+.tab{background:var(--sf2);border:1px solid var(--bd);border-radius:999px;color:#C4C8CD;font-size:12.5px;font-weight:700;padding:8px 13px}
+.tab.on{background:var(--ac);border-color:var(--ac);color:var(--acd)}
+#lockBtn.unlocked{background:#12241B;border-color:var(--grn);color:#6FD9A0}
+.iconb{padding:8px 10px;display:flex;align-items:center}
+#stowTools{display:flex;gap:8px;padding:10px 16px 0}
+#searchWrap input{background:var(--sf);border:1px solid var(--bd);border-radius:13px;color:var(--tx)}
+#panel,#mrPanel{background:#15171B;border-top:1px solid var(--bd);border-radius:18px 18px 0 0}
+#panel input,#panel select,#panel textarea,#mrPanel input,#mrPanel select,#mrPanel textarea{background:var(--sf);border:1px solid var(--bd);border-radius:10px;color:var(--tx)}
+.mr{background:var(--sf);border:none;border-radius:15px;margin:10px 16px 0;padding:14px 15px}
+.ct{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.cn{font-size:15.5px;font-weight:750;color:#EFF0F2}
+.chip{font-size:11px;font-weight:800;letter-spacing:.02em;color:var(--acd);border-radius:999px;padding:4px 10px;white-space:nowrap;flex-shrink:0}
+.nchip{background:var(--sf2);color:#C4C8CD;border:1px solid var(--bd)}
+.mrm{font-size:12px;color:var(--tm);margin-top:5px;padding-left:0;line-height:1.5}
+.seedb{font-size:9px;color:var(--yel);border:1px solid #6E5622;border-radius:4px;padding:0 4px;vertical-align:1px}
+.mrnone{color:#3A3F46;font-size:12.5px;text-align:center;margin-top:26px;line-height:1.7}
+.mrnone2{font-size:11px;color:#3A3F46}
+.mrbtn{background:var(--sf2);border:1px solid var(--bd);border-radius:999px;color:#C4C8CD;padding:8px 13px;font-size:12.5px;font-weight:700;cursor:pointer}
+.mrbtn.ok{background:var(--ac);border-color:var(--ac);color:var(--acd)}
+.mrbtn.warn{background:none;border-color:#5A3030;color:#E08A8A}
+.mrbtn.phx{padding:2px 6px;font-size:10px;border-radius:6px}
+.mrtop{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.mrtop b{color:var(--tm);font-size:11px;font-weight:800;letter-spacing:.1em}
+.mrlbl{font-size:11px;color:var(--tm);width:52px;flex-shrink:0}
+.mrv{color:var(--th);font-weight:650}
+.mrv2{font-size:11.5px;color:var(--tm)}
+.mhist{font-size:11px;color:var(--tm);margin:4px 0}
+#pinBanner{background:#2A1F12;border:1px solid #6E5622;color:#E8C87A;border-radius:12px}
+.mpin{border-color:#F2F3F5}
+#tabbar{background:#0B0D0F;border-top:1px solid #1A1D21;padding:7px 8px 12px}
+#tabbar button{color:var(--td);font-size:10.5px;font-weight:700;border-radius:12px;margin:0 3px;padding:6px 0 7px;display:flex;flex-direction:column;align-items:center;gap:3px}
+#tabbar button.on{color:var(--ac);background:#17191D}
+#tabbar svg{width:22px;height:22px}
+#drawerOv{position:fixed;inset:0;background:#000a;z-index:80;display:none}
+#drawerOv.open{display:block}
+#drawer{position:absolute;top:0;right:0;bottom:0;width:min(290px,82vw);background:#15171B;border-left:1px solid #24272C;padding:14px 0;display:flex;flex-direction:column;overflow:auto}
+.dhead{font-size:15px;font-weight:800;color:var(--th);padding:6px 20px 14px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #1F2226;margin-bottom:6px}
+.dclose{background:none;border:none;color:var(--tm);font-size:14px;cursor:pointer;padding:4px 8px}
+.ditem{background:none;border:none;text-align:left;font-size:14.5px;font-weight:650;color:var(--tx);padding:13px 20px;cursor:pointer;width:100%}
+.ditem:active{background:var(--sf2)}
+.ddiv{height:1px;background:#1F2226;margin:8px 0}
+.ghead{display:flex;align-items:center;gap:9px;margin:16px 16px 0;padding:4px 2px;cursor:pointer;user-select:none}
+.ghead b{font-size:13px;font-weight:800;color:#C4C8CD;letter-spacing:.04em}
+.garr{color:#5A5F66;font-size:12px;width:12px}
+.gsum{display:flex;align-items:center;gap:4px;font-size:11.5px;font-weight:800;color:#C4C8CD;margin-left:2px}
+.gdot{width:8px;height:8px;border-radius:50%;display:inline-block}
+.gcnt{margin-left:auto;font-size:11px;color:#5A5F66}
+.gitem{margin-top:8px}
+.statrow{display:flex;gap:10px;margin:12px 16px 2px}
+.stat{flex:1;background:var(--sf);border-radius:13px;padding:12px 6px;text-align:center}
+.stat b{display:block;font-size:19px;font-weight:800;color:var(--th)}
+.stat span{font-size:10px;color:var(--tm);letter-spacing:.06em}
+.secl{font-size:11.5px;font-weight:800;letter-spacing:.1em;color:var(--tm);margin:16px 18px 0;display:flex;align-items:center;gap:10px}
+.secadd{padding:5px 11px;font-size:11.5px}
+.crow{display:flex;align-items:center;gap:10px}
+.cbodyc{flex:1;min-width:0}
+.callb{text-decoration:none;flex-shrink:0}
+.ckrow{display:flex;align-items:center;gap:12px;margin:9px 16px 0;background:var(--sf);border-radius:13px;padding:13px 14px;cursor:pointer}
+.ckrow.on{opacity:.6}
+.ckbox{width:22px;height:22px;border-radius:7px;border:2px solid #3A3F46;display:flex;align-items:center;justify-content:center;color:var(--acd);flex-shrink:0}
+.ckrow.on .ckbox{background:var(--grn);border-color:var(--grn)}
+.ckbox svg{width:13px;height:13px}
+.cklbl{flex:1;font-size:14px;font-weight:650;color:var(--tx)}
+.ckrow.on .cklbl{text-decoration:line-through;color:var(--tm)}
+.ckdel{background:none;border:none;color:var(--td);font-size:12px;padding:4px;cursor:pointer}
+.wxbox{margin:12px 16px 0;background:#15171B;border:1px solid #2B2F35;border-radius:15px;padding:13px 15px;font-size:13px;color:#C4C8CD;line-height:1.6}
+.wxbox b{display:block;color:#F2F3F5;font-size:13px;margin-bottom:4px}
+.wxbox.warn{background:#2A1512;border-color:#7A3A30}
+.wxbox.warn b{color:#FF8A7A}
+.wxfoot{font-size:11px;color:#84898F;margin-top:7px}
+.wxfoot a{color:#C4C8CD}
+.bdot{position:absolute;top:2px;right:6px;width:8px;height:8px;border-radius:50%;background:#F05B52;display:none}
+.bdot.on{display:block}
+#menuBtn{position:relative}
+.dbadge{display:none;margin-left:auto;background:#F05B52;color:#fff;font-size:10px;font-weight:800;border-radius:999px;padding:2px 8px}
+.dbadge.on{display:inline-block}
+.ditem{display:flex;align-items:center}
+.cklink{padding:5px 10px;font-size:11px;text-decoration:none;flex-shrink:0}
+.newsup{font-size:11px;color:var(--td);margin:12px 18px 0}
+.newsr .cn{font-size:15px;line-height:1.45}
+.newss{font-size:12.5px;color:#9BA1A9;line-height:1.65;margin:7px 0 10px;white-space:pre-line}
+.newsm{display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--td)}
+.newsm a{color:#C4C8CD}
 </style>
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#0a1628">
@@ -163,24 +254,23 @@ body.locked .edt{display:none!important}
 <header>
   <div class="hrow">
     <div>
-      <div class="sub">First45 운용 · Beneteau First 45f5</div>
-      <h1>선내 적재표 <span id="syncState" style="font-size:11px;font-weight:400;color:#4a8ab5"></span></h1>
+      <div class="sub">BENETEAU FIRST 45F5</div>
+      <h1><span id="hTitle">적재표</span> <span id="syncState"></span></h1>
     </div>
     <div class="btns">
-      <button class="tab" id="lockBtn" onclick="toggleLock()">🔒 잠김</button>
-      <button class="tab" id="tabToggle" onclick="toggleView()">📋 목록</button>
-      <button class="tab" id="sortTab" onclick="cycleSort()">↕ 가나다순</button>
-      <button class="tab" onclick="exportCSV()">⬇ CSV</button>
-      <button class="tab" onclick="backupData()">💾 백업</button>
-      <button class="tab" id="restoreBtn" onclick="document.getElementById('restoreFile').click()">📂 복원</button>
-      <button class="tab" id="trashTab" onclick="openTrash()">🗑 휴지통</button>
-      <input type="file" id="restoreFile" accept=".json,application/json" style="display:none" onchange="restoreData(event)">
+      <button class="tab" id="lockBtn" onclick="toggleLock()">잠김</button>
+      <button class="tab iconb" id="menuBtn" onclick="openDrawer()" aria-label="메뉴"><span class="bdot" id="menuDot"></span><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
     </div>
   </div>
+  <div id="stowTools">
+    <button class="tab" id="tabToggle" onclick="toggleView()">목록</button>
+    <button class="tab" id="sortTab" onclick="cycleSort()">가나다순</button>
+  </div>
   <div id="searchWrap">
-    <input type="text" id="searchInput" placeholder="🔍 물품 검색 — 이름이나 비고로 어디 있는지 찾기" autocomplete="off">
+    <input type="text" id="searchInput" placeholder="물품 검색 — 이름이나 비고로 어디 있는지 찾기" autocomplete="off">
     <div id="searchResults"></div>
   </div>
+  <input type="file" id="restoreFile" accept=".json,application/json" style="display:none" onchange="restoreData(event)">
 </header>
 
 <div id="mapWrap">
@@ -193,42 +283,54 @@ body.locked .edt{display:none!important}
     <div class="mark" style="left:50%;top:82%;transform:translateX(-50%);color:#6a4a9a;letter-spacing:2px;font-size:8px">── 2층 (갑판) ──</div>
   </div>
 </div>
-<div id="hint">칸 클릭 · 초록=물품있음 · <span class="w">점선=벽면/선반</span> · <span class="d">보라=2층</span> · 📦 상자 · ↪ 이동 · 🔗 합치기 · 📷 사진 여러 장</div>
+<div id="hint">칸 클릭 · 초록=물품있음 · <span class="w">점선=벽면/선반</span> · <span class="d">보라=2층</span> · 상자 · 이동 · 합치기 · 사진</div>
 
 <div id="listView"></div>
 <div id="maintWrap" style="display:none">
   <div class="mrhead">
-    <button class="tab" id="maintViewBtn" onclick="mrToggleView('maint')">🗺 도면</button>
+    <button class="tab" id="maintViewBtn" onclick="mrToggleView('maint')">도면</button>
     <span style="flex:1"></span>
-    <button class="tab edt" onclick="mrAdd('maint')">＋ 항목추가</button>
+    <button class="tab edt" onclick="mrAdd('maint')">+ 추가</button>
   </div>
   <div id="maintList"></div>
 </div>
 <div id="repairWrap" style="display:none">
   <div class="mrhead">
-    <button class="tab" id="repairViewBtn" onclick="mrToggleView('repair')">🗺 도면</button>
+    <button class="tab" id="repairViewBtn" onclick="mrToggleView('repair')">도면</button>
     <span style="flex:1"></span>
-    <button class="tab edt" onclick="mrAdd('repair')">＋ 등록</button>
+    <button class="tab edt" onclick="mrAdd('repair')">+ 등록</button>
   </div>
   <div id="repairList"></div>
 </div>
+<div id="voyageWrap" style="display:none">
+  <div class="mrhead"><span style="flex:1"></span><button class="tab edt" onclick="addVoyage()">+ 기록</button></div>
+  <div id="voyageList"></div>
+</div>
+<div id="fuelWrap" style="display:none">
+  <div class="mrhead"><span style="flex:1"></span><button class="tab edt" onclick="addFuel()">+ 주유</button></div>
+  <div id="fuelList"></div>
+</div>
+<div id="newsWrap" style="display:none">
+  <div class="mrhead"><span style="flex:1"></span><button class="tab" onclick="renderNews(true)">새로고침</button></div>
+  <div id="newsList"></div>
+</div>
+<div id="contactsWrap" style="display:none"><div id="contactsList"></div></div>
+<div id="checkWrap" style="display:none"><div id="checkList"></div></div>
 <div id="mrMapWrap" style="display:none;padding:6px 14px 10px">
   <div style="display:flex;gap:6px;justify-content:center;margin-bottom:8px">
     <button class="tab" id="kindSide" onclick="setMapKind('side')">측면도</button>
     <button class="tab" id="kindPlan" onclick="setMapKind('plan')">평면도</button>
   </div>
-  <div id="pinBanner">📍 도면을 탭해서 핀 위치를 지정해라
+  <div id="pinBanner">도면을 탭해서 핀 위치를 지정해라
     <button class="mrbtn" style="margin-left:8px" onclick="pinCancel()">취소</button></div>
   <div id="mrMap" onclick="mrMapClick(event)"></div>
 </div>
+<datalist id="grpList"></datalist>
 <div id="mrPanel"></div>
 <input type="file" id="mrCam" accept="image/*" capture="environment" style="display:none" onchange="mrPickPhoto(event)">
 <input type="file" id="mrFile" accept="image/*" multiple style="display:none" onchange="mrPickPhoto(event)">
-<nav id="tabbar">
-  <button id="tabStow" class="on" onclick="switchTab('stow')"><span class="ti">📦</span>적재표</button>
-  <button id="tabMaint" onclick="switchTab('maint')"><span class="ti">🔧</span>정기점검</button>
-  <button id="tabRepair" onclick="switchTab('repair')"><span class="ti">⚠️</span>수리목록</button>
-</nav>
+<div id="drawerOv" onclick="closeDrawer()"><aside id="drawer" onclick="event.stopPropagation()"><div class="dhead">First45 운용 <button class="dclose" onclick="closeDrawer()">&#10005;</button></div><button class="ditem" onclick="drawerGo('news')">요트 뉴스 <span class="dbadge" id="newsBadge">새 소식</span></button><button class="ditem" onclick="drawerGo('fuel')">연료 기록</button><button class="ditem" onclick="drawerGo('contacts')">연락처 · 문서</button><button class="ditem" onclick="drawerGo('check')">출항 체크리스트</button><div class="ddiv"></div><button class="ditem" onclick="closeDrawer();exportCSV()">CSV 내보내기</button><button class="ditem" onclick="closeDrawer();backupData()">데이터 백업</button><button class="ditem" id="restoreBtn" onclick="drawerRestore()">백업 복원</button><button class="ditem" id="trashTab" onclick="drawerTrash()">휴지통</button></aside></div>
+<nav id="tabbar"><button id="tabStow" class="on" onclick="switchTab('stow')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><path d="M3.3 7l8.7 5 8.7-5M12 22V12"/></svg>적재표</button><button id="tabMaint" onclick="switchTab('maint')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>정기점검</button><button id="tabRepair" onclick="switchTab('repair')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4M12 17h.01"/></svg>수리목록</button><button id="tabVoyage" onclick="switchTab('voyage')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>항해일지</button></nav>
 
 
 <div id="panel">
@@ -247,8 +349,8 @@ body.locked .edt{display:none!important}
       <input type="text" id="fNote" class="n" placeholder="비고" autocomplete="off">
     </div>
     <div class="row">
-      <button class="pbtn" onclick="document.getElementById('photoCam').click()">📷 촬영</button>
-      <button class="pbtn" onclick="document.getElementById('photoFile').click()">🖼 앨범</button>
+      <button class="pbtn" onclick="document.getElementById('photoCam').click()">촬영</button>
+      <button class="pbtn" onclick="document.getElementById('photoFile').click()">앨범</button>
       <div id="photoPrev"></div>
       <input type="file" id="photoCam" accept="image/*" capture="environment" style="display:none" onchange="pickPhoto(event)">
       <input type="file" id="photoFile" accept="image/*" multiple style="display:none" onchange="pickPhoto(event)">
@@ -265,7 +367,7 @@ body.locked .edt{display:none!important}
 
 <div id="trashView">
   <div class="trashBox">
-    <div class="trashHead"><span>🗑 삭제된 물품</span><button class="x" onclick="closeTrash()">×</button></div>
+    <div class="trashHead"><span>삭제된 물품</span><button class="x" onclick="closeTrash()">×</button></div>
     <div id="trashBody"></div>
   </div>
 </div>
@@ -385,7 +487,7 @@ const ZONE_ORDER = ["선수","앞 화장실","선장실","살롱 좌현","살롱
 let items = [];
 let trash = [];
 let sortMode = 'name';
-const SORT_MODES = [['name','↕ 가나다순'],['added','↕ 추가순'],['photo','↕ 사진순'],['box','↕ 상자순'],['qty','↕ 수량순']];
+const SORT_MODES = [['name','가나다순'],['added','추가순'],['photo','사진순'],['box','상자순'],['qty','수량순']];
 let selected = null, inBox = null, editId = null, moveId = null, mergeId = null, hlId = null, view = 'map';
 let formPhotos = [];
 let pvList = [], pvIdx = 0;
@@ -427,6 +529,12 @@ async function initStorage(){
     try{ trash = migrate(await idbGet('trash')); }catch(e){ trash = []; }
     try{ const m = await idbGet('maint'); maint = (m&&m.length)? m : deepCopy(MAINT_DEFAULTS); }catch(e){ maint = deepCopy(MAINT_DEFAULTS); }
     try{ const r = await idbGet('repair'); repair = r||[]; }catch(e){ repair = []; }
+    try{ voyage = (await idbGet('voyage'))||[]; }catch(e){ voyage = []; }
+    try{ fuel = (await idbGet('fuel'))||[]; }catch(e){ fuel = []; }
+    try{ const c = await idbGet('contacts'); contacts = (c&&c.length)? c : deepCopy(CONTACT_DEFAULTS); }catch(e){ contacts = deepCopy(CONTACT_DEFAULTS); }
+    try{ vdocs = (await idbGet('vdocs'))||[]; }catch(e){ vdocs = []; }
+    try{ const k = await idbGet('checkt'); checkt = (k&&k.length)? k : deepCopy(CHECK_DEFAULTS); }catch(e){ checkt = deepCopy(CHECK_DEFAULTS); }
+    try{ mrTrash = (await idbGet('mrtrash'))||[]; }catch(e){ mrTrash = []; }
     updateTrashTab();
   }catch(e){
     db = null;
@@ -434,6 +542,12 @@ async function initStorage(){
     try{ trash = migrate(JSON.parse(localStorage.getItem('yacht_stowage_trash')||'[]')); }catch(_){ trash=[]; }
     try{ const m = JSON.parse(localStorage.getItem('f45_maint')||'[]'); maint = m.length? m : deepCopy(MAINT_DEFAULTS); }catch(_){ maint = deepCopy(MAINT_DEFAULTS); }
     try{ repair = JSON.parse(localStorage.getItem('f45_repair')||'[]'); }catch(_){ repair=[]; }
+    try{ voyage = JSON.parse(localStorage.getItem('f45_voyage')||'[]'); }catch(_){ voyage=[]; }
+    try{ fuel = JSON.parse(localStorage.getItem('f45_fuel')||'[]'); }catch(_){ fuel=[]; }
+    try{ const c = JSON.parse(localStorage.getItem('f45_contacts')||'[]'); contacts = c.length? c : deepCopy(CONTACT_DEFAULTS); }catch(_){ contacts = deepCopy(CONTACT_DEFAULTS); }
+    try{ vdocs = JSON.parse(localStorage.getItem('f45_vdocs')||'[]'); }catch(_){ vdocs=[]; }
+    try{ const k = JSON.parse(localStorage.getItem('f45_checkt')||'[]'); checkt = k.length? k : deepCopy(CHECK_DEFAULTS); }catch(_){ checkt = deepCopy(CHECK_DEFAULTS); }
+    try{ mrTrash = JSON.parse(localStorage.getItem('f45_mrtrash')||'[]'); }catch(_){ mrTrash=[]; }
   }
   refreshBoxes(); renderList();
 }
@@ -444,18 +558,30 @@ function saveLocal(){
     idbSet('trash', trash).catch(e=>{});
     idbSet('maint', maint).catch(e=>{});
     idbSet('repair', repair).catch(e=>{});
+    idbSet('voyage', voyage).catch(e=>{});
+    idbSet('fuel', fuel).catch(e=>{});
+    idbSet('contacts', contacts).catch(e=>{});
+    idbSet('vdocs', vdocs).catch(e=>{});
+    idbSet('checkt', checkt).catch(e=>{});
+    idbSet('mrtrash', mrTrash).catch(e=>{});
   } else {
     try{
       localStorage.setItem('yacht_stowage_items', JSON.stringify(items));
       localStorage.setItem('yacht_stowage_trash', JSON.stringify(trash));
       localStorage.setItem('f45_maint', JSON.stringify(maint));
       localStorage.setItem('f45_repair', JSON.stringify(repair));
+      localStorage.setItem('f45_voyage', JSON.stringify(voyage));
+      localStorage.setItem('f45_fuel', JSON.stringify(fuel));
+      localStorage.setItem('f45_contacts', JSON.stringify(contacts));
+      localStorage.setItem('f45_vdocs', JSON.stringify(vdocs));
+      localStorage.setItem('f45_checkt', JSON.stringify(checkt));
+      localStorage.setItem('f45_mrtrash', JSON.stringify(mrTrash));
     }
     catch(e){ alert('저장공간이 가득 찼다(기본 모드 5MB 제한). 사진을 줄이거나 백업 후 정리해라.'); }
   }
 }
 function save(){
-  if(!unlocked){ alert('읽기 전용 모드다. 🔒 버튼 눌러 잠금 해제 후 수정해라.'); return; }
+  if(!unlocked){ alert('읽기 전용 모드다. 잠금 해제 후 수정해라.'); return; }
   saveLocal();
   schedulePush();
 }
@@ -470,7 +596,7 @@ async function sha256hex(s){
 function applyLock(){
   document.body.classList.toggle('locked', !unlocked);
   const b = document.getElementById('lockBtn');
-  b.textContent = unlocked ? '🔓 수정중' : '🔒 잠김';
+  b.textContent = unlocked ? '수정중' : '잠김';
   b.classList.toggle('unlocked', unlocked);
 }
 async function toggleLock(){
@@ -489,7 +615,7 @@ async function toggleLock(){
 }
 
 // ===== 클라우드 동기화 (Firestore) =====
-let cloud = null, lastCloud = {}, lastCloudTrash = {}, lastCloudMaint = {}, lastCloudRepair = {}, pushTimer = null;
+let cloud = null, lastCloud = {}, lastCloudTrash = {}, lastCloudMaint = {}, lastCloudRepair = {}, lastCloudV = {}, lastCloudF = {}, lastCloudC = {}, lastCloudD = {}, lastCloudK = {}, lastCloudMT = {}, pushTimer = null;
 let storageReadyResolve; const storageReady = new Promise(r=>storageReadyResolve=r);
 function setSync(t){ const el=document.getElementById('syncState'); if(el) el.textContent = t; }
 const snapOf = arr => { const m={}; arr.forEach(i=>{ m[String(i.id)] = JSON.stringify(i); }); return m; };
@@ -497,22 +623,34 @@ const snapOf = arr => { const m={}; arr.forEach(i=>{ m[String(i.id)] = JSON.stri
 window.__initCloud = async function(api){
   cloud = api;
   await storageReady;
-  setSync('☁ 연결 중…');
+  setSync('연결 중…');
   try{ await cloudPull(); }
-  catch(e){ setSync('📴 오프라인 · 로컬 데이터'); }
+  catch(e){ setSync('오프라인 · 로컬'); }
   window.addEventListener('online', ()=>{ if(cloud) cloudPull().catch(()=>{}); });
 };
 window.__cloudFailed = async function(){
   await storageReady;
-  setSync('📴 오프라인 · 로컬 데이터');
+  setSync('오프라인 · 로컬');
 };
 
 async function cloudPull(){
   const r = await cloud.pull();
   if(Array.isArray(r.maint) && r.maint.length) maint = r.maint;
   if(Array.isArray(r.repair) && r.repair.length) repair = r.repair;
+  if(Array.isArray(r.voyage) && r.voyage.length) voyage = r.voyage;
+  if(Array.isArray(r.fuel) && r.fuel.length) fuel = r.fuel;
+  if(Array.isArray(r.contacts) && r.contacts.length) contacts = r.contacts;
+  if(Array.isArray(r.vdocs) && r.vdocs.length) vdocs = r.vdocs;
+  if(Array.isArray(r.checkt) && r.checkt.length) checkt = r.checkt;
+  if(Array.isArray(r.mrtrash)) mrTrash = r.mrtrash;
   lastCloudMaint = snapOf(Array.isArray(r.maint)? r.maint : []);
   lastCloudRepair = snapOf(Array.isArray(r.repair)? r.repair : []);
+  lastCloudV = snapOf(Array.isArray(r.voyage)? r.voyage : []);
+  lastCloudF = snapOf(Array.isArray(r.fuel)? r.fuel : []);
+  lastCloudC = snapOf(Array.isArray(r.contacts)? r.contacts : []);
+  lastCloudD = snapOf(Array.isArray(r.vdocs)? r.vdocs : []);
+  lastCloudK = snapOf(Array.isArray(r.checkt)? r.checkt : []);
+  lastCloudMT = snapOf(Array.isArray(r.mrtrash)? r.mrtrash : []);
   if(r.seeded){
     items = migrate(r.items); trash = migrate(r.trash);
     lastCloud = snapOf(items); lastCloudTrash = snapOf(trash);
@@ -520,12 +658,12 @@ async function cloudPull(){
     inBox=null; moveId=null; mergeId=null; editId=null;
     if(selected){ updateHeader(); renderPanelItems(); }
     refreshBoxes(); renderList(); updateTrashTab();
-    setSync('☁ 동기화됨');
+    setSync('동기화됨');
     // 정기점검 시드가 클라우드에 없으면 (수정 권한 있을 때) 조용히 올림
-    if(unlocked && maint.length && Object.keys(lastCloudMaint).length===0) schedulePush();
+    if(unlocked && ((maint.length && Object.keys(lastCloudMaint).length===0) || (checkt.length && Object.keys(lastCloudK).length===0))) schedulePush();
   } else {
     lastCloud = {}; lastCloudTrash = {};
-    setSync('☁ 클라우드 비어있음');
+    setSync('클라우드 비어있음');
     cloudSeedCheck();
   }
   if(curTab==='maint' || curTab==='repair') renderMR();
@@ -537,7 +675,7 @@ function cloudSeedCheck(){
 }
 function schedulePush(){
   if(!cloud || !unlocked) return;
-  setSync('⏳ 클라우드 저장 중…');
+  setSync('저장 중…');
   clearTimeout(pushTimer);
   pushTimer = setTimeout(pushNow, 1200);
 }
@@ -555,16 +693,27 @@ async function pushNow(){
     const [setT,delT] = diff(curT, lastCloudTrash);
     const [setM,delM] = diff(curM, lastCloudMaint);
     const [setR,delR] = diff(curR, lastCloudRepair);
-    if(setI.length||delI.length||setT.length||delT.length||setM.length||delM.length||setR.length||delR.length){
+    const curV = snapOf(voyage), curF = snapOf(fuel), curC = snapOf(contacts), curD = snapOf(vdocs), curK = snapOf(checkt);
+    const [setV,delV] = diff(curV, lastCloudV);
+    const [setF,delF] = diff(curF, lastCloudF);
+    const [setC,delC] = diff(curC, lastCloudC);
+    const [setD,delD] = diff(curD, lastCloudD);
+    const [setK,delK] = diff(curK, lastCloudK);
+    const curMT = snapOf(mrTrash);
+    const [setMT,delMT] = diff(curMT, lastCloudMT);
+    if(setI.length||delI.length||setT.length||delT.length||setM.length||delM.length||setR.length||delR.length
+       ||setV.length||delV.length||setF.length||delF.length||setC.length||delC.length||setD.length||delD.length||setK.length||delK.length||setMT.length||delMT.length){
       await cloud.push({setI, delI, setT, delT, setM, delM, setR, delR,
+                        setV, delV, setF, delF, setC, delC, setD, delD, setK, delK, setMT, delMT,
                         itemCount:items.length, trashCount:trash.length,
                         maintCount:maint.length, repairCount:repair.length});
     }
     lastCloud = curI; lastCloudTrash = curT; lastCloudMaint = curM; lastCloudRepair = curR;
-    setSync('☁ 동기화됨');
+    lastCloudV = curV; lastCloudF = curF; lastCloudC = curC; lastCloudD = curD; lastCloudK = curK; lastCloudMT = curMT;
+    setSync('동기화됨');
   }catch(e){
     console.error(e);
-    setSync('⚠ 동기화 실패 · 로컬엔 저장됨');
+    setSync('동기화 실패 · 로컬 저장');
   }
 }
 const lockerItems = id => items.filter(i=>i.lockerId===id);
@@ -618,7 +767,7 @@ function doSearch(q){
   sRes.innerHTML = hits.map(i=>`
     <div class="sr" onclick="goToItem(${i.id})">
       ${i.photos.length?`<img src="${i.photos[0]}">`:''}
-      <div><div class="sn">${i.box?'📦 ':''}${esc(i.name)}</div><div class="sp">📍 ${esc(locPath(i))}</div></div>
+      <div><div class="sn">${i.box?'📦 ':''}${esc(i.name)}</div><div class="sp">${esc(locPath(i))}</div></div>
       <div class="sq">×${esc(i.qty)}${esc(i.unit||'')}</div>
     </div>`).join('');
   sRes.style.display='block';
@@ -746,7 +895,7 @@ function startEdit(id){
   document.getElementById('fBox').checked=!!it.box;
   document.getElementById('fBox').disabled = it.box && children(it.id).length>0;
   formPhotos = (it.photos||[]).slice(); renderPhotoPreview();
-  document.getElementById('formTitle').textContent='물품 수정 (📷로 사진 추가 가능)';
+  document.getElementById('formTitle').textContent='물품 수정 (아래에서 사진 추가 가능)';
   document.getElementById('addBtn').textContent='수정 완료';
   document.getElementById('cancelBtn').style.display='';
   renderPanelItems();
@@ -768,22 +917,28 @@ function deleteItem(id){
 
 function updateTrashTab(){
   const t = document.getElementById('trashTab');
-  if(t) t.textContent = trash.length ? `🗑 휴지통 (${trash.length})` : '🗑 휴지통';
+  const n = trash.length + mrTrash.length;
+  if(t) t.textContent = n ? `휴지통 (${n})` : '휴지통';
 }
 
 function openTrash(){
   closePanel();
   const ov = document.getElementById('trashView');
-  if(!trash.length){ ov.querySelector('#trashBody').innerHTML = '<div style="color:#3a5a7a;text-align:center;padding:30px;font-size:13px">휴지통이 비어 있다</div>'; }
+  const mrHtml = mrTrash.length ? '<div class="secl" style="margin:10px 0 4px;padding:0">정비 · 기록</div>' + [...mrTrash].reverse().map(e=>
+    `<div class="trow"><div style="flex:1"><div style="font-size:13px;color:#D7D9DC;font-weight:600"><span class="chip nchip" style="margin-right:6px">${KIND_LABEL[e.kind]||e.kind}</span>${esc(mrTrashName(e))}</div>
+      <div style="font-size:11px;color:#5A5F66">${String(e.delAt||'').slice(0,10)} 삭제</div></div>
+      <div style="display:flex;gap:8px"><button class="trestore" onclick="mrRestore('${e.id}')">복원</button><button class="tdelp" onclick="mrPurge('${e.id}')">완전삭제</button></div></div>`).join('') : '';
+  if(!trash.length && !mrTrash.length){ ov.querySelector('#trashBody').innerHTML = '<div style="color:#3a5a7a;text-align:center;padding:30px;font-size:13px">휴지통이 비어 있다</div>'; }
+  else if(!trash.length){ ov.querySelector('#trashBody').innerHTML = mrHtml; }
   else {
-    ov.querySelector('#trashBody').innerHTML = trash.map(it=>{
+    ov.querySelector('#trashBody').innerHTML = '<div class="secl" style="margin:2px 0 4px;padding:0">적재표 물품</div>' + trash.map(it=>{
       const loc = getLocker(it.lockerId);
       let path = loc ? (loc.zone + ' · ' + loc.label) : '(삭제된 칸)';
       if(it.parentId){ const b = trash.find(x=>x.id===it.parentId)||items.find(x=>x.id===it.parentId); if(b) path += ' › 📦 '+b.name; }
       const thumb = it.photos&&it.photos.length?`<img src="${it.photos[0]}" style="width:34px;height:34px;object-fit:cover;border-radius:4px;border:1px solid #2a5a8a;margin-right:8px">`:'';
-      return `<div class="trow">${thumb}<div style="flex:1"><div style="font-size:13px;color:#c8dff0;font-weight:600">${it.box?'📦 ':''}${esc(it.name)} <span style="color:#7aefaa">×${esc(it.qty)}${esc(it.unit||'')}</span></div><div style="font-size:11px;color:#5a7a9a">📍 ${esc(path)}</div></div>
-        <div style="display:flex;gap:8px"><button class="trestore" onclick="restoreItem(${it.id})">↩ 복원</button><button class="tdelp" onclick="purgeItem(${it.id})">완전삭제</button></div></div>`;
-    }).join('') + (trash.length>1?`<button class="bs" style="width:100%;margin-top:10px;border-color:#7a3a3a;color:#c87a7a" onclick="purgeAll()">휴지통 비우기 (전체 완전삭제)</button>`:'');
+      return `<div class="trow">${thumb}<div style="flex:1"><div style="font-size:13px;color:#c8dff0;font-weight:600">${it.box?'📦 ':''}${esc(it.name)} <span style="color:#7aefaa">×${esc(it.qty)}${esc(it.unit||'')}</span></div><div style="font-size:11px;color:#5a7a9a">${esc(path)}</div></div>
+        <div style="display:flex;gap:8px"><button class="trestore" onclick="restoreItem(${it.id})">복원</button><button class="tdelp" onclick="purgeItem(${it.id})">완전삭제</button></div></div>`;
+    }).join('') + mrHtml + ((trash.length+mrTrash.length)>1?`<button class="bs" style="width:100%;margin-top:10px;border-color:#7a3a3a;color:#c87a7a" onclick="purgeAll()">휴지통 비우기 (전체 완전삭제)</button>`:'');
   }
   ov.style.display = 'flex';
 }
@@ -810,8 +965,9 @@ function purgeItem(id){
   save(); updateTrashTab(); openTrash();
 }
 function purgeAll(){
-  if(!confirm(`휴지통의 ${trash.length}개 항목을 전부 완전 삭제한다. 복구할 수 없다. 진행할까?`)) return;
-  trash = [];
+  const n = trash.length + mrTrash.length;
+  if(!confirm(`휴지통의 ${n}개 항목을 전부 완전 삭제한다. 복구할 수 없다. 진행할까?`)) return;
+  trash = []; mrTrash = [];
   save(); updateTrashTab(); openTrash();
 }
 
@@ -829,7 +985,7 @@ function renderMoveSub(zone, itemId){
   if(!wrap) return;
   if(!zone){ wrap.innerHTML=''; return; }
   const it = getItem(itemId); if(!it) return;
-  let h = '<option value="">📍 칸 선택…</option>';
+  let h = '<option value="">칸 선택…</option>';
   LOCKERS.filter(l=>l.zone===zone).forEach(l=>{
     const cur = !it.parentId && it.lockerId===l.id;
     h += `<option value="L:${l.id}"${cur?' disabled':''}>${l.label}${cur?' (현재 위치)':''}</option>`;
@@ -869,8 +1025,8 @@ function toggleMerge(id){ mergeId = (mergeId===id ? null : id); moveId=null; ren
 function mergePanelHTML(it){
   const same = items.filter(o=>o.id!==it.id && !o.box && norm(o.name)===norm(it.name));
   if(!same.length) return `<div class="mgp"><div class="mt">다른 위치에 같은 이름("${esc(it.name)}") 물품이 없다</div></div>`;
-  return `<div class="mgp"><div class="mt">🔗 같은 이름 ${same.length}개 발견 — 체크된 것을 <b>이곳으로</b> 합친다 (수량 합산·사진 통합)</div>` +
-    same.map(o=>`<label class="mgrow"><input type="checkbox" checked data-mid="${o.id}"><span>📍 ${esc(locPath(o))} · ×${esc(o.qty)}${esc(o.unit||'')}${o.photos.length?` · 📷${o.photos.length}`:''}</span></label>`).join('') +
+  return `<div class="mgp"><div class="mt">같은 이름 ${same.length}개 발견 — 체크된 것을 <b>이곳으로</b> 합친다 (수량 합산·사진 통합)</div>` +
+    same.map(o=>`<label class="mgrow"><input type="checkbox" checked data-mid="${o.id}"><span>${esc(locPath(o))} · ×${esc(o.qty)}${esc(o.unit||'')}${o.photos.length?` · 📷${o.photos.length}`:''}</span></label>`).join('') +
     `<button class="bp" style="margin-top:7px;width:100%" onclick="doMerge(${it.id})">선택 항목 합치기</button></div>`;
 }
 function doMerge(targetId){
@@ -930,7 +1086,7 @@ function renderPanelItems(){
   const li = selected ? sortItems(currentList()) : [];
   if(li.length===0){ wrap.innerHTML = '<div style="color:#2a4a6a;font-size:12px;text-align:center;margin-top:14px">등록된 물품 없음</div>'; }
   else wrap.innerHTML = li.map(it=>{
-    const mv = moveId===it.id ? `<select class="mv" onchange="renderMoveSub(this.value, ${it.id})"><option value="">📍 이동할 구역 선택…</option>${ZONE_ORDER.map(z=>`<option value="${z}">${z}</option>`).join('')}</select><div id="mvSubWrap_${it.id}"></div>` : '';
+    const mv = moveId===it.id ? `<select class="mv" onchange="renderMoveSub(this.value, ${it.id})"><option value="">이동할 구역 선택…</option>${ZONE_ORDER.map(z=>`<option value="${z}">${z}</option>`).join('')}</select><div id="mvSubWrap_${it.id}"></div>` : '';
     const mg = mergeId===it.id ? mergePanelHTML(it) : '';
     const hl = hlId===it.id ? ' hl' : '';
     if(it.box){
@@ -941,8 +1097,8 @@ function renderPanelItems(){
         <div class="meta">×<b>${esc(it.qty)}</b>${esc(it.unit||'')}${it.note?`<i>${esc(it.note)}</i>`:''}</div></div>
         <div class="ops">
           <button class="openb" onclick="openBox(${it.id})">열기 ▸</button>
-          <button class="pm" onclick="toggleMove(${it.id})">↪</button>
-          <button class="pe" onclick="startEdit(${it.id})">✏</button>
+          <button class="pm" onclick="toggleMove(${it.id})">이동</button>
+          <button class="pe" onclick="startEdit(${it.id})">수정</button>
           <button class="pd" onclick="deleteItem(${it.id})">✕</button>
         </div></div>${mv}
       </div>`;
@@ -952,9 +1108,9 @@ function renderPanelItems(){
       <div style="flex:1"><div class="nm">${esc(it.name)}</div>
       <div class="meta">×<b>${esc(it.qty)}</b>${esc(it.unit||'')}${it.note?`<i>${esc(it.note)}</i>`:''}</div></div>
       <div class="ops">
-        <button class="pg" onclick="toggleMerge(${it.id})">🔗</button>
-        <button class="pm" onclick="toggleMove(${it.id})">↪</button>
-        <button class="pe" onclick="startEdit(${it.id})">✏</button>
+        <button class="pg" onclick="toggleMerge(${it.id})">합침</button>
+        <button class="pm" onclick="toggleMove(${it.id})">이동</button>
+        <button class="pe" onclick="startEdit(${it.id})">수정</button>
         <button class="pd" onclick="deleteItem(${it.id})">✕</button>
       </div></div>${mv}${mg}
     </div>`;
@@ -967,7 +1123,7 @@ function rowHTML(it, isChild){
   const cam = it.photos.length ? `<span class="cam" onclick="viewPhotos(${it.id})">📷${it.photos.length>1?it.photos.length:''}</span>` : '';
   const nm = (isChild?'└ ':'') + (it.box?'📦 ':'') + esc(it.name);
   return `<tr><td class="${cls}">${cam}${nm}</td><td class="tq">×${esc(it.qty)}${esc(it.unit||'')}</td><td class="tm">${esc(it.note)}</td>
-    <td class="to"><button class="pm" onclick="listMove(${it.id})">↪</button><button class="pe" onclick="view='map';toggleView(true);startEdit(${it.id})">✏</button>
+    <td class="to"><button class="pm" onclick="listMove(${it.id})">이동</button><button class="pe" onclick="view='map';toggleView(true);startEdit(${it.id})">수정</button>
     <button class="pd" onclick="deleteItem(${it.id})">✕</button></td></tr>`;
 }
 
@@ -996,7 +1152,7 @@ function toggleView(force){
   document.getElementById('mapWrap').style.display = isMap?'flex':'none';
   document.getElementById('hint').style.display = isMap?'block':'none';
   document.getElementById('listView').style.display = isMap?'none':'block';
-  document.getElementById('tabToggle').textContent = isMap?'📋 목록':'🗺 도면';
+  document.getElementById('tabToggle').textContent = isMap?'목록':'도면';
   if(!isMap){ closePanel(); renderList(); }
 }
 
@@ -1022,7 +1178,7 @@ function exportCSV(){
 }
 
 function backupData(){
-  const data = {app:"yacht_stowage", date:new Date().toISOString(), items:items, trash:trash, maint:maint, repair:repair};
+  const data = {app:"yacht_stowage", date:new Date().toISOString(), items:items, trash:trash, maint:maint, repair:repair, voyage:voyage, fuel:fuel, contacts:contacts, vdocs:vdocs, checkt:checkt, mrtrash:mrTrash};
   const blob = new Blob([JSON.stringify(data)], {type:"application/json"});
   const a = document.createElement("a");
   const d = new Date(), pad = n=>String(n).padStart(2,'0');
@@ -1050,6 +1206,12 @@ function restoreData(ev){
       if(Array.isArray(data.trash)) trash = migrate(data.trash);
       if(Array.isArray(data.maint) && data.maint.length) maint = data.maint;
       if(Array.isArray(data.repair)) repair = data.repair;
+      if(Array.isArray(data.voyage)) voyage = data.voyage;
+      if(Array.isArray(data.fuel)) fuel = data.fuel;
+      if(Array.isArray(data.contacts)) contacts = data.contacts;
+      if(Array.isArray(data.vdocs)) vdocs = data.vdocs;
+      if(Array.isArray(data.checkt) && data.checkt.length) checkt = data.checkt;
+      if(Array.isArray(data.mrtrash)) mrTrash = data.mrtrash;
       save(); inBox=null; moveId=null; mergeId=null;
       if(selected){ updateHeader(); renderPanelItems(); }
       refreshBoxes(); renderList(); updateTrashTab();
@@ -1074,24 +1236,43 @@ let mrOpenType = null, mrOpenId = null, pinTarget = null;
 // 정기점검 초안 (얀마 디젤 + First 45f5 기준, 날짜 주기)
 // ※ 전부 [초안] — 주기·항목은 사용자가 확인 후 수정
 const MAINT_DEFAULTS = [
-  {id:'m01', name:'엔진오일 + 오일필터 교체',        months:6,  note:'[초안] 주기·내용 확인 필요'},
-  {id:'m02', name:'기어박스(세일드라이브) 오일 교체', months:12, note:'[초안] 주기·내용 확인 필요'},
-  {id:'m03', name:'연료필터 교체 (1차 세퍼레이터+2차)', months:12, note:'[초안] 주기·내용 확인 필요'},
-  {id:'m04', name:'해수펌프 임펠러 교체',            months:12, note:'[초안] 주기·내용 확인 필요'},
-  {id:'m05', name:'아연 아노드 점검·교체',           months:12, note:'[초안] 엔진/샤프트/러더 각 위치'},
-  {id:'m06', name:'V벨트 장력 점검·교체',            months:12, note:'[초안] 주기·내용 확인 필요'},
-  {id:'m07', name:'냉각수(부동액) 교체',             months:24, note:'[초안] 주기·내용 확인 필요'},
-  {id:'m08', name:'시콕·해수 스트레이너 점검',        months:6,  note:'[초안] 마린토일렛 인렛 포함'},
-  {id:'m09', name:'빌지펌프 작동 점검',              months:3,  note:'[초안] 전동·수동 둘 다'},
-  {id:'m10', name:'배터리 단자·상태 점검',           months:6,  note:'[초안] 주기·내용 확인 필요'},
-  {id:'m11', name:'스탠딩 리깅 점검',                months:12, note:'[초안] 로드리깅 단자·턴버클'},
-  {id:'m12', name:'러닝 리깅·세일 점검',             months:12, note:'[초안] 주기·내용 확인 필요'},
-  {id:'m13', name:'하부 방오도장(안티파울링)',        months:12, note:'[초안] 킬 선단부 터치업 포함'},
-  {id:'m14', name:'소화기·안전장비 점검',            months:12, note:'[초안] 유효기한 확인'},
-  {id:'m15', name:'스티어링·러더 베어링 점검',        months:12, note:'[초안] 주기·내용 확인 필요'},
+  {id:'m01', grp:'엔진', name:'엔진오일 + 오일필터 교체', months:6,  note:'[초안] 주기·내용 확인 필요'},
+  {id:'m02', grp:'엔진', name:'기어박스(세일드라이브) 오일 교체', months:12, note:'[초안] 주기·내용 확인 필요'},
+  {id:'m03', grp:'엔진', name:'연료필터 교체 (1차 세퍼레이터+2차)', months:12, note:'[초안] 주기·내용 확인 필요'},
+  {id:'m04', grp:'엔진', name:'해수펌프 임펠러 교체', months:12, note:'[초안] 주기·내용 확인 필요'},
+  {id:'m05', grp:'선체·수중', name:'아연 아노드 점검·교체', months:12, note:'[초안] 엔진/샤프트/러더 각 위치'},
+  {id:'m06', grp:'엔진', name:'V벨트 장력 점검·교체', months:12, note:'[초안] 주기·내용 확인 필요'},
+  {id:'m07', grp:'엔진', name:'냉각수(부동액) 교체', months:24, note:'[초안] 주기·내용 확인 필요'},
+  {id:'m08', grp:'선체·수중', name:'시콕·해수 스트레이너 점검', months:6,  note:'[초안] 마린토일렛 인렛 포함'},
+  {id:'m09', grp:'선체·수중', name:'빌지펌프 작동 점검', months:3,  note:'[초안] 전동·수동 둘 다'},
+  {id:'m10', grp:'전기', name:'배터리 단자·상태 점검', months:6,  note:'[초안] 주기·내용 확인 필요'},
+  {id:'m11', grp:'리깅·세일', name:'스탠딩 리깅 점검', months:12, note:'[초안] 로드리깅 단자·턴버클'},
+  {id:'m12', grp:'리깅·세일', name:'러닝 리깅·세일 점검', months:12, note:'[초안] 주기·내용 확인 필요'},
+  {id:'m13', grp:'선체·수중', name:'하부 방오도장(안티파울링)', months:12, note:'[초안] 킬 선단부 터치업 포함'},
+  {id:'m14', grp:'안전장비', name:'소화기·안전장비 점검', months:12, note:'[초안] 유효기한 확인'},
+  {id:'m15', grp:'선체·수중', name:'스티어링·러더 베어링 점검', months:12, note:'[초안] 주기·내용 확인 필요'},
 ].map(x=>({...x, lastDate:'', photos:[], pin:null, history:[], seed:true}));
 
 const deepCopy = o => JSON.parse(JSON.stringify(o));
+const MAINT_GRPS = ['엔진','전기','선체·수중','리깅·세일','안전장비'];
+const GRP_MAP = {m01:'엔진',m02:'엔진',m03:'엔진',m04:'엔진',m06:'엔진',m07:'엔진',
+  m10:'전기', m05:'선체·수중',m08:'선체·수중',m09:'선체·수중',m13:'선체·수중',m15:'선체·수중',
+  m11:'리깅·세일',m12:'리깅·세일', m14:'안전장비'};
+function normalizeMaint(){
+  maint.forEach(it=>{ if(!it.grp) it.grp = GRP_MAP[it.id] || '기타'; });
+}
+function allGrps(){
+  const s = [...MAINT_GRPS];
+  maint.forEach(it=>{ if(it.grp && !s.includes(it.grp)) s.push(it.grp); });
+  if(!s.includes('기타')) s.push('기타');
+  return s;
+}
+function grpFold(){ try{ return JSON.parse(localStorage.getItem('f45_gfold')||'{}'); }catch(e){ return {}; } }
+function toggleGrp(g){
+  const f = grpFold(); f[g] = !f[g];
+  try{ localStorage.setItem('f45_gfold', JSON.stringify(f)); }catch(e){}
+  renderMaintList();
+}
 function addMonths(iso, m){
   const [y,mo,d] = iso.split('-').map(Number);
   const nd = new Date(y, mo-1+(m||12), 1);
@@ -1102,38 +1283,52 @@ function addMonths(iso, m){
 function fmtDate(d){ const p=n=>String(n).padStart(2,'0'); return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate()); }
 const today = () => fmtDate(new Date());
 function mStatus(it){
-  if(!it.lastDate) return {c:'#8a97a8', t:'미기록', next:null, days:null};
+  if(!it.lastDate) return {c:'#5A5F66', t:'미기록', next:null, days:null};
   const nd = addMonths(it.lastDate, it.months);
   const days = Math.floor((nd - new Date())/864e5);
-  if(days<0)   return {c:'#e05a5a', t:'지남 '+(-days)+'일', next:nd, days};
-  if(days<=30) return {c:'#e0b74a', t:'남음 '+days+'일',  next:nd, days};
-  return {c:'#57c785', t:'남음 '+days+'일', next:nd, days};
+  if(days<0)   return {c:'#F05B52', t:'지남 '+(-days)+'일', next:nd, days};
+  if(days<=30) return {c:'#E8B33C', t:'남음 '+days+'일',  next:nd, days};
+  return {c:'#46B87C', t:'남음 '+days+'일', next:nd, days};
 }
-const getMR = (t,id) => (t==='maint'?maint:repair).find(x=>String(x.id)===String(id));
+const DS = {maint:()=>maint, repair:()=>repair, voyage:()=>voyage, fuel:()=>fuel, contact:()=>contacts, vdoc:()=>vdocs};
+const getMR = (t,id) => (DS[t]?DS[t]():[]).find(x=>String(x.id)===String(id));
+function rerender(t){
+  if(t==='maint'||t==='repair') renderMR();
+  else if(t==='voyage') renderVoyage();
+  else if(t==='fuel') renderFuel();
+  else if(t==='contact'||t==='vdoc') renderContacts();
+}
 function saveMR(){ save(); }
 
 // ===== 탭 전환 =====
+const TAB_TITLES = {stow:'적재표', maint:'정기점검', repair:'수리목록', voyage:'항해일지', fuel:'연료 기록', news:'요트 뉴스', contacts:'연락처 · 문서', check:'출항 체크리스트'};
 function switchTab(t){
   curTab = t;
+  document.getElementById('hTitle').textContent = TAB_TITLES[t]||'First45';
   const stow = t==='stow';
-  ['searchWrap','tabToggle','sortTab','trashTab'].forEach(id=>{
-    const el=document.getElementById(id); if(el) el.style.display = stow?'':'none';
-  });
+  ['searchWrap','stowTools'].forEach(id=>{ const el=document.getElementById(id); if(el) el.style.display = stow?'':'none'; });
   if(stow){ toggleView(true); }
   else {
     document.getElementById('mapWrap').style.display='none';
     document.getElementById('listView').style.display='none';
-    const h=document.getElementById('hint'); if(h) h.style.display='none';
+    const hh=document.getElementById('hint'); if(hh) hh.style.display='none';
     closePanel(); closeTrash();
   }
-  document.getElementById('maintWrap').style.display  = t==='maint' ?'':'none';
-  document.getElementById('repairWrap').style.display = t==='repair'?'':'none';
-  if(stow) document.getElementById('mrMapWrap').style.display='none';
+  const show = (id,on)=>{ const el=document.getElementById(id); if(el) el.style.display = on?'':'none'; };
+  show('maintWrap', t==='maint'); show('repairWrap', t==='repair');
+  show('voyageWrap', t==='voyage'); show('fuelWrap', t==='fuel');
+  show('newsWrap', t==='news'); show('contactsWrap', t==='contacts'); show('checkWrap', t==='check');
+  if(t!=='maint' && t!=='repair') show('mrMapWrap', false);
   closeMR(); pinCancel();
-  [['tabStow','stow'],['tabMaint','maint'],['tabRepair','repair']].forEach(([id,k])=>{
+  [['tabStow','stow'],['tabMaint','maint'],['tabRepair','repair'],['tabVoyage','voyage']].forEach(([id,k])=>{
     document.getElementById(id).classList.toggle('on', t===k);
   });
-  if(!stow) renderMR();
+  if(t==='maint'||t==='repair') renderMR();
+  else if(t==='voyage') renderVoyage();
+  else if(t==='fuel') renderFuel();
+  else if(t==='news') renderNews();
+  else if(t==='contacts') renderContacts();
+  else if(t==='check') renderCheck();
 }
 
 // ===== 목록/도면 전환 =====
@@ -1148,7 +1343,7 @@ function renderMR(){
   document.getElementById('mrMapWrap').style.display = isMap?'':'none';
   document.getElementById('maintList').style.display  = (t==='maint' && !isMap)?'':'none';
   document.getElementById('repairList').style.display = (t==='repair'&& !isMap)?'':'none';
-  document.getElementById(t==='maint'?'maintViewBtn':'repairViewBtn').textContent = isMap?'📋 목록':'🗺 도면';
+  document.getElementById(t==='maint'?'maintViewBtn':'repairViewBtn').textContent = isMap?'목록':'도면';
   if(isMap) setMapKind(mrMapKind);
   else t==='maint' ? renderMaintList() : renderRepairList();
 }
@@ -1156,49 +1351,72 @@ function renderMR(){
 // ===== 정기점검 목록 =====
 function renderMaintList(){
   const L = document.getElementById('maintList');
-  const arr = [...maint].sort((a,b)=>{
-    const da=mStatus(a).days, db=mStatus(b).days;
-    if(da===null && db===null) return String(a.name).localeCompare(String(b.name),'ko');
-    if(da===null) return 1; if(db===null) return -1;
-    return da-db;
-  });
-  L.innerHTML = arr.map(it=>{
-    const s=mStatus(it);
-    return `<div class="mr" onclick="openMR('maint','${it.id}')">
-      <div class="mrt"><span class="dot" style="background:${s.c}"></span>
-        <span class="mrn">${esc(it.name)}${it.seed?' <span class="seedb">초안</span>':''}</span>
-        <span class="mrs" style="color:${s.c}">${s.t}</span></div>
-      <div class="mrm">주기 ${it.months}개월 · 마지막 ${it.lastDate||'—'}${s.next?' · 다음 '+fmtDate(s.next):''}${it.pin?' · 📍':''}${it.photos&&it.photos.length?' · 📷'+it.photos.length:''}</div>
-    </div>`;
-  }).join('') || '<div class="mrnone">항목 없음 — ＋ 항목추가로 등록</div>';
+  normalizeMaint();
+  if(!maint.length){ L.innerHTML = '<div class="mrnone">항목 없음 — + 추가로 등록</div>'; return; }
+  const fold = grpFold();
+  const order = allGrps().filter(g=>maint.some(it=>it.grp===g));
+  L.innerHTML = order.map(g=>{
+    const arr = maint.filter(it=>it.grp===g).sort((a,b)=>{
+      const da=mStatus(a).days, db=mStatus(b).days;
+      if(da===null && db===null) return String(a.name).localeCompare(String(b.name),'ko');
+      if(da===null) return 1; if(db===null) return -1;
+      return da-db;
+    });
+    const red = arr.filter(it=>{const d=mStatus(it).days; return d!==null&&d<0;}).length;
+    const yel = arr.filter(it=>{const d=mStatus(it).days; return d!==null&&d>=0&&d<=30;}).length;
+    const closed = !!fold[g];
+    const head = `<div class="ghead" onclick="toggleGrp('${esc(g)}')">
+      <span class="garr">${closed?'&#9656;':'&#9662;'}</span><b>${esc(g)}</b>
+      <span class="gsum">${red?`<span class="gdot" style="background:#F05B52"></span>${red}`:''}${yel?` <span class="gdot" style="background:#E8B33C"></span>${yel}`:''}</span>
+      <span class="gcnt">${arr.length}</span></div>`;
+    if(closed) return head;
+    return head + arr.map(it=>{
+      const s=mStatus(it);
+      return `<div class="mr gitem" onclick="openMR('maint','${it.id}')">
+        <div class="ct"><div class="cn">${esc(it.name)}${it.seed?' <span class="seedb">초안</span>':''}</div>
+          <span class="chip" style="background:${s.c}">${s.t}</span></div>
+        <div class="mrm">주기 ${it.months}개월 · 마지막 ${it.lastDate||'—'}${s.next?' · 다음 '+fmtDate(s.next):''}${it.pin?' · 핀':''}${it.photos&&it.photos.length?' · 사진 '+it.photos.length:''}</div>
+      </div>`;
+    }).join('');
+  }).join('');
 }
 
 // ===== 수리목록 =====
 const RP_ORDER = {open:0, progress:1, done:2};
-const RP_LABEL = {open:'🔴 고장', progress:'🟡 진행중', done:'🟢 완료'};
-const RP_COLOR = {open:'#e05a5a', progress:'#e0b74a', done:'#57c785'};
+const RP_LABEL = {open:'고장', progress:'진행중', done:'완료'};
+const RP_COLOR = {open:'#F05B52', progress:'#E8B33C', done:'#46B87C'};
+let showDone = false;
+function toggleDone(){ showDone = !showDone; renderRepairList(); }
 function renderRepairList(){
   const L = document.getElementById('repairList');
-  const arr = [...repair].sort((a,b)=>
-    (RP_ORDER[a.status]-RP_ORDER[b.status]) || String(b.created||'').localeCompare(String(a.created||'')));
-  L.innerHTML = arr.map(it=>`<div class="mr" onclick="openMR('repair','${it.id}')">
-      <div class="mrt"><span class="dot" style="background:${RP_COLOR[it.status]||'#8a97a8'}"></span>
-        <span class="mrn">${esc(it.title)}</span>
-        <span class="mrs" style="color:${RP_COLOR[it.status]}">${RP_LABEL[it.status]||it.status}</span></div>
-      <div class="mrm">발견 ${it.created||'—'}${it.doneDate?' · 완료 '+it.doneDate:''}${it.pin?' · 📍':''}${it.photos&&it.photos.length?' · 📷'+it.photos.length:''}${it.note?' · '+esc(it.note).slice(0,30):''}</div>
-    </div>`).join('') || '<div class="mrnone">등록된 고장·수리 항목 없음</div>';
+  const open_ = repair.filter(it=>it.status!=='done')
+    .sort((a,b)=>(RP_ORDER[a.status]-RP_ORDER[b.status]) || String(b.created||'').localeCompare(String(a.created||'')));
+  const done_ = repair.filter(it=>it.status==='done')
+    .sort((a,b)=>String(b.doneDate||'').localeCompare(String(a.doneDate||'')));
+  const row = it => `<div class="mr" onclick="openMR('repair','${it.id}')">
+      <div class="ct"><div class="cn">${esc(it.title)}</div>
+        ${it.grp?`<span class="chip nchip">${esc(it.grp)}</span>`:''}
+        <span class="chip" style="background:${RP_COLOR[it.status]||'#5A5F66'}">${RP_LABEL[it.status]||it.status}</span></div>
+      <div class="mrm">발견 ${it.created||'—'}${it.doneDate?' · 완료 '+it.doneDate:''}${it.pin?' · 핀':''}${it.photos&&it.photos.length?' · 사진 '+it.photos.length:''}${it.note?' · '+esc(it.note).slice(0,30):''}</div>
+    </div>`;
+  L.innerHTML =
+    (open_.map(row).join('') || '<div class="mrnone">진행 중인 고장·수리 항목 없음</div>')
+    + (done_.length ? `<div class="ghead" onclick="toggleDone()">
+        <span class="garr">${showDone?'&#9662;':'&#9656;'}</span><b>완료된 수리</b><span class="gcnt">${done_.length}</span></div>`
+        + (showDone ? done_.map(row).join('') : '') : '');
 }
 
 // ===== 추가 =====
 function mrAdd(t){
-  if(!unlocked){ alert('읽기 전용 모드다. 🔒 버튼으로 잠금 해제 후 추가해라.'); return; }
+  if(!unlocked){ alert('읽기 전용 모드다. 잠금 해제 후 추가해라.'); return; }
   if(t==='maint'){
     const name = prompt('점검 항목 이름:'); if(!name||!name.trim()) return;
     const mo = parseInt(prompt('주기 (개월):','12'),10);
-    maint.push({id:String(Date.now()), name:name.trim(), months:(mo>0?mo:12), lastDate:'', note:'', photos:[], pin:null, history:[], seed:false});
+    const g = (prompt('계통 그룹 ('+allGrps().join(' / ')+' 중 하나, 새 이름도 가능):','엔진')||'기타').trim()||'기타';
+    maint.push({id:String(Date.now()), grp:g, name:name.trim(), months:(mo>0?mo:12), lastDate:'', note:'', photos:[], pin:null, history:[], seed:false});
   } else {
     const title = prompt('고장/수리 내용:'); if(!title||!title.trim()) return;
-    repair.push({id:String(Date.now()), title:title.trim(), status:'open', note:'', photos:[], pin:null, created:today(), doneDate:''});
+    repair.push({id:String(Date.now()), grp:'', title:title.trim(), status:'open', note:'', photos:[], pin:null, created:today(), doneDate:''});
   }
   saveMR(); renderMR();
 }
@@ -1207,57 +1425,99 @@ function mrAdd(t){
 function openMR(t, id){
   const it = getMR(t,id); if(!it) return;
   mrOpenType=t; mrOpenId=String(id);
+  const dl=document.getElementById('grpList');
+  if(dl) dl.innerHTML = allGrps().map(g=>`<option value="${esc(g)}">`).join('');
   const P = document.getElementById('mrPanel');
-  const ph = (it.photos||[]).map((p,i)=>`<img src="${p}" onclick="pvOpen(getMR('${t}','${id}').photos,${i})">`
-             + (unlocked?`<button class="mrbtn warn edt" style="padding:2px 6px;font-size:10px" onclick="mrDelPhoto(${i})">✕</button>`:''))
-             .join('') || '<span style="font-size:11px;color:#2a4a6a">사진 없음</span>';
-  const pinBtns = `<button class="mrbtn edt" onclick="pinStart()">📍 ${it.pin?'핀 이동':'핀 지정'}</button>`
+  const TITLES = {maint:'정기점검', repair:'수리목록', voyage:'항해일지', fuel:'연료 기록', contact:'연락처', vdoc:'문서'};
+  const hasPhotos = (t==='maint'||t==='repair'||t==='voyage'||t==='vdoc');
+  const ph = hasPhotos ? ((it.photos||[]).map((p,i)=>`<img src="${p}" onclick="pvOpen(getMR('${t}','${id}').photos,${i})">`
+             + (unlocked?`<button class="mrbtn warn edt phx" onclick="mrDelPhoto(${i})">&#10005;</button>`:''))
+             .join('') || '<span class="mrnone2">사진 없음</span>') : '';
+  const pinBtns = (t==='maint'||t==='repair') ?
+        `<div class="mrrow"><button class="mrbtn edt" onclick="pinStart()">${it.pin?'핀 이동':'핀 지정'}</button>`
         + (it.pin?`<button class="mrbtn edt" onclick="pinRemove()">핀 삭제</button>
-                   <button class="mrbtn" onclick="pinShow()">도면에서 보기</button>`:'');
+                   <button class="mrbtn" onclick="pinShow()">도면에서 보기</button>`:'') + '</div>' : '';
+  const tf = (lbl,key,val,type,attrs)=>`<div class="mrrow"><span class="mrlbl">${lbl}</span>${unlocked
+      ?`<input type="${type||'text'}" value="${esc(String(val==null?'':val))}" ${attrs||'style="flex:1"'} onchange="mrField('${key}',this.value)">`
+      :`<b class="mrv">${esc(String(val==null||val===''?'—':val))}</b>`}</div>`;
   let body='';
   if(t==='maint'){
     const s=mStatus(it);
     body = `
       <div class="mrrow"><span class="mrlbl">이름</span>${unlocked
-        ?`<input id="mrName" value="${esc(it.name)}" style="flex:1" onchange="mrField('name',this.value)">`
-        :`<b style="color:#c8dff0">${esc(it.name)}</b>`}${it.seed?' <span class="seedb">초안</span>':''}</div>
+        ?`<input value="${esc(it.name)}" style="flex:1" onchange="mrField('name',this.value)">`
+        :`<b class="mrv">${esc(it.name)}</b>`}${it.seed?' <span class="seedb">초안</span>':''}</div>
+      <div class="mrrow"><span class="mrlbl">계통</span>${unlocked
+        ?`<input list="grpList" value="${esc(it.grp||'기타')}" style="width:130px" onchange="mrField('grp',this.value.trim()||'기타')">`
+        :`<b class="mrv">${esc(it.grp||'기타')}</b>`}</div>
       <div class="mrrow"><span class="mrlbl">주기</span>${unlocked
         ?`<input type="number" min="1" value="${it.months}" style="width:70px" onchange="mrField('months',parseInt(this.value,10)||12)"> 개월`
-        :`${it.months}개월`}</div>
+        :`<b class="mrv">${it.months}개월</b>`}</div>
       <div class="mrrow"><span class="mrlbl">마지막</span>${unlocked
         ?`<input type="date" value="${it.lastDate||''}" onchange="mrField('lastDate',this.value)">`
-        :`${it.lastDate||'—'}`}
-        <span style="color:${s.c};font-size:12px">${s.next?('다음 '+fmtDate(s.next)+' · '):''}${s.t}</span></div>
-      <div class="mrrow edt"><button class="mrbtn ok" onclick="mrComplete()">✅ 오늘 완료 처리</button></div>
-      ${(it.history&&it.history.length)?`<div class="mhist">이력: ${it.history.map(h=>h.date).join(' · ')}</div>`:''}`;
-  } else {
+        :`<b class="mrv">${it.lastDate||'—'}</b>`}
+        <span class="chip" style="background:${s.c}">${s.t}</span>${s.next?`<span class="mrv2">다음 ${fmtDate(s.next)}</span>`:''}</div>
+      <div class="mrrow edt"><button class="mrbtn ok" onclick="mrComplete()">완료 처리</button></div>
+      ${(it.history&&it.history.length)?`<div class="mhist">이력: ${it.history.map(x=>x.date).join(' · ')}</div>`:''}`;
+  } else if(t==='repair'){
     body = `
       <div class="mrrow"><span class="mrlbl">내용</span>${unlocked
         ?`<input value="${esc(it.title)}" style="flex:1" onchange="mrField('title',this.value)">`
-        :`<b style="color:#c8dff0">${esc(it.title)}</b>`}</div>
+        :`<b class="mrv">${esc(it.title)}</b>`}</div>
       <div class="mrrow"><span class="mrlbl">상태</span>${unlocked
         ?`<select onchange="mrStatus(this.value)">
-            <option value="open"${it.status==='open'?' selected':''}>🔴 고장</option>
-            <option value="progress"${it.status==='progress'?' selected':''}>🟡 진행중</option>
-            <option value="done"${it.status==='done'?' selected':''}>🟢 완료</option></select>`
-        :`<span style="color:${RP_COLOR[it.status]}">${RP_LABEL[it.status]}</span>`}
-        <span style="font-size:11px;color:#4a789e">발견 ${it.created||'—'}${it.doneDate?' · 완료 '+it.doneDate:''}</span></div>`;
+            <option value="open"${it.status==='open'?' selected':''}>고장</option>
+            <option value="progress"${it.status==='progress'?' selected':''}>진행중</option>
+            <option value="done"${it.status==='done'?' selected':''}>완료</option></select>`
+        :`<span class="chip" style="background:${RP_COLOR[it.status]}">${RP_LABEL[it.status]}</span>`}
+        <span class="mrv2">발견 ${it.created||'—'}${it.doneDate?' · 완료 '+it.doneDate:''}</span></div>
+      <div class="mrrow"><span class="mrlbl">계통</span>${unlocked
+        ?`<input list="grpList" value="${esc(it.grp||'')}" style="width:130px" placeholder="엔진/전기…" onchange="mrField('grp',this.value.trim())">`
+        :`<b class="mrv">${esc(it.grp||'—')}</b>`}</div>`;
+  } else if(t==='voyage'){
+    body = tf('날짜','date',it.date,'date','')
+      + tf('출발','from',it.from) + tf('도착','to',it.to)
+      + `<div class="mrrow"><span class="mrlbl">거리</span>${unlocked
+          ?`<input type="number" step="0.1" value="${esc(String(it.nm||''))}" style="width:90px" onchange="mrField('nm',this.value)"> NM`
+          :`<b class="mrv">${it.nm?it.nm+' NM':'—'}</b>`}</div>`
+      + `<div class="mrrow"><span class="mrlbl">시간</span>${unlocked
+          ?`<input type="number" step="0.5" value="${esc(String(it.hours||''))}" style="width:70px" onchange="mrField('hours',this.value)"> 항해h
+             <input type="number" step="0.5" value="${esc(String(it.engineH||''))}" style="width:70px" onchange="mrField('engineH',this.value)"> 엔진h`
+          :`<b class="mrv">항해 ${it.hours||'—'}h · 엔진 ${it.engineH||'—'}h</b>`}</div>`
+      + tf('동승','crew',it.crew) + tf('날씨','weather',it.weather);
+  } else if(t==='fuel'){
+    body = tf('날짜','date',it.date,'date','')
+      + `<div class="mrrow"><span class="mrlbl">주유량</span>${unlocked
+          ?`<input type="number" step="0.1" value="${esc(String(it.liters||''))}" style="width:90px" onchange="mrField('liters',this.value)"> L`
+          :`<b class="mrv">${it.liters?it.liters+' L':'—'}</b>`}</div>`
+      + `<div class="mrrow"><span class="mrlbl">금액</span>${unlocked
+          ?`<input type="number" value="${esc(String(it.cost||''))}" style="width:110px" onchange="mrField('cost',this.value)"> 원`
+          :`<b class="mrv">${it.cost?Number(it.cost).toLocaleString('ko-KR')+'원':'—'}</b>`}</div>`;
+  } else if(t==='contact'){
+    body = tf('이름','name',it.name) + tf('전화','phone',it.phone,'tel')
+      + tf('메일','email',it.email,'email') + tf('사이트','site',it.site,'url')
+      + ((it.phone||it.email||it.site)?`<div class="mrrow">
+          ${it.phone?`<a class="mrbtn ok" style="text-decoration:none" href="tel:${esc(it.phone)}">전화 걸기</a>`:''}
+          ${it.email?`<a class="mrbtn" style="text-decoration:none" href="mailto:${esc(it.email)}">메일 쓰기</a>`:''}
+          ${it.site?`<a class="mrbtn" style="text-decoration:none" href="${esc(it.site)}" target="_blank" rel="noopener">사이트 열기</a>`:''}
+        </div>`:'');
+  } else if(t==='vdoc'){
+    body = tf('제목','title',it.title);
   }
   P.innerHTML = `
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
-      <b style="color:#8ac0e8;font-size:13px">${t==='maint'?'🔧 정기점검':'⚠️ 수리목록'}</b>
-      <button class="mrbtn" onclick="closeMR()">✕ 닫기</button></div>
+    <div class="mrtop"><b>${TITLES[t]||''}</b>
+      <button class="mrbtn" onclick="closeMR()">닫기</button></div>
     ${body}
     <div class="mrrow"><span class="mrlbl">메모</span>${unlocked
       ?`<textarea rows="2" style="flex:1" onchange="mrField('note',this.value)">${esc(it.note||'')}</textarea>`
-      :`<span style="font-size:12px;color:#8ab0cc;flex:1">${esc(it.note||'—')}</span>`}</div>
-    <div class="mrrow"><span class="mrlbl">사진</span><div class="mrph" style="flex:1">${ph}</div></div>
+      :`<span class="mrv" style="flex:1">${esc(it.note||'—')}</span>`}</div>
+    ${hasPhotos?`<div class="mrrow"><span class="mrlbl">사진</span><div class="mrph" style="flex:1">${ph}</div></div>
     <div class="mrrow edt">
-      <button class="mrbtn" onclick="document.getElementById('mrCam').click()">📷 촬영</button>
-      <button class="mrbtn" onclick="document.getElementById('mrFile').click()">🖼 앨범</button></div>
-    <div class="mrrow">${pinBtns}</div>
+      <button class="mrbtn" onclick="document.getElementById('mrCam').click()">촬영</button>
+      <button class="mrbtn" onclick="document.getElementById('mrFile').click()">앨범</button></div>`:''}
+    ${pinBtns}
     <div class="mrrow edt" style="justify-content:flex-end">
-      <button class="mrbtn warn" onclick="mrDelete()">🗑 항목 삭제</button></div>`;
+      <button class="mrbtn warn" onclick="mrDelete()">삭제</button></div>`;
   P.classList.add('open');
 }
 function closeMR(){ document.getElementById('mrPanel').classList.remove('open'); mrOpenType=null; mrOpenId=null; }
@@ -1266,7 +1526,7 @@ function mrField(k,v){
   const it=getMR(mrOpenType,mrOpenId); if(!it) return;
   it[k]=v; it.seed=false;
   if(mrOpenType==='repair' && k==='title' && !v.trim()){ it.title='(제목 없음)'; }
-  saveMR(); renderMR(); openMR(mrOpenType,mrOpenId);
+  saveMR(); rerender(mrOpenType); openMR(mrOpenType,mrOpenId);
 }
 function mrStatus(v){
   const it=getMR('repair',mrOpenId); if(!it) return;
@@ -1283,11 +1543,38 @@ function mrComplete(){
   saveMR(); renderMR(); openMR('maint',mrOpenId);
 }
 function mrDelete(){
-  const it=getMR(mrOpenType,mrOpenId); if(!it) return;
-  if(!confirm(`"${it.name||it.title}" 삭제할까? (되돌릴 수 없다)`)) return;
-  if(mrOpenType==='maint') maint = maint.filter(x=>String(x.id)!==mrOpenId);
-  else repair = repair.filter(x=>String(x.id)!==mrOpenId);
-  saveMR(); closeMR(); renderMR();
+  const t = mrOpenType, arr = DS[t] ? DS[t]() : null; if(!arr) return;
+  const i = arr.findIndex(x=>String(x.id)===mrOpenId); if(i<0) return;
+  const it = arr[i];
+  const nm = it.name || it.title || (t==='voyage' ? ((it.from||'')+' → '+(it.to||'')) : t==='fuel' ? (it.date+' 주유') : '항목');
+  if(!confirm(`"${nm}" 휴지통으로 옮길까? (휴지통에서 복원 가능)`)) return;
+  mrTrash.push({id: t+'_'+it.id, kind:t, data:deepCopy(it), delAt:new Date().toISOString()});
+  arr.splice(i,1);
+  saveMR(); closeMR(); rerender(t); updateTrashTab();
+}
+function mrTrashName(e){
+  const d=e.data||{};
+  return d.name || d.title || d.label || (e.kind==='voyage'?((d.from||'')+' → '+(d.to||'')) : e.kind==='fuel'?((d.date||'')+' 주유 '+(d.liters||'?')+'L') : '항목');
+}
+function mrRestore(tid){
+  const i = mrTrash.findIndex(e=>e.id===tid); if(i<0) return;
+  const e = mrTrash[i];
+  if(e.kind==='maint') maint.push(e.data);
+  else if(e.kind==='repair') repair.push(e.data);
+  else if(e.kind==='voyage') voyage.push(e.data);
+  else if(e.kind==='fuel') fuel.push(e.data);
+  else if(e.kind==='contact') contacts.push(e.data);
+  else if(e.kind==='vdoc') vdocs.push(e.data);
+  else if(e.kind==='check') checkt.push(e.data);
+  mrTrash.splice(i,1);
+  saveMR(); updateTrashTab(); openTrash();
+  if(e.kind==='check') renderCheck(); else rerender(e.kind);
+}
+function mrPurge(tid){
+  const e = mrTrash.find(x=>x.id===tid); if(!e) return;
+  if(!confirm(`"${mrTrashName(e)}" 완전 삭제한다. 복구 불가. 진행할까?`)) return;
+  mrTrash = mrTrash.filter(x=>x.id!==tid);
+  saveMR(); updateTrashTab(); openTrash();
 }
 function mrDelPhoto(i){
   const it=getMR(mrOpenType,mrOpenId); if(!it||!it.photos) return;
@@ -1362,8 +1649,275 @@ function mrMapClick(e){
   openMR(t,id);
 }
 
+// ============================================================
+// ===== 서랍 메뉴 + 항해일지/연료/뉴스/연락처·문서/체크리스트 =====
+// ============================================================
+let voyage=[], fuel=[], contacts=[], vdocs=[], checkt=[];
+let mrTrash=[];
+const KIND_LABEL = {maint:'정기점검', repair:'수리', voyage:'항해일지', fuel:'연료', contact:'연락처', vdoc:'문서', check:'체크항목'};
+const CONTACT_DEFAULTS = [
+  {id:'ct01', name:'해양경찰 긴급신고', phone:'122', email:'', site:'', note:'사고·구조 (해상 119)'},
+  {id:'ct02', name:'기상콜센터', phone:'131', email:'', site:'https://www.weather.go.kr/w/special-report/overall.do', note:'특보·해상예보'},
+  {id:'ct03', name:'원거리 수상레저 신고', phone:'', email:'', site:'https://boat.kcg.go.kr', note:'출항 전 신고'},
+  {id:'ct04', name:'안도항 서고지출장소', phone:'061-840-2730', email:'', site:'', note:'안도 정박 관련'},
+  {id:'ct05', name:'대륙(DACO) 호남대리점', phone:'062-603-0377', email:'', site:'', note:'차단기·전장 부품'},
+  {id:'ct06', name:'대륙 CP 기술팀', phone:'031-329-5268', email:'', site:'', note:'기술 문의'},
+  {id:'ct07', name:'Mouser Korea', phone:'', email:'korea@mouser.com', site:'', note:'전자부품 주문'},
+  {id:'ct08', name:'DigiKey Korea', phone:'', email:'Korea.Support@digikey.com', site:'', note:'전자부품 주문'},
+  {id:'ct09', name:'마린테크 교육원', phone:'', email:'', site:'https://marinetech.kr', note:'선내기·FRP 자격과정'},
+];
+let newsCache=null;
+
+const CHECK_DEFAULTS = [
+  {id:'c01', label:'기상·풍속·파고 확인'},
+  {id:'c02', label:'연료량 확인 (딥스틱)'},
+  {id:'c03', label:'엔진오일·냉각수 레벨'},
+  {id:'c04', label:'시콕 위치 확인'},
+  {id:'c05', label:'빌지 상태·펌프 작동'},
+  {id:'c06', label:'배터리 전압'},
+  {id:'c07', label:'항해등·계기 점검'},
+  {id:'c08', label:'구명조끼·안전장비 인원수'},
+  {id:'c09', label:'VHF·휴대폰 충전 상태'},
+  {id:'c10', label:'계류줄·펜더 정리'},
+  {id:'c11', label:'원거리 수상레저 신고 (해당 시)', url:'https://boat.kcg.go.kr'},
+];
+
+// ----- 서랍 -----
+function openDrawer(){ document.getElementById('drawerOv').classList.add('open'); }
+function closeDrawer(){ document.getElementById('drawerOv').classList.remove('open'); }
+function drawerGo(t){ closeDrawer(); switchTab(t); }
+function drawerTrash(){ closeDrawer(); switchTab('stow'); openTrash(); }
+function drawerRestore(){ closeDrawer(); document.getElementById('restoreFile').click(); }
+
+// ----- 항해일지 -----
+function fmtNum(n){ return (Math.round(n*10)/10).toLocaleString('ko-KR'); }
+function voyStats(){
+  const y = String(new Date().getFullYear());
+  const arr = voyage.filter(v=>(v.date||'').startsWith(y));
+  const nm = arr.reduce((s,v)=>s+(parseFloat(v.nm)||0),0);
+  const eh = arr.reduce((s,v)=>s+(parseFloat(v.engineH)||0),0);
+  return {cnt:arr.length, nm, eh, y};
+}
+function renderVoyage(){
+  const L = document.getElementById('voyageList');
+  const st = voyStats();
+  const head = `<div class="statrow"><div class="stat"><b>${st.cnt}</b><span>${st.y} 항해</span></div><div class="stat"><b>${fmtNum(st.nm)}</b><span>거리 NM</span></div><div class="stat"><b>${fmtNum(st.eh)}</b><span>엔진 h</span></div></div>`;
+  const arr = [...voyage].sort((a,b)=>String(b.date||'').localeCompare(String(a.date||'')));
+  L.innerHTML = head + (arr.map(v=>`<div class="mr" onclick="openMR('voyage','${v.id}')">
+      <div class="ct"><div class="cn">${esc(v.from||'—')} → ${esc(v.to||'—')}</div>
+      <span class="chip nchip">${v.nm?fmtNum(parseFloat(v.nm))+' NM':'—'}</span></div>
+      <div class="mrm">${v.date||'—'}${v.engineH?' · 엔진 '+v.engineH+'h':''}${v.crew?' · '+esc(v.crew):''}${v.photos&&v.photos.length?' · 사진 '+v.photos.length:''}</div>
+    </div>`).join('') || '<div class="mrnone">기록된 항해가 없다 — + 기록으로 시작</div>');
+}
+function addVoyage(){
+  if(!unlocked){ alert('읽기 전용 모드다. 잠금 해제 후 추가해라.'); return; }
+  const v = {id:String(Date.now()), date:today(), from:'', to:'', nm:'', hours:'', engineH:'', crew:'', weather:'', note:'', photos:[]};
+  voyage.push(v); saveMR(); renderVoyage(); openMR('voyage', v.id);
+}
+
+// ----- 연료 -----
+function fuelStats(){
+  const y = String(new Date().getFullYear());
+  const arr = fuel.filter(f=>(f.date||'').startsWith(y));
+  const l = arr.reduce((s,f)=>s+(parseFloat(f.liters)||0),0);
+  const w = arr.reduce((s,f)=>s+(parseFloat(f.cost)||0),0);
+  return {cnt:arr.length, l, w, y};
+}
+function renderFuel(){
+  const L = document.getElementById('fuelList');
+  const st = fuelStats();
+  const head = `<div class="statrow"><div class="stat"><b>${st.cnt}</b><span>${st.y} 주유</span></div><div class="stat"><b>${fmtNum(st.l)}</b><span>리터</span></div><div class="stat"><b>${st.w?Math.round(st.w/10000)+'만':'—'}</b><span>원</span></div></div>`;
+  const arr = [...fuel].sort((a,b)=>String(b.date||'').localeCompare(String(a.date||'')));
+  L.innerHTML = head + (arr.map(f=>`<div class="mr" onclick="openMR('fuel','${f.id}')">
+      <div class="ct"><div class="cn">${f.liters?fmtNum(parseFloat(f.liters))+' L':'—'}</div>
+      <span class="chip nchip">${f.cost?Number(f.cost).toLocaleString('ko-KR')+'원':''}</span></div>
+      <div class="mrm">${f.date||'—'}${f.note?' · '+esc(f.note).slice(0,40):''}</div>
+    </div>`).join('') || '<div class="mrnone">주유 기록이 없다. 연료게이지가 고장이면 이 기록이 딥스틱의 보조가 된다</div>');
+}
+function addFuel(){
+  if(!unlocked){ alert('읽기 전용 모드다. 잠금 해제 후 추가해라.'); return; }
+  const f = {id:String(Date.now()), date:today(), liters:'', cost:'', note:''};
+  fuel.push(f); saveMR(); renderFuel(); openMR('fuel', f.id);
+}
+
+// ----- 연락처 · 문서 -----
+function renderContacts(){
+  const L = document.getElementById('contactsList');
+  const cs = [...contacts].sort((a,b)=>String(a.name||'').localeCompare(String(b.name||''),'ko'));
+  const ds = [...vdocs].sort((a,b)=>String(a.title||'').localeCompare(String(b.title||''),'ko'));
+  L.innerHTML =
+    `<div class="secl">연락처 <button class="tab edt secadd" onclick="addContact()">+ 추가</button></div>` +
+    (cs.map(c=>`<div class="mr crow" onclick="openMR('contact','${c.id}')">
+        <div class="cbodyc"><div class="cn">${esc(c.name||'—')}</div>
+        <div class="mrm">${esc(c.phone||c.email||c.site||'')}${c.note?' · '+esc(c.note).slice(0,30):''}</div></div>
+        ${c.phone?`<a class="mrbtn callb" href="tel:${esc(c.phone)}" onclick="event.stopPropagation()">전화</a>`:''}
+        ${c.email?`<a class="mrbtn callb" href="mailto:${esc(c.email)}" onclick="event.stopPropagation()">메일</a>`:''}
+        ${c.site?`<a class="mrbtn callb" href="${esc(c.site)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">사이트</a>`:''}
+      </div>`).join('') || '<div class="mrnone">마리나 · VTS · 해경 · 보험 · 부품상 번호를 넣어둬라</div>') +
+    `<div class="secl" style="margin-top:18px">문서 <button class="tab edt secadd" onclick="addVdoc()">+ 추가</button></div>` +
+    (ds.map(d=>`<div class="mr" onclick="openMR('vdoc','${d.id}')">
+        <div class="ct"><div class="cn">${esc(d.title||'—')}</div>${d.photos&&d.photos.length?`<span class="chip nchip">사진 ${d.photos.length}</span>`:''}</div>
+        ${d.note?`<div class="mrm">${esc(d.note).slice(0,50)}</div>`:''}
+      </div>`).join('') || '<div class="mrnone">보험증서 · 선박검사증 · 면허 사진을 보관해라 (오프라인에서도 열린다)</div>');
+}
+function addContact(){
+  if(!unlocked){ alert('읽기 전용 모드다.'); return; }
+  const c = {id:String(Date.now()), name:'', phone:'', email:'', site:'', note:''};
+  contacts.push(c); saveMR(); renderContacts(); openMR('contact', c.id);
+}
+function addVdoc(){
+  if(!unlocked){ alert('읽기 전용 모드다.'); return; }
+  const d = {id:String(Date.now()), title:'', note:'', photos:[]};
+  vdocs.push(d); saveMR(); renderContacts(); openMR('vdoc', d.id);
+}
+
+// ----- 출항 체크리스트 -----
+function getCheckState(){
+  try{
+    const s = JSON.parse(localStorage.getItem('f45_check')||'{}');
+    if(s.d !== today()) return {d:today(), ids:[]};
+    return s;
+  }catch(e){ return {d:today(), ids:[]}; }
+}
+function setCheckState(s){ try{ localStorage.setItem('f45_check', JSON.stringify(s)); }catch(e){} }
+function renderCheck(){
+  const L = document.getElementById('checkList');
+  const st = getCheckState();
+  const done = checkt.filter(c=>st.ids.includes(String(c.id))).length;
+  L.innerHTML =
+    `<div class="statrow"><div class="stat"><b>${done} / ${checkt.length}</b><span>오늘 점검</span></div>
+     <button class="mrbtn" style="align-self:center" onclick="resetCheck()">초기화</button></div>` +
+    checkt.map(c=>{
+      const on = st.ids.includes(String(c.id));
+      return `<div class="ckrow${on?' on':''}" onclick="toggleCheck('${c.id}')">
+        <span class="ckbox">${on?'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>':''}</span>
+        <span class="cklbl">${esc(c.label)}</span>
+        ${c.url?`<a class="mrbtn cklink" href="${esc(c.url)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">바로가기</a>`:''}
+        <button class="ckdel edt" onclick="event.stopPropagation();editCheckItem('${c.id}')">&#9998;</button>
+        <button class="ckdel edt" onclick="event.stopPropagation();delCheckItem('${c.id}')">&#10005;</button>
+      </div>`;
+    }).join('') +
+    `<div style="padding:12px 18px"><button class="tab edt" onclick="addCheckItem()">+ 항목 추가</button></div>`;
+}
+function toggleCheck(id){
+  const st = getCheckState(); id=String(id);
+  const i = st.ids.indexOf(id);
+  if(i>=0) st.ids.splice(i,1); else st.ids.push(id);
+  setCheckState(st); renderCheck();
+}
+function resetCheck(){ setCheckState({d:today(), ids:[]}); renderCheck(); }
+function addCheckItem(){
+  if(!unlocked){ alert('읽기 전용 모드다.'); return; }
+  const l = prompt('점검 항목:'); if(!l||!l.trim()) return;
+  const u = prompt('연결할 링크 주소 (없으면 비워두고 확인):','') || '';
+  checkt.push({id:String(Date.now()), label:l.trim(), url:u.trim()});
+  saveMR(); renderCheck();
+}
+function editCheckItem(id){
+  if(!unlocked) return;
+  const it = checkt.find(c=>String(c.id)===String(id)); if(!it) return;
+  const l = prompt('항목 이름:', it.label); if(l===null) return;
+  const u = prompt('링크 주소 (없으면 비워둠):', it.url||''); if(u===null) return;
+  if(l.trim()) it.label = l.trim();
+  it.url = u.trim();
+  saveMR(); renderCheck();
+}
+function delCheckItem(id){
+  if(!unlocked) return;
+  const it = checkt.find(c=>String(c.id)===String(id)); if(!it) return;
+  if(!confirm(`"${it.label}" 항목을 휴지통으로 옮길까?`)) return;
+  mrTrash.push({id:'check_'+it.id, kind:'check', data:deepCopy(it), delAt:new Date().toISOString()});
+  checkt = checkt.filter(c=>String(c.id)!==String(id));
+  saveMR(); renderCheck(); updateTrashTab();
+}
+
+// ----- 요트 뉴스 -----
+let krCache=null;
+function lastSeen(){ try{ return JSON.parse(localStorage.getItem('f45_seen')||'{}'); }catch(e){ return {}; } }
+function markSeen(){
+  const s = { news: newsCache&&newsCache.updated || lastSeen().news || '',
+              kr: krCache&&krCache.updated || lastSeen().kr || '',
+              wxKey: (krCache&&krCache.wx&&krCache.wx.active) ? krCache.wx.active.join('|') : (lastSeen().wxKey||'') };
+  try{ localStorage.setItem('f45_seen', JSON.stringify(s)); }catch(e){}
+  updateBadge();
+}
+let badgeState = {fresh:false, wx:false};
+function updateBadge(){
+  const on = badgeState.fresh || badgeState.wx;
+  const d = document.getElementById('menuDot'); if(d) d.classList.toggle('on', on);
+  const b = document.getElementById('newsBadge');
+  if(b){ b.classList.toggle('on', on); b.textContent = badgeState.wx ? '특보' : '새 소식'; }
+}
+async function checkNewsBadge(){
+  try{
+    const seen = lastSeen();
+    let fresh=false, wx=false;
+    try{
+      const r = await fetch('kr.json?v='+Date.now(), {cache:'no-store'});
+      if(r.ok){ const k = await r.json();
+        if(k.updated && k.updated !== seen.kr) fresh = true;
+        const key = (k.wx&&k.wx.active&&k.wx.active.length) ? k.wx.active.join('|') : '';
+        if(key && key !== (seen.wxKey||'')) wx = true;
+      }
+    }catch(e){}
+    try{
+      const r = await fetch('news.json?v='+Date.now(), {cache:'no-store'});
+      if(r.ok){ const n = await r.json();
+        if(n.updated && n.updated !== seen.news) fresh = true; }
+    }catch(e){}
+    badgeState = {fresh, wx};
+    updateBadge();
+  }catch(e){}
+}
+async function renderNews(force){
+  const L = document.getElementById('newsList');
+  if(!newsCache || !krCache || force){
+    L.innerHTML = '<div class="mrnone">뉴스 불러오는 중…</div>';
+    try{ const r = await fetch('kr.json?v='+Date.now(), {cache:'no-store'}); krCache = r.ok ? await r.json() : null; }catch(e){ krCache = null; }
+    try{ const r = await fetch('news.json?v='+Date.now(), {cache:'no-store'}); newsCache = r.ok ? await r.json() : null; }catch(e){ newsCache = null; }
+  }
+  let html = '';
+  // ── 해상 특보 (매일 수집)
+  const wx = krCache && krCache.wx;
+  if(wx && wx.active && wx.active.length){
+    html += `<div class="wxbox warn"><b>해상 특보 발효 중</b>${wx.active.map(w=>`<div>${esc(w)}</div>`).join('')}
+      <div class="wxfoot">수집 ${krCache.updated?String(krCache.updated).slice(5,16).replace('T',' '):''} ·
+      <a href="https://www.weather.go.kr/w/special-report/overall.do" target="_blank" rel="noopener">기상청 실시간 확인</a></div></div>`;
+  } else {
+    html += `<div class="wxbox"><b>해상 특보</b><div>${wx?esc(wx.summary||'수집된 특보 없음'):'특보 수집 대기 중'}</div>
+      <div class="wxfoot"><a href="https://www.weather.go.kr/w/special-report/overall.do" target="_blank" rel="noopener">기상청 실시간 특보 확인</a> · 출항 판단은 실시간 페이지 기준</div></div>`;
+  }
+  // ── 한국 해양 소식
+  const gov = (krCache && krCache.gov) || [];
+  if(gov.length){
+    html += '<div class="secl">한국 해양 소식</div>' + gov.slice(0,6).map(n=>
+      `<div class="mr newsr"><div class="cn" style="font-size:14px">${esc(n.title)}</div>
+       <div class="newsm"><span>${esc(n.source||'')}${n.date?' · '+String(n.date).slice(0,10):''}</span>
+       <a class="mrbtn" href="${esc(n.link||'#')}" target="_blank" rel="noopener">원문</a></div></div>`).join('');
+  }
+  // ── 해외 요트 뉴스
+  html += '<div class="secl">해외 요트 뉴스</div>';
+  if(newsCache && newsCache.items && newsCache.items.length){
+    const up = newsCache.updated ? new Date(newsCache.updated) : null;
+    html += `<div class="newsup">마지막 수집 ${up?up.toLocaleDateString('ko-KR'):'—'} · ${newsCache.items.length}건 선별</div>`
+      + newsCache.items.map(n=>`<div class="mr newsr">
+        <div class="ct"><div class="cn">${esc(n.t_ko||n.title||'')}</div>${n.cat?`<span class="chip nchip">${esc(n.cat)}</span>`:''}</div>
+        ${n.s_ko?`<div class="newss">${esc(n.s_ko)}</div>`:''}
+        <div class="newsm"><span>${esc(n.source||'')}${n.date?' · '+String(n.date).slice(0,10):''}</span>
+        <a class="mrbtn" href="${esc(n.link||'#')}" target="_blank" rel="noopener">원문 보기</a></div>
+      </div>`).join('');
+  } else {
+    html += '<div class="mrnone">아직 수집된 해외 뉴스가 없다.<br>뉴스 수집 설정(GitHub Actions) 완료 후 표시된다.</div>';
+  }
+  L.innerHTML = html;
+  markSeen();
+  badgeState = {fresh:false, wx:false};
+  updateBadge();
+}
+
 applyLock();
 initStorage().then(()=>storageReadyResolve());
+setTimeout(checkNewsBadge, 2500);
 </script>
 <script type="module">
 (async ()=>{
@@ -1388,12 +1942,24 @@ initStorage().then(()=>storageReadyResolve());
         const tsnap = await getDocs(collection(fdb,'trash'));
         const msnap = await getDocs(collection(fdb,'maint'));
         const rsnap = await getDocs(collection(fdb,'repair'));
+        const vsnap = await getDocs(collection(fdb,'voyage'));
+        const fsnap = await getDocs(collection(fdb,'fuel'));
+        const csnap = await getDocs(collection(fdb,'contacts'));
+        const dsnap = await getDocs(collection(fdb,'vdocs'));
+        const ksnap = await getDocs(collection(fdb,'checkt'));
+        const mtsnap = await getDocs(collection(fdb,'mrtrash'));
         return {
           seeded: meta.exists(),
           items: isnap.docs.map(d=>d.data()),
           trash: tsnap.docs.map(d=>d.data()),
           maint: msnap.docs.map(d=>d.data()),
-          repair: rsnap.docs.map(d=>d.data())
+          repair: rsnap.docs.map(d=>d.data()),
+          voyage: vsnap.docs.map(d=>d.data()),
+          fuel: fsnap.docs.map(d=>d.data()),
+          contacts: csnap.docs.map(d=>d.data()),
+          vdocs: dsnap.docs.map(d=>d.data()),
+          checkt: ksnap.docs.map(d=>d.data()),
+          mrtrash: mtsnap.docs.map(d=>d.data())
         };
       },
       async push(p){
@@ -1406,6 +1972,18 @@ initStorage().then(()=>storageReadyResolve());
         p.delM.forEach(k=>ops.push(['del','maint',k]));
         p.setR.forEach(i=>ops.push(['set','repair',String(i.id),i]));
         p.delR.forEach(k=>ops.push(['del','repair',k]));
+        (p.setV||[]).forEach(i=>ops.push(['set','voyage',String(i.id),i]));
+        (p.delV||[]).forEach(k=>ops.push(['del','voyage',k]));
+        (p.setF||[]).forEach(i=>ops.push(['set','fuel',String(i.id),i]));
+        (p.delF||[]).forEach(k=>ops.push(['del','fuel',k]));
+        (p.setC||[]).forEach(i=>ops.push(['set','contacts',String(i.id),i]));
+        (p.delC||[]).forEach(k=>ops.push(['del','contacts',k]));
+        (p.setD||[]).forEach(i=>ops.push(['set','vdocs',String(i.id),i]));
+        (p.delD||[]).forEach(k=>ops.push(['del','vdocs',k]));
+        (p.setK||[]).forEach(i=>ops.push(['set','checkt',String(i.id),i]));
+        (p.delK||[]).forEach(k=>ops.push(['del','checkt',k]));
+        (p.setMT||[]).forEach(i=>ops.push(['set','mrtrash',String(i.id),i]));
+        (p.delMT||[]).forEach(k=>ops.push(['del','mrtrash',k]));
         ops.push(['set','meta','info',{updatedAt:new Date().toISOString(),
           itemCount:p.itemCount, trashCount:p.trashCount,
           maintCount:p.maintCount, repairCount:p.repairCount}]);
