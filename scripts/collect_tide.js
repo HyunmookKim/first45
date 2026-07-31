@@ -33,22 +33,38 @@ async function fetchPage(url){
 
 // ── 지점 목록: 통합검색 페이지들에서 /숫자.html 링크와 이름을 수집
 const HUBS = ['41-2.html','120.html','195.html','67.html'];   // 남해/서해/동해/제주 통합검색
+// 허브 파싱이 실패해도 최소한 이 지점들은 확보 (실제 페이지에서 확인한 ID)
+const SEED = {
+  '41':'여수','271':'국동항','272':'소호동','270':'돌산항','831':'여수구항','507':'안도항',
+  '455':'우학리','267':'심포항','268':'여수연도항','44':'월전항','43':'낭도항','228':'백야도',
+  '51':'거문도','52':'초도','49':'손죽도','29':'욕지도','25':'통영','28':'사량도','31':'삼천포',
+  '39':'광양','222':'순천만','48':'나로도항','219':'녹동','60':'완도','61':'청산도','62':'마량항',
+  '36':'미조항','34':'노량리','1':'부산','9':'고현항','19':'장승포항','20':'지세포항',
+};
 async function collectSpotList(){
-  const map = new Map();
+  const map = new Map(Object.entries(SEED));
+  const seedN = map.size;
   for(const h of HUBS){
     try{
       const html = await fetchPage(BASE+h);
-      const re = /href="(?:https?:\/\/www\.badatime\.com)?\/?(\d{1,5})\.html"[^>]*>\s*([^<>{}]{1,20}?)\s*</g;
-      let m;
+      // href 형태: "https://www.badatime.com/41.html" / "//www.badatime.com/41.html" / "/41.html" / "41.html"
+      const re = /href=["'](?:[^"']*\/)?(\d{1,5})\.html["'][^>]*>([\s\S]{0,60}?)<\/a>/g;
+      let m, found = 0;
       while((m = re.exec(html))){
         const id = m[1], name = strip(m[2]);
-        if(!name || /^\d+$/.test(name) || name.length < 2) continue;
+        if(!name || /^\d+$/.test(name) || name.length < 2 || name.length > 20) continue;
+        found++;
         if(!map.has(id)) map.set(id, name);
       }
-      console.log('HUB', h, '누적 지점', map.size);
+      console.log('HUB', h, '링크', found, '· 누적 지점', map.size);
+      if(!found){
+        const sample = (html.match(/href=["'][^"']*\d+\.html["'][^>]*>[\s\S]{0,40}/) || ['(href 패턴 없음)'])[0];
+        console.warn('  진단 — 실제 형식:', sample.slice(0,160));
+      }
       await sleep(GAP_MS);
     }catch(e){ console.warn('HUB FAIL', h, e.message); }
   }
+  console.log('시드', seedN, '+ 허브 수집 =', map.size, '지점');
   return map;
 }
 
@@ -90,10 +106,16 @@ function parseLatLon(txt){
   return { lon: +m[1] + (+m[2])/60, lat: +m[3] + (+m[4])/60 };
 }
 
+let diagShown = 0;
 async function collectSpot(id, name, year){
   const txt = strip(await fetchPage(BASE + id + '-2.html'));
   const days = parseTide(txt, year);
   const pos = parseLatLon(txt);
+  if((!days.length || !pos) && diagShown < 2){
+    diagShown++;
+    console.warn(`  진단 [${id} ${name}] 조석 ${days.length}일 / 좌표 ${pos?'OK':'없음'} / 본문 ${txt.length}자`);
+    console.warn('  본문 일부:', txt.slice(0, 200));
+  }
   if(!days.length || !pos) return null;
   return { id, name, lat: +pos.lat.toFixed(4), lon: +pos.lon.toFixed(4), days: days.slice(0, 15) };
 }
