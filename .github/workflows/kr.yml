@@ -1,7 +1,7 @@
 name: collect-kr
 on:
   schedule:
-    - cron: '0 */3 * * *'   # 3시간마다 (특보 감시)
+    - cron: '0 21 * * *'   # 매일 06:00 KST
   workflow_dispatch:
 permissions:
   contents: write
@@ -15,6 +15,8 @@ jobs:
           node-version: 24
       - run: npm install rss-parser@3
       - run: node scripts/collect_kr.js
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
       - name: commit kr.json
         run: |
           git config user.name "news-bot"
