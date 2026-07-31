@@ -162,7 +162,7 @@ h1{font-size:20px;font-weight:800;color:var(--th);letter-spacing:-.02em}
 .tab.on{background:var(--ac);border-color:var(--ac);color:var(--acd)}
 #lockBtn.unlocked{background:#12241B;border-color:var(--grn);color:#6FD9A0}
 .iconb{padding:8px 10px;display:flex;align-items:center}
-#stowTools{display:flex;gap:8px;padding:10px 16px 0}
+#stowTools,#mrSub{display:flex;gap:8px;padding:10px 16px 0}
 #searchWrap input{background:var(--sf);border:1px solid var(--bd);border-radius:13px;color:var(--tx)}
 #panel,#mrPanel{background:#15171B;border-top:1px solid var(--bd);border-radius:18px 18px 0 0}
 #panel input,#panel select,#panel textarea,#mrPanel input,#mrPanel select,#mrPanel textarea{background:var(--sf);border:1px solid var(--bd);border-radius:10px;color:var(--tx)}
@@ -223,6 +223,43 @@ h1{font-size:20px;font-weight:800;color:var(--th);letter-spacing:-.02em}
 .cklbl{flex:1;font-size:14px;font-weight:650;color:var(--tx)}
 .ckrow.on .cklbl{text-decoration:line-through;color:var(--tm)}
 .ckdel{background:none;border:none;color:var(--td);font-size:12px;padding:4px;cursor:pointer}
+.wxbar{padding:10px 16px 2px}
+.wxspots{display:flex;gap:7px;overflow-x:auto;padding-bottom:4px}
+.wxspots .tab{white-space:nowrap;flex-shrink:0}
+.wxnow{margin:8px 16px 0;background:var(--sf);border-radius:15px;padding:14px 15px}
+.wxnowtop{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px}
+.wxnowtop b{font-size:15.5px;font-weight:750;color:#EFF0F2}
+.wxnowtop span{font-size:10.5px;color:var(--td)}
+.wxbig{display:flex;gap:6px}
+.wxb{flex:1;text-align:center}
+.wxb b{display:block;font-size:22px;font-weight:800;color:#EFF0F2;line-height:1.15}
+.wxb i{font-size:10px;color:var(--tm);font-style:normal}
+.wxarrow{display:block;font-size:17px;line-height:1;margin-bottom:2px}
+.wxarrow.sm{font-size:12px;width:18px;text-align:center;flex-shrink:0}
+.wxsun{margin-top:11px;padding-top:9px;border-top:1px solid #24272C;font-size:11.5px;color:var(--tm);text-align:center}
+.wxhead{display:flex;align-items:center;gap:6px;margin:6px 16px 0;font-size:10px;color:var(--td)}
+.wxtl{margin:2px 16px 0;background:var(--sf);border-radius:13px;padding:6px 10px;overflow:hidden}
+.wxrow{display:flex;align-items:center;gap:6px;padding:3px 0}
+.wxh{width:20px;font-size:11px;color:var(--tm);font-variant-numeric:tabular-nums;flex-shrink:0}
+.wxbarwrap{flex:1;height:5px;background:#24272C;border-radius:3px;overflow:hidden;min-width:40px}
+.wxbarwrap i{display:block;height:100%;border-radius:3px}
+.wxv{width:30px;text-align:right;font-size:11.5px;font-weight:700;font-variant-numeric:tabular-nums;flex-shrink:0}
+.wxv.dim{color:var(--td);font-weight:600}
+.wxday{font-size:11px;font-weight:800;color:#C4C8CD;padding:8px 0 3px;border-top:1px solid #24272C;margin-top:4px}
+.wxtl .wxday:first-child{border-top:none;margin-top:0;padding-top:2px}
+.wxtide{margin:8px 16px 0;background:var(--sf);border-radius:15px;padding:13px 14px 8px}
+.wxtidetop{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;flex-wrap:wrap;gap:6px}
+.wxtidetop b{font-size:14px;font-weight:750;color:#EFF0F2}
+.wxtidetop span{font-size:11px;color:var(--tm);display:flex;align-items:center;gap:6px}
+.tidesrc{font-size:11px;color:var(--tm);margin:2px 0 6px;line-height:1.6}
+.tideext{display:block;color:var(--td);font-size:10.5px}
+.wxsvg{width:100%;height:72px;display:block}
+.wxcfg{margin:10px 16px 0;font-size:11.5px;color:var(--tm);display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.wxcfg b{color:#C4C8CD}
+.wxslots{display:flex;gap:1px;margin:9px 0 7px;height:9px;border-radius:3px;overflow:hidden}
+.wxslots i{flex:1;display:block}
+.wxwarn{margin:12px 16px 0;font-size:11px;color:var(--td);line-height:1.65;background:#1A1614;border-left:2px solid #6E4A22;border-radius:0 8px 8px 0;padding:9px 12px}
+.wxwarn b{color:#C99A5B}
 .wxbox{margin:12px 16px 0;background:#15171B;border:1px solid #2B2F35;border-radius:15px;padding:13px 15px;font-size:13px;color:#C4C8CD;line-height:1.6}
 .wxbox b{display:block;color:#F2F3F5;font-size:13px;margin-bottom:4px}
 .wxbox.warn{background:#2A1512;border-color:#7A3A30}
@@ -286,6 +323,10 @@ h1{font-size:20px;font-weight:800;color:var(--th);letter-spacing:-.02em}
 <div id="hint">칸 클릭 · 초록=물품있음 · <span class="w">점선=벽면/선반</span> · <span class="d">보라=2층</span> · 상자 · 이동 · 합치기 · 사진</div>
 
 <div id="listView"></div>
+<div id="mrSub" style="display:none">
+  <button class="tab on" id="subMaint" onclick="setMrSub('maint')">정기점검</button>
+  <button class="tab" id="subRepair" onclick="setMrSub('repair')">수리목록</button>
+</div>
 <div id="maintWrap" style="display:none">
   <div class="mrhead">
     <button class="tab" id="maintViewBtn" onclick="mrToggleView('maint')">도면</button>
@@ -302,6 +343,7 @@ h1{font-size:20px;font-weight:800;color:var(--th);letter-spacing:-.02em}
   </div>
   <div id="repairList"></div>
 </div>
+<div id="weatherWrap" style="display:none"><div id="weatherList"></div></div>
 <div id="voyageWrap" style="display:none">
   <div class="mrhead"><span style="flex:1"></span><button class="tab edt" onclick="addVoyage()">+ 기록</button></div>
   <div id="voyageList"></div>
@@ -330,7 +372,7 @@ h1{font-size:20px;font-weight:800;color:var(--th);letter-spacing:-.02em}
 <input type="file" id="mrCam" accept="image/*" capture="environment" style="display:none" onchange="mrPickPhoto(event)">
 <input type="file" id="mrFile" accept="image/*" multiple style="display:none" onchange="mrPickPhoto(event)">
 <div id="drawerOv" onclick="closeDrawer()"><aside id="drawer" onclick="event.stopPropagation()"><div class="dhead">First45 운용 <button class="dclose" onclick="closeDrawer()">&#10005;</button></div><button class="ditem" onclick="drawerGo('news')">요트 뉴스 <span class="dbadge" id="newsBadge">새 소식</span></button><button class="ditem" onclick="drawerGo('fuel')">연료 기록</button><button class="ditem" onclick="drawerGo('contacts')">연락처 · 문서</button><button class="ditem" onclick="drawerGo('check')">출항 체크리스트</button><div class="ddiv"></div><button class="ditem" onclick="closeDrawer();exportCSV()">CSV 내보내기</button><button class="ditem" onclick="closeDrawer();backupData()">데이터 백업</button><button class="ditem" id="restoreBtn" onclick="drawerRestore()">백업 복원</button><button class="ditem" id="trashTab" onclick="drawerTrash()">휴지통</button></aside></div>
-<nav id="tabbar"><button id="tabStow" class="on" onclick="switchTab('stow')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><path d="M3.3 7l8.7 5 8.7-5M12 22V12"/></svg>적재표</button><button id="tabMaint" onclick="switchTab('maint')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>정기점검</button><button id="tabRepair" onclick="switchTab('repair')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4M12 17h.01"/></svg>수리목록</button><button id="tabVoyage" onclick="switchTab('voyage')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>항해일지</button></nav>
+<nav id="tabbar"><button id="tabStow" class="on" onclick="switchTab('stow')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><path d="M3.3 7l8.7 5 8.7-5M12 22V12"/></svg>적재표</button><button id="tabMaint" onclick="switchTab('maint')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>정비</button><button id="tabWeather" onclick="switchTab('weather')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19a4.5 4.5 0 0 0 0-9h-1.3A7 7 0 1 0 5 17.7"/><path d="M2 20.5c1.2 0 1.2-1 2.4-1s1.2 1 2.4 1 1.2-1 2.4-1 1.2 1 2.4 1 1.2-1 2.4-1 1.2 1 2.4 1 1.2-1 2.4-1"/></svg>날씨</button><button id="tabVoyage" onclick="switchTab('voyage')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>항해일지</button></nav>
 
 
 <div id="panel">
@@ -1273,6 +1315,16 @@ function toggleGrp(g){
   try{ localStorage.setItem('f45_gfold', JSON.stringify(f)); }catch(e){}
   renderMaintList();
 }
+const UNIT_LABEL = { d:'일', w:'주', m:'개월' };
+function addPeriod(iso, n, unit){
+  if(unit==='d' || unit==='w'){
+    const [y,mo,d] = iso.split('-').map(Number);
+    const x = new Date(y, mo-1, d);
+    x.setDate(x.getDate() + n*(unit==='w'?7:1));
+    return x;
+  }
+  return addMonths(iso, n);
+}
 function addMonths(iso, m){
   const [y,mo,d] = iso.split('-').map(Number);
   const nd = new Date(y, mo-1+(m||12), 1);
@@ -1284,7 +1336,7 @@ function fmtDate(d){ const p=n=>String(n).padStart(2,'0'); return d.getFullYear(
 const today = () => fmtDate(new Date());
 function mStatus(it){
   if(!it.lastDate) return {c:'#5A5F66', t:'미기록', next:null, days:null};
-  const nd = addMonths(it.lastDate, it.months);
+  const nd = addPeriod(it.lastDate, it.months, it.unit||'m');
   const days = Math.floor((nd - new Date())/864e5);
   if(days<0)   return {c:'#F05B52', t:'지남 '+(-days)+'일', next:nd, days};
   if(days<=30) return {c:'#E8B33C', t:'남음 '+days+'일',  next:nd, days};
@@ -1293,7 +1345,8 @@ function mStatus(it){
 const DS = {maint:()=>maint, repair:()=>repair, voyage:()=>voyage, fuel:()=>fuel, contact:()=>contacts, vdoc:()=>vdocs};
 const getMR = (t,id) => (DS[t]?DS[t]():[]).find(x=>String(x.id)===String(id));
 function rerender(t){
-  if(t==='maint'||t==='repair') renderMR();
+  if(t==='maint'){ document.getElementById('hTitle').textContent = mrSub==='maint'?'정기점검':'수리목록'; renderMR(); }
+  else if(t==='weather') renderWeather();
   else if(t==='voyage') renderVoyage();
   else if(t==='fuel') renderFuel();
   else if(t==='contact'||t==='vdoc') renderContacts();
@@ -1301,7 +1354,17 @@ function rerender(t){
 function saveMR(){ save(); }
 
 // ===== 탭 전환 =====
-const TAB_TITLES = {stow:'적재표', maint:'정기점검', repair:'수리목록', voyage:'항해일지', fuel:'연료 기록', news:'요트 뉴스', contacts:'연락처 · 문서', check:'출항 체크리스트'};
+let mrSub = 'maint';
+function setMrSub(k){
+  mrSub = k;
+  document.getElementById('subMaint').classList.toggle('on', k==='maint');
+  document.getElementById('subRepair').classList.toggle('on', k==='repair');
+  document.getElementById('maintWrap').style.display = k==='maint'?'':'none';
+  document.getElementById('repairWrap').style.display = k==='repair'?'':'none';
+  document.getElementById('hTitle').textContent = k==='maint'?'정기점검':'수리목록';
+  closeMR(); pinCancel(); renderMR();
+}
+const TAB_TITLES = {stow:'적재표', maint:'정기점검', repair:'수리목록', weather:'날씨 · 물때', voyage:'항해일지', fuel:'연료 기록', news:'요트 뉴스', contacts:'연락처 · 문서', check:'출항 체크리스트'};
 function switchTab(t){
   curTab = t;
   document.getElementById('hTitle').textContent = TAB_TITLES[t]||'First45';
@@ -1315,13 +1378,16 @@ function switchTab(t){
     closePanel(); closeTrash();
   }
   const show = (id,on)=>{ const el=document.getElementById(id); if(el) el.style.display = on?'':'none'; };
-  show('maintWrap', t==='maint'); show('repairWrap', t==='repair');
+  show('mrSub', t==='maint');
+  if(t==='maint'){ show('maintWrap', mrSub==='maint'); show('repairWrap', mrSub==='repair'); }
+  else { show('maintWrap', false); show('repairWrap', false); }
+  show('weatherWrap', t==='weather');
   show('voyageWrap', t==='voyage'); show('fuelWrap', t==='fuel');
   show('newsWrap', t==='news'); show('contactsWrap', t==='contacts'); show('checkWrap', t==='check');
-  if(t!=='maint' && t!=='repair') show('mrMapWrap', false);
+  if(t!=='maint') show('mrMapWrap', false);
   closeMR(); pinCancel();
-  [['tabStow','stow'],['tabMaint','maint'],['tabRepair','repair'],['tabVoyage','voyage']].forEach(([id,k])=>{
-    document.getElementById(id).classList.toggle('on', t===k);
+  [['tabStow','stow'],['tabMaint','maint'],['tabWeather','weather'],['tabVoyage','voyage']].forEach(([id,k])=>{
+    const el=document.getElementById(id); if(el) el.classList.toggle('on', t===k);
   });
   if(t==='maint'||t==='repair') renderMR();
   else if(t==='voyage') renderVoyage();
@@ -1338,6 +1404,7 @@ function mrToggleView(t){
   renderMR();
 }
 function renderMR(){
+  if(curTab==='maint'){ renderMaintList(); renderRepairList(); return; }
   const t = curTab; if(t!=='maint' && t!=='repair') return;
   const isMap = (t==='maint'?maintView:repairView)==='map';
   document.getElementById('mrMapWrap').style.display = isMap?'':'none';
@@ -1375,7 +1442,7 @@ function renderMaintList(){
       return `<div class="mr gitem" onclick="openMR('maint','${it.id}')">
         <div class="ct"><div class="cn">${esc(it.name)}${it.seed?' <span class="seedb">초안</span>':''}</div>
           <span class="chip" style="background:${s.c}">${s.t}</span></div>
-        <div class="mrm">주기 ${it.months}개월 · 마지막 ${it.lastDate||'—'}${s.next?' · 다음 '+fmtDate(s.next):''}${it.pin?' · 핀':''}${it.photos&&it.photos.length?' · 사진 '+it.photos.length:''}</div>
+        <div class="mrm">주기 ${it.months}${UNIT_LABEL[it.unit||'m']} · 마지막 ${it.lastDate||'—'}${s.next?' · 다음 '+fmtDate(s.next):''}${it.pin?' · 핀':''}${it.photos&&it.photos.length?' · 사진 '+it.photos.length:''}</div>
       </div>`;
     }).join('');
   }).join('');
@@ -1411,9 +1478,11 @@ function mrAdd(t){
   if(!unlocked){ alert('읽기 전용 모드다. 잠금 해제 후 추가해라.'); return; }
   if(t==='maint'){
     const name = prompt('점검 항목 이름:'); if(!name||!name.trim()) return;
-    const mo = parseInt(prompt('주기 (개월):','12'),10);
+    const us = (prompt('주기 단위 — d(일) / w(주) / m(개월):','m')||'m').trim().toLowerCase();
+    const unit = ['d','w','m'].includes(us)? us : 'm';
+    const mo = parseInt(prompt('주기 ('+UNIT_LABEL[unit]+'):', unit==='m'?'12':'1'),10);
     const g = (prompt('계통 그룹 ('+allGrps().join(' / ')+' 중 하나, 새 이름도 가능):','엔진')||'기타').trim()||'기타';
-    maint.push({id:String(Date.now()), grp:g, name:name.trim(), months:(mo>0?mo:12), lastDate:'', note:'', photos:[], pin:null, history:[], seed:false});
+    maint.push({id:String(Date.now()), grp:g, name:name.trim(), months:(mo>0?mo:12), unit:unit, lastDate:'', note:'', photos:[], pin:null, history:[], seed:false});
   } else {
     const title = prompt('고장/수리 내용:'); if(!title||!title.trim()) return;
     repair.push({id:String(Date.now()), grp:'', title:title.trim(), status:'open', note:'', photos:[], pin:null, created:today(), doneDate:''});
@@ -1451,8 +1520,13 @@ function openMR(t, id){
         ?`<input list="grpList" value="${esc(it.grp||'기타')}" style="width:130px" onchange="mrField('grp',this.value.trim()||'기타')">`
         :`<b class="mrv">${esc(it.grp||'기타')}</b>`}</div>
       <div class="mrrow"><span class="mrlbl">주기</span>${unlocked
-        ?`<input type="number" min="1" value="${it.months}" style="width:70px" onchange="mrField('months',parseInt(this.value,10)||12)"> 개월`
-        :`<b class="mrv">${it.months}개월</b>`}</div>
+        ?`<input type="number" min="1" value="${it.months}" style="width:62px" onchange="mrField('months',parseInt(this.value,10)||12)">
+           <select onchange="mrField('unit',this.value)">
+             <option value="d"${(it.unit||'m')==='d'?' selected':''}>일</option>
+             <option value="w"${(it.unit||'m')==='w'?' selected':''}>주</option>
+             <option value="m"${(it.unit||'m')==='m'?' selected':''}>개월</option>
+           </select>`
+        :`<b class="mrv">${it.months}${UNIT_LABEL[it.unit||'m']}</b>`}</div>
       <div class="mrrow"><span class="mrlbl">마지막</span>${unlocked
         ?`<input type="date" value="${it.lastDate||''}" onchange="mrField('lastDate',this.value)">`
         :`<b class="mrv">${it.lastDate||'—'}</b>`}
@@ -1915,6 +1989,426 @@ async function renderNews(force){
   updateBadge();
 }
 
+// ============================================================
+// ===== 날씨 · 물때 · 다리 통과높이 =====
+// ============================================================
+// 지역 기준값: 약최고고조위(HAT). 해도상 다리 높이(clr)의 기준면.
+// 실제 통과높이 = 해도 표기 높이 + (HAT − 현재 조위)
+const HAT_PRESETS = {
+  '여수':      { hat: 3.62, lat: 34.7470, lon: 127.7520 },
+  '부산':      { hat: 1.35, lat: 35.0960, lon: 129.0350 },
+  '목포':      { hat: 4.85, lat: 34.7800, lon: 126.3750 },
+  '통영':      { hat: 3.15, lat: 34.8270, lon: 128.4340 },
+  '완도':      { hat: 3.95, lat: 34.3160, lon: 126.7590 },
+  '제주':      { hat: 2.85, lat: 33.5270, lon: 126.5430 },
+  '인천':      { hat: 9.55, lat: 37.4510, lon: 126.5920 },
+};
+const WX_SPOTS_DEFAULT = [
+  { id:'s1', name:'원형마리나', lat:34.8107, lon:127.6560, region:'여수' },
+  { id:'s2', name:'금오도',     lat:34.5330, lon:127.7690, region:'여수' },
+  { id:'s3', name:'욕지도',     lat:34.6250, lon:128.2620, region:'통영' },
+];
+
+let wxSpots = [], wxCur = null, wxData = null, wxTide = null, wxBridges = [];
+let wxLoading = false, wxGeoTried = false;
+
+const wxLS = (k,d)=>{ try{ const v=localStorage.getItem(k); return v?JSON.parse(v):d; }catch(e){ return d; } };
+const wxSet = (k,v)=>{ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} };
+
+function wxInit(){
+  wxSpots = wxLS('f45_spots', null) || deepCopy(WX_SPOTS_DEFAULT);
+  wxBridges = wxLS('f45_bridges', null) || [
+    { id:'b1', name:'돌산대교', clr:20.0, region:'여수' },
+  ];
+  wxCur = wxLS('f45_wxcur', null) || wxSpots[0];
+}
+
+const DIRS = ['북','북북동','북동','동북동','동','동남동','남동','남남동','남','남남서','남서','서남서','서','서북서','북서','북북서'];
+const dirName = d => DIRS[Math.round(((d%360)/22.5))%16];
+const ms2kt = v => v*1.94384;
+
+function wxWindColor(kt){
+  if(kt < 8)  return '#46B87C';
+  if(kt < 14) return '#8FCB4A';
+  if(kt < 20) return '#E8B33C';
+  if(kt < 27) return '#F0803C';
+  return '#F05B52';
+}
+function wxWaveColor(m){
+  if(m < 0.5) return '#46B87C';
+  if(m < 1.0) return '#8FCB4A';
+  if(m < 1.5) return '#E8B33C';
+  if(m < 2.5) return '#F0803C';
+  return '#F05B52';
+}
+
+// ---------- 데이터 취득 ----------
+async function wxFetch(lat, lon){
+  const base = 'https://api.open-meteo.com/v1/forecast?latitude='+lat.toFixed(4)+'&longitude='+lon.toFixed(4)
+    + '&hourly=temperature_2m,apparent_temperature,precipitation,weather_code,wind_speed_10m,wind_direction_10m,wind_gusts_10m,visibility'
+    + '&daily=sunrise,sunset&timezone=Asia%2FSeoul&forecast_days=5&wind_speed_unit=kn';
+  const mar = 'https://marine-api.open-meteo.com/v1/marine?latitude='+lat.toFixed(4)+'&longitude='+lon.toFixed(4)
+    + '&hourly=wave_height,wave_period,wave_direction&timezone=Asia%2FSeoul&forecast_days=5';
+  const [a, b] = await Promise.all([
+    fetch(base).then(r=>r.ok?r.json():null).catch(()=>null),
+    fetch(mar).then(r=>r.ok?r.json():null).catch(()=>null),
+  ]);
+  if(!a) throw new Error('날씨 데이터를 받지 못했다');
+  return { w:a, m:b };
+}
+
+// ---------- 조위: 만조/간조 손입력 → 곡선 보간 ----------
+// 조석은 사인 곡선에 가깝다. 인접한 극값 두 점 사이를 반주기 코사인으로 보간.
+function tideAt(ts, pts){
+  if(!pts || pts.length < 2) return null;
+  const P = [...pts].sort((a,b)=>a.t-b.t);
+  if(ts <= P[0].t || ts >= P[P.length-1].t) return null;
+  for(let i=0;i<P.length-1;i++){
+    if(ts >= P[i].t && ts <= P[i+1].t){
+      const f = (ts - P[i].t) / (P[i+1].t - P[i].t);
+      return P[i].v + (P[i+1].v - P[i].v) * (1 - Math.cos(Math.PI*f)) / 2;
+    }
+  }
+  return null;
+}
+let tideCache = null, tideLoaded = false;
+async function loadTide(){
+  if(tideLoaded) return tideCache;
+  tideLoaded = true;
+  try{
+    const r = await fetch('tide.json?v='+Date.now(), {cache:'no-store'});
+    if(r.ok){ tideCache = await r.json(); try{ localStorage.setItem('f45_tide_cache', JSON.stringify(tideCache)); }catch(e){} }
+  }catch(e){}
+  if(!tideCache){ try{ tideCache = JSON.parse(localStorage.getItem('f45_tide_cache')||'null'); }catch(e){} }
+  return tideCache;
+}
+function hav(a,b,c,d){
+  const R=6371, t=x=>x*Math.PI/180;
+  const dLat=t(c-a), dLon=t(d-b);
+  const q=Math.sin(dLat/2)**2 + Math.cos(t(a))*Math.cos(t(c))*Math.sin(dLon/2)**2;
+  return 2*R*Math.asin(Math.sqrt(q));
+}
+// 현재 지점에서 가장 가까운 물때 관측지점
+function nearestTideSpot(){
+  if(!tideCache || !tideCache.spots || !wxCur) return null;
+  let best=null, bd=1e9;
+  tideCache.spots.forEach(s=>{
+    const d = hav(wxCur.lat, wxCur.lon, s.lat, s.lon);
+    if(d<bd){ bd=d; best=s; }
+  });
+  return best ? { ...best, dist: bd } : null;
+}
+// 자동 물때 → 표준 포인트 배열로
+function autoTidePoints(){
+  const sp = nearestTideSpot(); if(!sp) return null;
+  const today_ = today();
+  const di = sp.days.findIndex(x=>x.d===today_);
+  if(di<0) return null;
+  const mk = (dayObj, rec) => {
+    const [hh,mm] = rec.t.split(':').map(Number);
+    const d = new Date(dayObj.d+'T00:00:00+09:00');
+    d.setHours(hh,mm,0,0);
+    return { t:d.getTime(), v:rec.v/100 };
+  };
+  const pts = [];
+  [sp.days[di-1], sp.days[di], sp.days[di+1]].forEach(day=>{
+    if(!day) return;
+    (day.h||[]).forEach(r=>pts.push(mk(day,r)));
+    (day.l||[]).forEach(r=>pts.push(mk(day,r)));
+  });
+  pts.sort((a,b)=>a.t-b.t);
+  return pts.length>=2 ? { pts, spot: sp, day: sp.days[di] } : null;
+}
+function tidePoints(){
+  const raw = wxLS('f45_tide', null);
+  if(!raw || !raw.date || !raw.rows || !raw.rows.length) return null;
+  if(raw.date !== today()) return { stale:true, date:raw.date, pts:[] };
+  const pts = raw.rows.map(r=>{
+    const [hh,mm] = String(r.time).split(':').map(Number);
+    const d = new Date(raw.date+'T00:00:00+09:00');
+    d.setHours(hh||0, mm||0, 0, 0);
+    return { t: d.getTime(), v: Number(r.cm)/100 };
+  }).sort((a,b)=>a.t-b.t);
+  return { stale:false, date:raw.date, pts };
+}
+
+function tideInput(){
+  const cur = wxLS('f45_tide', {date:today(), rows:[]});
+  const txt = prompt(
+    '오늘 만조·간조를 입력해라 (물때와날씨 앱 참고).\n' +
+    '형식: 시각,높이cm  —  줄바꿈 또는 / 로 구분\n\n' +
+    '예)\n04:08,88\n10:01,291\n15:59,56\n22:35,335',
+    (cur.date===today() ? (cur.rows||[]).map(r=>r.time+','+r.cm).join('\n') : '')
+  );
+  if(txt===null) return;
+  const rows = txt.split(/[\n\/]+/).map(s=>s.trim()).filter(Boolean).map(s=>{
+    const m = s.match(/(\d{1,2})\s*[:시]\s*(\d{1,2}).*?(-?\d{2,4})/);
+    return m ? { time: String(m[1]).padStart(2,'0')+':'+String(m[2]).padStart(2,'0'), cm: Number(m[3]) } : null;
+  }).filter(Boolean);
+  if(rows.length < 2){ alert('최소 2개(만조·간조)는 필요하다.'); return; }
+  wxSet('f45_tide', { date: today(), rows });
+  renderWeather();
+}
+
+// ---------- 위치 ----------
+function wxUseGPS(){
+  if(!navigator.geolocation){ alert('이 기기에서 위치 기능을 쓸 수 없다.'); return; }
+  const st = document.getElementById('wxStatus');
+  if(st) st.textContent = '현재 위치 확인 중…';
+  navigator.geolocation.getCurrentPosition(
+    p=>{
+      wxCur = { id:'gps', name:'현재 위치', lat:p.coords.latitude, lon:p.coords.longitude, region: wxNearestRegion(p.coords.latitude, p.coords.longitude) };
+      wxSet('f45_wxcur', wxCur); wxData=null; renderWeather();
+    },
+    e=>{ alert('위치를 가져오지 못했다.\n브라우저 설정에서 위치 권한을 허용해라.'); renderWeather(); },
+    { enableHighAccuracy:false, timeout:10000, maximumAge:300000 }
+  );
+}
+function wxNearestRegion(lat, lon){
+  let best='여수', bd=1e9;
+  Object.entries(HAT_PRESETS).forEach(([k,v])=>{
+    const d = (v.lat-lat)**2 + (v.lon-lon)**2;
+    if(d<bd){ bd=d; best=k; }
+  });
+  return best;
+}
+function wxPick(id){
+  const s = wxSpots.find(x=>x.id===id); if(!s) return;
+  wxCur = s; wxSet('f45_wxcur', s); wxData=null; renderWeather();
+}
+function wxAddSpot(){
+  if(!unlocked){ alert('잠금 해제 후 추가해라.'); return; }
+  const name = prompt('지점 이름 (예: 안도항):'); if(!name||!name.trim()) return;
+  const c = prompt('위도,경도 (예: 34.5330,127.7690)\n비워두면 현재 위치로 저장한다.','');
+  const add = (lat,lon)=>{
+    wxSpots.push({ id:'s'+Date.now(), name:name.trim(), lat, lon, region: wxNearestRegion(lat,lon) });
+    wxSet('f45_spots', wxSpots); renderWeather();
+  };
+  if(c && c.trim()){
+    const m = c.split(',').map(x=>parseFloat(x.trim()));
+    if(m.length!==2 || isNaN(m[0]) || isNaN(m[1])){ alert('위도,경도 형식이 아니다.'); return; }
+    add(m[0], m[1]);
+  } else {
+    if(!navigator.geolocation){ alert('위치 기능을 쓸 수 없다.'); return; }
+    navigator.geolocation.getCurrentPosition(p=>add(p.coords.latitude, p.coords.longitude), ()=>alert('위치 실패'));
+  }
+}
+function wxDelSpot(){
+  if(!unlocked || !wxCur || wxCur.id==='gps') return;
+  if(!confirm(`"${wxCur.name}" 지점을 삭제할까?`)) return;
+  wxSpots = wxSpots.filter(s=>s.id!==wxCur.id);
+  wxSet('f45_spots', wxSpots);
+  wxCur = wxSpots[0] || null; wxSet('f45_wxcur', wxCur); wxData=null; renderWeather();
+}
+
+// ---------- 다리 ----------
+function bridgeAdd(){
+  if(!unlocked){ alert('잠금 해제 후 추가해라.'); return; }
+  const name = prompt('다리 이름:'); if(!name||!name.trim()) return;
+  const clr = parseFloat(prompt('해도에 표기된 높이 (m) — 예: 20.0',''));
+  if(!(clr>0)){ alert('숫자를 입력해라.'); return; }
+  wxBridges.push({ id:'b'+Date.now(), name:name.trim(), clr, region:(wxCur&&wxCur.region)||'여수' });
+  wxSet('f45_bridges', wxBridges); renderWeather();
+}
+function bridgeDel(id){
+  if(!unlocked) return;
+  const b = wxBridges.find(x=>x.id===id); if(!b) return;
+  if(!confirm(`"${b.name}" 삭제할까?`)) return;
+  wxBridges = wxBridges.filter(x=>x.id!==id);
+  wxSet('f45_bridges', wxBridges); renderWeather();
+}
+function hatEdit(){
+  const r = (wxCur&&wxCur.region)||'여수';
+  const cur = (HAT_PRESETS[r]||{}).hat || 3.62;
+  const v = parseFloat(prompt(`${r} 기준 약최고고조위(HAT, m)\n해도 다리 높이의 기준면이다.`, String(cur)));
+  if(!(v>0)) return;
+  const ov = wxLS('f45_hat', {}); ov[r] = v; wxSet('f45_hat', ov);
+  renderWeather();
+}
+function hatOf(region){
+  const ov = wxLS('f45_hat', {});
+  if(ov[region]!=null) return ov[region];
+  return (HAT_PRESETS[region]||{}).hat ?? 3.62;
+}
+function airDraft(){ return wxLS('f45_airdraft', 20.37); }
+function airDraftEdit(){
+  const v = parseFloat(prompt('우리 배 최고 높이(공기흘수, m)\n안테나 포함 실측값을 넣어라.', String(airDraft())));
+  if(!(v>0)) return;
+  wxSet('f45_airdraft', v); renderWeather();
+}
+function clearanceMargin(){ return wxLS('f45_margin', 1.0); }
+function marginEdit(){
+  const v = parseFloat(prompt('안전 여유고 (m)\n이 값 이상 남아야 "통과 가능"으로 본다.', String(clearanceMargin())));
+  if(!(v>=0)) return;
+  wxSet('f45_margin', v); renderWeather();
+}
+
+// ---------- 렌더 ----------
+async function renderWeather(){
+  const L = document.getElementById('weatherList');
+  if(!wxCur){ wxInit(); }
+  await loadTide();
+  if(!wxCur){ L.innerHTML = '<div class="mrnone">지점이 없다 — + 지점으로 추가해라</div>'; return; }
+
+  const head = `<div class="wxbar">
+    <div class="wxspots">
+      <button class="tab${wxCur.id==='gps'?' on':''}" onclick="wxUseGPS()">현재 위치</button>
+      ${wxSpots.map(s=>`<button class="tab${wxCur.id===s.id?' on':''}" onclick="wxPick('${s.id}')">${esc(s.name)}</button>`).join('')}
+      <button class="tab edt" onclick="wxAddSpot()">+</button>
+    </div>
+  </div>`;
+
+  if(!wxData || wxData.key !== wxCur.lat+','+wxCur.lon){
+    L.innerHTML = head + '<div class="mrnone" id="wxStatus">날씨 불러오는 중…</div>';
+    try{
+      const d = await wxFetch(wxCur.lat, wxCur.lon);
+      wxData = { key: wxCur.lat+','+wxCur.lon, ...d };
+    }catch(e){
+      L.innerHTML = head + '<div class="mrnone">날씨를 불러오지 못했다.<br>인터넷 연결을 확인하고 다시 시도해라.<br><br><button class="tab" onclick="wxData=null;renderWeather()">다시 시도</button></div>';
+      return;
+    }
+  }
+
+  const W = wxData.w, M = wxData.m;
+  const H = W.hourly, times = H.time;
+  const now = Date.now();
+  let i0 = times.findIndex(t=> new Date(t+'+09:00').getTime() >= now - 3600e3);
+  if(i0 < 0) i0 = 0;
+
+  // 현재
+  const kt = H.wind_speed_10m[i0], gust = H.wind_gusts_10m[i0], dir = H.wind_direction_10m[i0];
+  const wave = M && M.hourly ? M.hourly.wave_height[i0] : null;
+  const nowCard = `<div class="wxnow">
+    <div class="wxnowtop"><b>${esc(wxCur.name)}</b><span>${wxCur.lat.toFixed(3)}, ${wxCur.lon.toFixed(3)}</span></div>
+    <div class="wxbig">
+      <div class="wxb"><span class="wxarrow" style="transform:rotate(${dir+180}deg);color:${wxWindColor(kt)}">&#10148;</span>
+        <b style="color:${wxWindColor(kt)}">${kt.toFixed(1)}</b><i>kt ${dirName(dir)}</i></div>
+      <div class="wxb"><b>${gust.toFixed(0)}</b><i>돌풍 kt</i></div>
+      <div class="wxb"><b style="color:${wave!=null?wxWaveColor(wave):'#84898F'}">${wave!=null?wave.toFixed(1):'—'}</b><i>파고 m</i></div>
+      <div class="wxb"><b>${H.temperature_2m[i0].toFixed(0)}°</b><i>체감 ${H.apparent_temperature[i0].toFixed(0)}°</i></div>
+    </div>
+    <div class="wxsun">일출 ${String(W.daily.sunrise[0]).slice(11)} · 일몰 ${String(W.daily.sunset[0]).slice(11)}</div>
+  </div>`;
+
+  // 시간대별 타임라인 (48h)
+  const N = Math.min(i0+48, times.length);
+  let rows = '';
+  for(let i=i0;i<N;i++){
+    const t = new Date(times[i]+'+09:00');
+    const k = H.wind_speed_10m[i], g = H.wind_gusts_10m[i], d = H.wind_direction_10m[i];
+    const wv = M && M.hourly ? M.hourly.wave_height[i] : null;
+    const isNewDay = (i===i0) || t.getHours()===0;
+    rows += `${isNewDay?`<div class="wxday">${t.getMonth()+1}/${t.getDate()} (${'일월화수목금토'[t.getDay()]})</div>`:''}
+      <div class="wxrow">
+        <span class="wxh">${String(t.getHours()).padStart(2,'0')}</span>
+        <span class="wxarrow sm" style="transform:rotate(${d+180}deg);color:${wxWindColor(k)}">&#10148;</span>
+        <span class="wxbarwrap"><i style="width:${Math.min(100,k/35*100)}%;background:${wxWindColor(k)}"></i></span>
+        <span class="wxv" style="color:${wxWindColor(k)}">${k.toFixed(0)}</span>
+        <span class="wxv dim">${g.toFixed(0)}</span>
+        <span class="wxv" style="color:${wv!=null?wxWaveColor(wv):'#5A5F66'}">${wv!=null?wv.toFixed(1):'—'}</span>
+        <span class="wxv dim">${H.temperature_2m[i].toFixed(0)}°</span>
+      </div>`;
+  }
+  const timeline = `<div class="secl">시간대별 예보</div>
+    <div class="wxhead"><span class="wxh">시</span><span style="width:18px"></span><span class="wxbarwrap"></span>
+      <span class="wxv">풍속</span><span class="wxv">돌풍</span><span class="wxv">파고</span><span class="wxv">기온</span></div>
+    <div class="wxtl">${rows}</div>`;
+
+  L.innerHTML = head + nowCard + tideSection() + timeline;
+}
+
+function tideSection(){
+  const A = autoTidePoints();
+  const T = A ? { stale:false, date:today(), pts:A.pts, auto:A } : tidePoints();
+  const region = (wxCur&&wxCur.region)||'여수';
+  const hat = hatOf(region);
+  const editBtn = T && T.auto ? '' : `<button class="tab edt" onclick="tideInput()">${T&&!T.stale?'수정':'입력'}</button>`;
+
+  if(!T || T.stale){
+    return `<div class="secl">물때 · 다리 통과높이 ${editBtn}</div>
+      <div class="wxbox"><b>오늘 물때가 없다</b>
+      <div>물때 자동수집이 아직 설정되지 않았다. 임시로 직접 입력하면 시간대별 조위와 다리 통과높이가 계산된다.</div>
+      <div class="wxfoot">${T&&T.stale?`마지막 입력: ${T.date} (지난 날짜)`:''}</div></div>`;
+  }
+
+  // 조위 곡선
+  const pts = T.pts;
+  const t0 = pts[0].t, t1 = pts[pts.length-1].t;
+  const vals = [];
+  for(let t=t0; t<=t1; t+=1800e3){ const v = tideAt(t, pts); if(v!=null) vals.push({t, v}); }
+  const vmin = Math.min(...pts.map(p=>p.v)), vmax = Math.max(...pts.map(p=>p.v));
+  const W_=320, Hh=70, pad=4;
+  const px = t => pad + (t-t0)/(t1-t0)*(W_-pad*2);
+  const py = v => Hh-pad - (v-vmin)/((vmax-vmin)||1)*(Hh-pad*2);
+  const path = vals.map((p,i)=>(i?'L':'M')+px(p.t).toFixed(1)+' '+py(p.v).toFixed(1)).join(' ');
+  const nowT = Date.now();
+  const nowV = tideAt(nowT, pts);
+  const nowMark = (nowT>t0 && nowT<t1 && nowV!=null)
+    ? `<line x1="${px(nowT).toFixed(1)}" y1="0" x2="${px(nowT).toFixed(1)}" y2="${Hh}" stroke="#FF7A45" stroke-width="1.5"/>
+       <circle cx="${px(nowT).toFixed(1)}" cy="${py(nowV).toFixed(1)}" r="3.5" fill="#FF7A45"/>` : '';
+  const labels = pts.map(p=>{
+    const d = new Date(p.t);
+    return `<text x="${px(p.t).toFixed(1)}" y="${(py(p.v)-6).toFixed(1)}" fill="#84898F" font-size="9" text-anchor="middle">${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}</text>`;
+  }).join('');
+
+  const chart = `<div class="wxtide">
+    <div class="wxtidetop"><b>지금 조위 ${nowV!=null?(nowV*100).toFixed(0)+' cm':'—'}</b>
+      <span>${region} HAT ${hat.toFixed(2)}m <button class="mrbtn edt" onclick="hatEdit()">기준값</button></span></div>
+    ${T.auto?`<div class="tidesrc">${esc(T.auto.spot.name)} 관측 · ${T.auto.spot.dist<1?'1km 이내':T.auto.spot.dist.toFixed(0)+'km'}
+      ${T.auto.day.sr?` · 일출 ${T.auto.day.sr} 일몰 ${T.auto.day.ss}`:''}
+      <span class="tideext">만조 ${(T.auto.day.h||[]).map(x=>x.t+'('+x.v+')').join(' ')} · 간조 ${(T.auto.day.l||[]).map(x=>x.t+'('+x.v+')').join(' ')}</span></div>`:''}
+    <svg viewBox="0 0 ${W_} ${Hh}" class="wxsvg">
+      <path d="${path}" fill="none" stroke="#5FA8D3" stroke-width="2"/>
+      ${nowMark}${labels}
+    </svg></div>`;
+
+  // 다리
+  const ad = airDraft(), mg = clearanceMargin();
+  const bs = wxBridges.filter(b=>!b.region || b.region===region);
+  const bridgeHtml = bs.map(b=>{
+    // 향후 12시간 통과 가능 시간대
+    const slots = [];
+    for(let t=Math.max(t0,nowT); t<=t1; t+=1800e3){
+      const tv = tideAt(t, pts); if(tv==null) continue;
+      const clr = b.clr + (hat - tv);
+      slots.push({t, clr, ok: clr - ad >= mg, near: clr - ad >= 0 && clr - ad < mg});
+    }
+    const nowClr = nowV!=null ? b.clr + (hat - nowV) : null;
+    const bar = slots.map(s=>`<i style="background:${s.ok?'#46B87C':s.near?'#E8B33C':'#F05B52'}" title="${new Date(s.t).getHours()}시 ${s.clr.toFixed(2)}m"></i>`).join('');
+    const okSlots = slots.filter(s=>s.ok);
+    let win = '오늘 남은 시간에 통과 가능 구간 없음';
+    if(okSlots.length){
+      const groups=[]; let g=[okSlots[0]];
+      for(let i=1;i<okSlots.length;i++){
+        if(okSlots[i].t - g[g.length-1].t <= 1800e3+1) g.push(okSlots[i]);
+        else { groups.push(g); g=[okSlots[i]]; }
+      }
+      groups.push(g);
+      win = groups.map(gr=>{
+        const a=new Date(gr[0].t), z=new Date(gr[gr.length-1].t);
+        return `${String(a.getHours()).padStart(2,'0')}:${String(a.getMinutes()).padStart(2,'0')}~${String(z.getHours()).padStart(2,'0')}:${String(z.getMinutes()).padStart(2,'0')}`;
+      }).join(', ');
+    }
+    return `<div class="mr">
+      <div class="ct"><div class="cn">${esc(b.name)}</div>
+        <span class="chip" style="background:${nowClr==null?'#5A5F66':(nowClr-ad>=mg?'#46B87C':nowClr-ad>=0?'#E8B33C':'#F05B52')}">${nowClr!=null?nowClr.toFixed(2)+' m':'—'}</span></div>
+      <div class="mrm">해도 ${b.clr.toFixed(1)}m · 지금 여유 ${nowClr!=null?(nowClr-ad).toFixed(2)+'m':'—'}</div>
+      <div class="wxslots">${bar}</div>
+      <div class="mrm">통과 가능: ${win}</div>
+      <div class="edt" style="text-align:right"><button class="mrbtn warn" onclick="bridgeDel('${b.id}')">삭제</button></div>
+    </div>`;
+  }).join('');
+
+  return `<div class="secl">물때 · 다리 통과높이 ${editBtn}</div>` + chart +
+    `<div class="wxcfg">배 높이 <b>${ad.toFixed(2)}m</b> <button class="mrbtn edt" onclick="airDraftEdit()">변경</button>
+     · 여유고 <b>${mg.toFixed(1)}m</b> <button class="mrbtn edt" onclick="marginEdit()">변경</button>
+     <button class="tab edt" onclick="bridgeAdd()">+ 다리</button></div>` +
+    (bridgeHtml || '<div class="mrnone">등록된 다리가 없다 — + 다리로 추가</div>') +
+    `<div class="wxwarn">조위는 ${T.auto?'국립해양조사원 만조·간조':'입력한 만조·간조'}를 곡선으로 보간한 <b>근사값</b>이다(오차 ±10~20cm).
+     실제 통과 전에는 반드시 여수 VTS에 확인하고, 안테나 포함 실측 높이를 기준으로 판단해라.</div>`;
+}
+
+wxInit();
 applyLock();
 initStorage().then(()=>storageReadyResolve());
 setTimeout(checkNewsBadge, 2500);
