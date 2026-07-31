@@ -100,7 +100,46 @@ function parseWarnText(body){
   return [...new Set(lines)];
 }
 
+// 기상청 API허브 특보 현황 (apihub.kma.go.kr — 키 필요, 최우선)
+const WRN_TYPE = { W:'강풍', R:'호우', C:'한파', D:'건조', O:'폭풍해일', V:'풍랑', T:'태풍', S:'대설', Y:'황사', H:'폭염', F:'안개' };
+const WRN_LVL  = { '1':'예비특보', '2':'주의보', '3':'경보' };
+async function collectWxHub(){
+  const key = process.env.KMA_HUB_KEY;
+  if(!key) { console.log('WX HUB 키 없음 — 건너뜀'); return null; }
+  try{
+    const url = 'https://apihub.kma.go.kr/api/typ01/url/wrn_now_data.php?fe=f&disp=0&help=1&authKey=' + key;
+    const txt = await fetchText(url);
+    if(/401|Unauthorized|인증/i.test(txt.slice(0,200)) && txt.length < 400) throw new Error('인증 실패(키 확인)');
+    const lines = txt.split(/\r?\n/).filter(l => l.trim() && !l.trim().startsWith('#'));
+    const found = [];
+    for(const line of lines){
+      const toks = line.split(/[,\s]+/).filter(Boolean);
+      // 행 안에서 특보종류 1글자 코드 + 등급 숫자 + 한글 구역명을 유연하게 탐색
+      let typ=null, lvl=null, name=null;
+      toks.forEach(t=>{
+        if(WRN_TYPE[t]) typ = WRN_TYPE[t];
+        else if(/^[123]$/.test(t) && lvl===null && typ!==null) lvl = WRN_LVL[t];
+        else if(/[가-힣]/.test(t)) name = (name? name+' ' : '') + t;
+      });
+      if(typ && name) found.push({ text: typ + (lvl||'특보') + ': ' + name, marine: /바다|해상|해역|도서/.test(name) });
+    }
+    if(!found.length){
+      console.warn('WX HUB 파싱 0건 — 응답 형식 확인용 원문 앞부분:');
+      console.warn(txt.replace(key,'***').slice(0, 400));
+      return null;
+    }
+    const marine = found.filter(f=>f.marine).map(f=>f.text);
+    const mine = marine.filter(t=>MY_SEA.test(t));
+    console.log('WX HUB 성공: 전체', found.length, '· 해상', marine.length, '· 우리해역', mine.length);
+    if(mine.length)   return { src:'KMA', active: mine, summary:'' };
+    if(marine.length) return { src:'KMA', active: [], summary:'우리 해역 특보 없음 · 타 해역 '+marine.length+'건', others: marine.slice(0,6) };
+    return { src:'KMA', active: [], summary:'발효 중인 해상 특보 없음' };
+  }catch(e){ console.warn('WX HUB FAIL', e.message); return null; }
+}
+
 async function collectWx(){
+  const hub = await collectWxHub();
+  if(hub) return hub;
   const KMA = [
     'https://www.weather.go.kr/w/special-report/overall.do',
     'https://www.kma.go.kr/weather/warning/status.jsp',
@@ -122,8 +161,11 @@ async function collectWx(){
   // 폴백: 구글뉴스 최근 24시간 특보 보도
   try{
     const parser = new Parser({ timeout: 20000, headers: UA });
-    const feed = await parser.parseURL(gn('(풍랑주의보 OR 풍랑경보 OR 해상특보) when:1d'));
-    const items = (feed.items||[]).map(i=>strip(i.title).replace(/ - [^-]+$/,''));
+    const feed = await parser.parseURL(gn('풍랑주의보 OR 풍랑경보 OR 해상특보 OR "강풍·풍랑"'));
+    const cutoff = Date.now() - 36*3600e3;
+    const items = (feed.items||[])
+      .filter(i=>{ const d=i.isoDate||i.pubDate; return d && new Date(d).getTime() > cutoff; })
+      .map(i=>strip(i.title).replace(/ - [^-]+$/,''));
     console.log('WX NEWS 폴백', items.length, '건');
     const mine = items.filter(t=>MY_SEA.test(t));
     if(mine.length) return { src:'NEWS', active: mine.slice(0,3), summary:'※ 언론 보도 기준 — 기상청 실시간 확인 필수' };
