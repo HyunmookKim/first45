@@ -84,8 +84,9 @@ ${JSON.stringify(payload)}`;
 // 우리 해역: 여수·남해서부 일대 (구역명 기준)
 const MY_SEA = /(남해서부|남해동부|서해남부|전남|여수|거문도|초도|제주)/;
 
-async function fetchText(url){
-  const r = await fetch(url, { headers: UA, redirect:'follow' });
+async function fetchText(url, ms){
+  const r = await fetch(url, { headers: UA, redirect:'follow',
+    signal: AbortSignal.timeout(ms || 20000) });
   if(!r.ok) throw new Error('HTTP '+r.status);
   const buf = Buffer.from(await r.arrayBuffer());
   let t = buf.toString('utf8');
@@ -134,12 +135,37 @@ function groupWarn(rows){
   return [...m].map(([k,v])=> k + ': ' + v.join(', '));
 }
 
+// fetch 실패 시 진짜 원인은 e.cause 안에 있음 ('fetch failed'는 껍데기 메시지)
+function why(e){
+  const c = e && e.cause;
+  if(!c) return e && e.message || String(e);
+  const parts = [e.message];
+  if(c.code) parts.push('code=' + c.code);
+  if(c.message && c.message !== e.message) parts.push(c.message);
+  if(c.errno !== undefined) parts.push('errno=' + c.errno);
+  if(Array.isArray(c.errors))
+    c.errors.forEach(x => parts.push('· ' + (x.code||'') + ' ' + (x.message||'')));
+  return parts.join(' | ');
+}
+
 async function collectWxHub(){
   const key = process.env.KMA_HUB_KEY;
   if(!key){ console.log('WX HUB 키 없음 — 건너뜀'); return null; }
+  const url = 'https://apihub.kma.go.kr/api/typ01/url/wrn_now_data.php?fe=f&disp=0&help=1&authKey=' + key;
+  let txt = null, lastErr = null;
+  for(let i = 1; i <= 3; i++){
+    try{
+      txt = await fetchText(url, 25000);
+      if(i > 1) console.log('WX HUB', i, '번째 시도 성공');
+      break;
+    }catch(e){
+      lastErr = e;
+      console.warn('WX HUB 시도', i, '실패:', why(e));
+      if(i < 3) await new Promise(r=>setTimeout(r, 3000));
+    }
+  }
+  if(txt === null){ console.warn('WX HUB FAIL 3회 모두 실패'); return null; }
   try{
-    const url = 'https://apihub.kma.go.kr/api/typ01/url/wrn_now_data.php?fe=f&disp=0&help=1&authKey=' + key;
-    const txt = await fetchText(url);
     if(txt.length < 400 && /401|403|Unauthorized|인증|권한/i.test(txt))
       throw new Error('인증/권한 실패 — 활용신청 상태 확인');
     const all = parseHub(txt);
@@ -158,7 +184,7 @@ async function collectWxHub(){
       return { src:'KMA', active: [], summary:'우리 해역 특보 없음 · 타 해역 '+marine.length+'건',
                others: groupWarn(others).slice(0,6) };
     return { src:'KMA', active: [], summary:'발효 중인 해상 특보 없음' };
-  }catch(e){ console.warn('WX HUB FAIL', e.message); return null; }
+  }catch(e){ console.warn('WX HUB FAIL', why(e)); return null; }
 }
 
 async function collectWx(){
