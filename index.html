@@ -1918,6 +1918,12 @@ async function renderNews(force){
 applyLock();
 initStorage().then(()=>storageReadyResolve());
 setTimeout(checkNewsBadge, 2500);
+setInterval(checkNewsBadge, 30*60*1000);
+document.addEventListener('visibilitychange', ()=>{
+  if(document.visibilityState !== 'visible') return;
+  if(curTab === 'news'){ renderNews(true); }
+  else { checkNewsBadge(); }
+});
 </script>
 <script type="module">
 (async ()=>{
