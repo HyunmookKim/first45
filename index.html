@@ -1735,7 +1735,7 @@ function setMapKind(k){
   mrMapKind = k;
   document.getElementById('kindSide').classList.toggle('on', k==='side');
   document.getElementById('kindPlan').classList.toggle('on', k==='plan');
-  const t = curTab==='repair' ? 'repair' : 'maint';
+  const t = (((curTab==='maint') ? mrSub : curTab)==='repair') ? 'repair' : 'maint';
   const items = t==='maint' ? maint : repair;
   const pins = items.filter(i=>i.pin && i.pin.map===k);
   const src = k==='side' ? SIDEVIEW : FLOORPLAN;
@@ -1750,7 +1750,7 @@ function pinStart(){
   if(!unlocked){ alert('읽기 전용 모드다.'); return; }
   pinTarget = {type:mrOpenType, id:mrOpenId};
   closeMR();
-  if(curTab==='maint') maintView='map'; else repairView='map';
+  if(pinTarget.type==='repair') repairView='map'; else maintView='map';
   renderMR();
   document.getElementById('pinBanner').style.display='block';
 }
@@ -1761,10 +1761,11 @@ function pinRemove(){
 }
 function pinShow(){
   const it=getMR(mrOpenType,mrOpenId); if(!it||!it.pin) return;
+  const ty = mrOpenType;
   mrMapKind = it.pin.map;
-  if(mrOpenType==='maint') maintView='map'; else repairView='map';
+  if(ty==='repair') repairView='map'; else maintView='map';
   closeMR();
-  if(curTab==='maint' && mrSub!==mrOpenType) setMrSub(mrOpenType);
+  if(curTab==='maint' && mrSub!==ty) setMrSub(ty);
   else renderMR();
 }
 function mrMapClick(e){
