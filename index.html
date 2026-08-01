@@ -400,7 +400,7 @@ h1{font-size:20px;font-weight:800;color:var(--th);letter-spacing:-.02em}
   <div id="voyageList"></div>
 </div>
 <div id="fuelWrap" style="display:none">
-  <div class="mrhead"><span style="flex:1"></span><button class="tab edt" onclick="addFuel()">+ 주유</button></div>
+  <div class="mrhead"><span style="flex:1"></span><button class="tab edt" onclick="addRun()">+ 엔진가동</button><button class="tab edt" onclick="addFuel()">+ 주유</button></div>
   <div id="fuelList"></div>
 </div>
 <div id="newsWrap" style="display:none">
@@ -625,6 +625,7 @@ async function initStorage(){
     try{ const r = await idbGet('repair'); repair = r||[]; }catch(e){ repair = []; }
     try{ voyage = (await idbGet('voyage'))||[]; }catch(e){ voyage = []; }
     try{ fuel = (await idbGet('fuel'))||[]; }catch(e){ fuel = []; }
+    try{ runs = (await idbGet('runs'))||[]; }catch(e){ runs = []; }
     try{ const c = await idbGet('contacts'); contacts = (c&&c.length)? c : deepCopy(CONTACT_DEFAULTS); }catch(e){ contacts = deepCopy(CONTACT_DEFAULTS); }
     try{ vdocs = (await idbGet('vdocs'))||[]; }catch(e){ vdocs = []; }
     try{ const k = await idbGet('checkt'); checkt = (k&&k.length)? k : deepCopy(CHECK_DEFAULTS); }catch(e){ checkt = deepCopy(CHECK_DEFAULTS); }
@@ -638,6 +639,7 @@ async function initStorage(){
     try{ repair = JSON.parse(localStorage.getItem('f45_repair')||'[]'); }catch(_){ repair=[]; }
     try{ voyage = JSON.parse(localStorage.getItem('f45_voyage')||'[]'); }catch(_){ voyage=[]; }
     try{ fuel = JSON.parse(localStorage.getItem('f45_fuel')||'[]'); }catch(_){ fuel=[]; }
+    try{ runs = JSON.parse(localStorage.getItem('f45_runs')||'[]'); }catch(_){ runs=[]; }
     try{ const c = JSON.parse(localStorage.getItem('f45_contacts')||'[]'); contacts = c.length? c : deepCopy(CONTACT_DEFAULTS); }catch(_){ contacts = deepCopy(CONTACT_DEFAULTS); }
     try{ vdocs = JSON.parse(localStorage.getItem('f45_vdocs')||'[]'); }catch(_){ vdocs=[]; }
     try{ const k = JSON.parse(localStorage.getItem('f45_checkt')||'[]'); checkt = k.length? k : deepCopy(CHECK_DEFAULTS); }catch(_){ checkt = deepCopy(CHECK_DEFAULTS); }
@@ -654,6 +656,7 @@ function saveLocal(){
     idbSet('repair', repair).catch(e=>{});
     idbSet('voyage', voyage).catch(e=>{});
     idbSet('fuel', fuel).catch(e=>{});
+    idbSet('runs', runs).catch(e=>{});
     idbSet('contacts', contacts).catch(e=>{});
     idbSet('vdocs', vdocs).catch(e=>{});
     idbSet('checkt', checkt).catch(e=>{});
@@ -666,6 +669,7 @@ function saveLocal(){
       localStorage.setItem('f45_repair', JSON.stringify(repair));
       localStorage.setItem('f45_voyage', JSON.stringify(voyage));
       localStorage.setItem('f45_fuel', JSON.stringify(fuel));
+      localStorage.setItem('f45_runs', JSON.stringify(runs));
       localStorage.setItem('f45_contacts', JSON.stringify(contacts));
       localStorage.setItem('f45_vdocs', JSON.stringify(vdocs));
       localStorage.setItem('f45_checkt', JSON.stringify(checkt));
@@ -709,7 +713,7 @@ async function toggleLock(){
 }
 
 // ===== 클라우드 동기화 (Firestore) =====
-let cloud = null, lastCloud = {}, lastCloudTrash = {}, lastCloudMaint = {}, lastCloudRepair = {}, lastCloudV = {}, lastCloudF = {}, lastCloudC = {}, lastCloudD = {}, lastCloudK = {}, lastCloudMT = {}, pushTimer = null;
+let cloud = null, lastCloud = {}, lastCloudTrash = {}, lastCloudMaint = {}, lastCloudRepair = {}, lastCloudV = {}, lastCloudF = {}, lastCloudC = {}, lastCloudD = {}, lastCloudK = {}, lastCloudMT = {}, lastCloudRN = {}, pushTimer = null;
 let storageReadyResolve; const storageReady = new Promise(r=>storageReadyResolve=r);
 function setSync(t){ const el=document.getElementById('syncState'); if(el) el.textContent = t; }
 const snapOf = arr => { const m={}; arr.forEach(i=>{ m[String(i.id)] = JSON.stringify(i); }); return m; };
@@ -733,6 +737,7 @@ async function cloudPull(){
   if(Array.isArray(r.repair) && r.repair.length) repair = r.repair;
   if(Array.isArray(r.voyage) && r.voyage.length) voyage = r.voyage;
   if(Array.isArray(r.fuel) && r.fuel.length) fuel = r.fuel;
+  if(Array.isArray(r.runs) && r.runs.length) runs = r.runs;
   if(Array.isArray(r.contacts) && r.contacts.length) contacts = r.contacts;
   if(Array.isArray(r.vdocs) && r.vdocs.length) vdocs = r.vdocs;
   if(Array.isArray(r.checkt) && r.checkt.length) checkt = r.checkt;
@@ -741,6 +746,7 @@ async function cloudPull(){
   lastCloudRepair = snapOf(Array.isArray(r.repair)? r.repair : []);
   lastCloudV = snapOf(Array.isArray(r.voyage)? r.voyage : []);
   lastCloudF = snapOf(Array.isArray(r.fuel)? r.fuel : []);
+  lastCloudRN = snapOf(Array.isArray(r.runs)? r.runs : []);
   lastCloudC = snapOf(Array.isArray(r.contacts)? r.contacts : []);
   lastCloudD = snapOf(Array.isArray(r.vdocs)? r.vdocs : []);
   lastCloudK = snapOf(Array.isArray(r.checkt)? r.checkt : []);
@@ -788,22 +794,26 @@ async function pushNow(){
     const [setM,delM] = diff(curM, lastCloudMaint);
     const [setR,delR] = diff(curR, lastCloudRepair);
     const curV = snapOf(voyage), curF = snapOf(fuel), curC = snapOf(contacts), curD = snapOf(vdocs), curK = snapOf(checkt);
+    const curRN = snapOf(runs);
     const [setV,delV] = diff(curV, lastCloudV);
     const [setF,delF] = diff(curF, lastCloudF);
+    const [setRN,delRN] = diff(curRN, lastCloudRN);
     const [setC,delC] = diff(curC, lastCloudC);
     const [setD,delD] = diff(curD, lastCloudD);
     const [setK,delK] = diff(curK, lastCloudK);
     const curMT = snapOf(mrTrash);
     const [setMT,delMT] = diff(curMT, lastCloudMT);
     if(setI.length||delI.length||setT.length||delT.length||setM.length||delM.length||setR.length||delR.length
-       ||setV.length||delV.length||setF.length||delF.length||setC.length||delC.length||setD.length||delD.length||setK.length||delK.length||setMT.length||delMT.length){
+       ||setV.length||delV.length||setF.length||delF.length||setC.length||delC.length||setD.length||delD.length||setK.length||delK.length||setMT.length||delMT.length||setRN.length||delRN.length){
       await cloud.push({setI, delI, setT, delT, setM, delM, setR, delR,
                         setV, delV, setF, delF, setC, delC, setD, delD, setK, delK, setMT, delMT,
+                        setRN, delRN,
                         itemCount:items.length, trashCount:trash.length,
                         maintCount:maint.length, repairCount:repair.length});
     }
     lastCloud = curI; lastCloudTrash = curT; lastCloudMaint = curM; lastCloudRepair = curR;
     lastCloudV = curV; lastCloudF = curF; lastCloudC = curC; lastCloudD = curD; lastCloudK = curK; lastCloudMT = curMT;
+    lastCloudRN = curRN;
     setSync('동기화됨');
   }catch(e){
     console.error(e);
@@ -1394,13 +1404,13 @@ function mStatus(it){
   if(days<=30) return {c:'#E8B33C', t:'남음 '+days+'일',  next:nd, days};
   return {c:'#46B87C', t:'남음 '+days+'일', next:nd, days};
 }
-const DS = {maint:()=>maint, repair:()=>repair, voyage:()=>voyage, fuel:()=>fuel, contact:()=>contacts, vdoc:()=>vdocs};
+const DS = {maint:()=>maint, repair:()=>repair, voyage:()=>voyage, fuel:()=>fuel, run:()=>runs, contact:()=>contacts, vdoc:()=>vdocs};
 const getMR = (t,id) => (DS[t]?DS[t]():[]).find(x=>String(x.id)===String(id));
 function rerender(t){
   if(t==='maint'){ document.getElementById('hTitle').textContent = mrSub==='maint'?'정기점검':'수리목록'; renderMR(); }
   else if(t==='weather') renderWeather();
   else if(t==='voyage') renderVoyage();
-  else if(t==='fuel') renderFuel();
+  else if(t==='fuel'||t==='run') renderFuel();
   else if(t==='contact'||t==='vdoc') renderContacts();
 }
 function saveMR(){ save(); }
@@ -1618,11 +1628,26 @@ function openMR(t, id){
       + wxRow('출항 날씨','wxOut', it.wxOut)
       + wxRow('입항 날씨','wxIn',  it.wxIn)
       + (it.weather ? tf('날씨(옛기록)','weather',it.weather) : '');
+  } else if(t==='run'){
+    body = tf('날짜','date',it.date,'date','')
+      + `<div class="mrrow"><span class="mrlbl">가동시간</span>${unlocked
+          ?`<input type="number" step="0.1" value="${esc(String(it.hours||''))}" style="width:90px" onchange="mrField('hours',this.value)"> 시간`
+          :`<b class="mrv">${it.hours?it.hours+' 시간':'—'}</b>`}</div>`
+      + `<div class="mrrow"><span class="mrlbl">목적</span>${unlocked
+          ?`<select onchange="mrField('purpose',this.value)" style="flex:1">${
+              RUN_PURPOSES.map(x=>`<option value="${x}"${it.purpose===x?' selected':''}>${x}</option>`).join('')
+            }</select>`
+          :`<b class="mrv">${esc(it.purpose||'—')}</b>`}</div>`;
   } else if(t==='fuel'){
     body = tf('날짜','date',it.date,'date','')
       + `<div class="mrrow"><span class="mrlbl">주유량</span>${unlocked
           ?`<input type="number" step="0.1" value="${esc(String(it.liters||''))}" style="width:90px" onchange="mrField('liters',this.value)"> L`
           :`<b class="mrv">${it.liters?it.liters+' L':'—'}</b>`}</div>`
+      + `<div class="mrrow"><span class="mrlbl">만탱크</span>${unlocked
+          ?`<label style="flex:1;display:flex;align-items:center;gap:6px;cursor:pointer">
+              <input type="checkbox" ${it.full?'checked':''} onchange="mrField('full',this.checked)">
+              <span style="color:#7b8794;font-size:13px">가득 채웠으면 켜라 — 잔량 추정의 기준이 된다</span></label>`
+          :`<b class="mrv">${it.full?'예':'—'}</b>`}</div>`
       + `<div class="mrrow"><span class="mrlbl">금액</span>${unlocked
           ?`<input type="number" value="${esc(String(it.cost||''))}" style="width:110px" onchange="mrField('cost',this.value)"> 원`
           :`<b class="mrv">${it.cost?Number(it.cost).toLocaleString('ko-KR')+'원':'—'}</b>`}</div>`;
@@ -1679,7 +1704,7 @@ function mrDelete(){
   const t = mrOpenType, arr = DS[t] ? DS[t]() : null; if(!arr) return;
   const i = arr.findIndex(x=>String(x.id)===mrOpenId); if(i<0) return;
   const it = arr[i];
-  const nm = it.name || it.title || (t==='voyage' ? ((it.from||'')+' → '+(it.to||'')) : t==='fuel' ? (it.date+' 주유') : '항목');
+  const nm = it.name || it.title || (t==='voyage' ? ((it.from||'')+' → '+(it.to||'')) : t==='fuel' ? (it.date+' 주유') : t==='run' ? (it.date+' 엔진가동') : '항목');
   if(!confirm(`"${nm}" 휴지통으로 옮길까? (휴지통에서 복원 가능)`)) return;
   mrTrash.push({id: t+'_'+it.id, kind:t, data:deepCopy(it), delAt:new Date().toISOString()});
   arr.splice(i,1);
@@ -1687,7 +1712,7 @@ function mrDelete(){
 }
 function mrTrashName(e){
   const d=e.data||{};
-  return d.name || d.title || d.label || (e.kind==='voyage'?((d.from||'')+' → '+(d.to||'')) : e.kind==='fuel'?((d.date||'')+' 주유 '+(d.liters||'?')+'L') : '항목');
+  return d.name || d.title || d.label || (e.kind==='voyage'?((d.from||'')+' → '+(d.to||'')) : e.kind==='fuel'?((d.date||'')+' 주유 '+(d.liters||'?')+'L') : e.kind==='run'?((d.date||'')+' 엔진 '+(d.hours||'?')+'h') : '항목');
 }
 function mrRestore(tid){
   const i = mrTrash.findIndex(e=>e.id===tid); if(i<0) return;
@@ -1696,6 +1721,7 @@ function mrRestore(tid){
   else if(e.kind==='repair') repair.push(e.data);
   else if(e.kind==='voyage') voyage.push(e.data);
   else if(e.kind==='fuel') fuel.push(e.data);
+  else if(e.kind==='run') runs.push(e.data);
   else if(e.kind==='contact') contacts.push(e.data);
   else if(e.kind==='vdoc') vdocs.push(e.data);
   else if(e.kind==='check') checkt.push(e.data);
@@ -1788,7 +1814,7 @@ function mrMapClick(e){
 // ============================================================
 // ===== 서랍 메뉴 + 항해일지/연료/뉴스/연락처·문서/체크리스트 =====
 // ============================================================
-let voyage=[], fuel=[], contacts=[], vdocs=[], checkt=[];
+let voyage=[], fuel=[], runs=[], contacts=[], vdocs=[], checkt=[];
 let mrTrash=[];
 const KIND_LABEL = {maint:'정기점검', repair:'수리', voyage:'항해일지', fuel:'연료', contact:'연락처', vdoc:'문서', check:'체크항목'};
 const CONTACT_DEFAULTS = [
@@ -1933,6 +1959,60 @@ async function wxCapture(key, vid){
 }
 
 // ----- 연료 -----
+const RUN_PURPOSES = ['항해','충전','시운전','이동','기타'];
+
+// 엔진 가동시간: 항해일지 engineH + 엔진 단독 가동 기록을 합산한다.
+// (계기판 아워미터가 없으므로 앱 사용 시작 시점부터의 누적값)
+function engineHours(){
+  const fromVoyage = voyage.reduce((s,v)=> s + (parseFloat(v.engineH)||0), 0);
+  const fromRun    = runs.reduce((s,r)=> s + (parseFloat(r.hours)||0), 0);
+  return { total: fromVoyage + fromRun, voyage: fromVoyage, run: fromRun };
+}
+
+// 어떤 시각(날짜)까지의 누적 가동시간 — 주유 구간별 소비량 계산용
+function hoursUntil(dateStr){
+  if(!dateStr) return null;
+  const a = voyage.filter(v=> v.date && v.date <= dateStr)
+                  .reduce((s,v)=> s + (parseFloat(v.engineH)||0), 0);
+  const b = runs.filter(r=> r.date && r.date <= dateStr)
+                .reduce((s,r)=> s + (parseFloat(r.hours)||0), 0);
+  return a + b;
+}
+
+// 시간당 연료 소비량 — 직전 주유 이후 돌린 시간으로 나눈다.
+// 주유 2회 이상 + 그 사이 가동 기록이 있어야 산출된다.
+function fuelRate(){
+  const arr = fuel.filter(f=> f.date && parseFloat(f.liters)>0)
+                  .sort((a,b)=> String(a.date).localeCompare(String(b.date)));
+  if(arr.length < 2) return null;
+  const segs = [];
+  for(let i=1;i<arr.length;i++){
+    const h0 = hoursUntil(arr[i-1].date), h1 = hoursUntil(arr[i].date);
+    const dh = h1 - h0, li = parseFloat(arr[i].liters)||0;
+    if(dh > 0.1 && li > 0) segs.push({ lph: li/dh, date: arr[i].date, dh, li });
+  }
+  if(!segs.length) return null;
+  const last = segs[segs.length-1];
+  const avg = segs.reduce((s,x)=> s+x.lph, 0) / segs.length;
+  return { last: last.lph, avg, n: segs.length, seg: last };
+}
+
+// 마지막 만탱크 이후 소비량으로 남은 연료를 추정한다 (게이지 고장 대비 보조값)
+const TANK_L = 250;
+function fuelLeft(){
+  const full = fuel.filter(f=> f.full && f.date)
+                   .sort((a,b)=> String(b.date).localeCompare(String(a.date)))[0];
+  if(!full) return null;
+  const r = fuelRate(); if(!r) return null;
+  const since = engineHours().total - hoursUntil(full.date);
+  if(since < 0) return null;
+  const used = since * r.avg;
+  const after = fuel.filter(f=> f.date > full.date && !f.full)
+                    .reduce((s,f)=> s + (parseFloat(f.liters)||0), 0);
+  const left = Math.max(0, Math.min(TANK_L, TANK_L - used + after));
+  return { left, used, since, from: full.date, rate: r.avg };
+}
+
 function fuelStats(){
   const y = String(new Date().getFullYear());
   const arr = fuel.filter(f=>(f.date||'').startsWith(y));
@@ -1940,21 +2020,65 @@ function fuelStats(){
   const w = arr.reduce((s,f)=>s+(parseFloat(f.cost)||0),0);
   return {cnt:arr.length, l, w, y};
 }
+
 function renderFuel(){
   const L = document.getElementById('fuelList');
-  const st = fuelStats();
-  const head = `<div class="statrow"><div class="stat"><b>${st.cnt}</b><span>${st.y} 주유</span></div><div class="stat"><b>${fmtNum(st.l)}</b><span>리터</span></div><div class="stat"><b>${st.w?Math.round(st.w/10000)+'만':'—'}</b><span>원</span></div></div>`;
-  const arr = [...fuel].sort((a,b)=>String(b.date||'').localeCompare(String(a.date||'')));
-  L.innerHTML = head + (arr.map(f=>`<div class="mr" onclick="openMR('fuel','${f.id}')">
-      <div class="ct"><div class="cn">${f.liters?fmtNum(parseFloat(f.liters))+' L':'—'}</div>
-      <span class="chip nchip">${f.cost?Number(f.cost).toLocaleString('ko-KR')+'원':''}</span></div>
-      <div class="mrm">${f.date||'—'}${f.note?' · '+esc(f.note).slice(0,40):''}</div>
-    </div>`).join('') || '<div class="mrnone">주유 기록이 없다. 연료게이지가 고장이면 이 기록이 딥스틱의 보조가 된다</div>');
+  const st = fuelStats(), eh = engineHours(), rate = fuelRate(), left = fuelLeft();
+
+  const head = `<div class="statrow">
+      <div class="stat"><b>${eh.total.toFixed(1)}</b><span>총 가동시간</span></div>
+      <div class="stat"><b>${rate? rate.last.toFixed(1) : '—'}</b><span>L/시간</span></div>
+      <div class="stat"><b>${left? Math.round(left.left) : '—'}</b><span>잔량 추정 L</span></div>
+    </div>
+    <div class="statrow">
+      <div class="stat"><b>${st.cnt}</b><span>${st.y} 주유</span></div>
+      <div class="stat"><b>${fmtNum(st.l)}</b><span>리터</span></div>
+      <div class="stat"><b>${st.w? Math.round(st.w/10000)+'만' : '—'}</b><span>${st.y} 연료비</span></div>
+    </div>`;
+
+  const notes = [];
+  if(eh.total > 0)
+    notes.push(`항해 ${eh.voyage.toFixed(1)}h · 단독가동 ${eh.run.toFixed(1)}h`);
+  if(rate)
+    notes.push(`평균 ${rate.avg.toFixed(1)} L/h (구간 ${rate.n}개)`);
+  else
+    notes.push('연료 소비량 — 주유 2회 이상 + 그 사이 가동 기록이 있어야 나온다');
+  if(left)
+    notes.push(`잔량은 ${left.from} 만탱크 이후 ${left.since.toFixed(1)}h 가동 기준 추정 — 딥스틱으로 반드시 확인해라`);
+  else
+    notes.push('잔량 추정 — 주유 기록에서 "만탱크"를 켜면 계산된다');
+  const sub = `<div class="mrnone" style="text-align:left">${notes.join('<br>')}</div>`;
+
+  // 주유·가동 기록을 한 목록에 날짜순으로 섞어 보여준다
+  const rows = [
+    ...fuel.map(f=>({ k:'fuel', date:f.date||'', o:f })),
+    ...runs.map(r=>({ k:'run',  date:r.date||'', o:r })),
+  ].sort((a,b)=> String(b.date).localeCompare(String(a.date)));
+
+  L.innerHTML = head + sub + (rows.map(x=> x.k==='fuel'
+    ? `<div class="mr" onclick="openMR('fuel','${x.o.id}')">
+        <div class="ct"><div class="cn">⛽ ${x.o.liters?fmtNum(parseFloat(x.o.liters))+' L':'—'}${x.o.full?' <span class="chip">만탱크</span>':''}</div>
+        <span class="chip nchip">${x.o.cost?Number(x.o.cost).toLocaleString('ko-KR')+'원':''}</span></div>
+        <div class="mrm">${x.o.date||'—'}${x.o.note?' · '+esc(x.o.note).slice(0,40):''}</div>
+      </div>`
+    : `<div class="mr" onclick="openMR('run','${x.o.id}')">
+        <div class="ct"><div class="cn">⚙ ${x.o.hours?x.o.hours+' 시간':'—'}</div>
+        <span class="chip">${esc(x.o.purpose||'기타')}</span></div>
+        <div class="mrm">${x.o.date||'—'}${x.o.note?' · '+esc(x.o.note).slice(0,40):''}</div>
+      </div>`
+  ).join('') || '<div class="mrnone">기록이 없다. 연료게이지가 고장이면 이 기록이 딥스틱의 보조가 된다</div>');
 }
+
 function addFuel(){
   if(!unlocked){ alert('읽기 전용 모드다. 잠금 해제 후 추가해라.'); return; }
-  const f = {id:String(Date.now()), date:today(), liters:'', cost:'', note:''};
+  const f = {id:String(Date.now()), date:today(), liters:'', cost:'', full:false, note:''};
   fuel.push(f); saveMR(); renderFuel(); openMR('fuel', f.id);
+}
+
+function addRun(){
+  if(!unlocked){ alert('읽기 전용 모드다. 잠금 해제 후 추가해라.'); return; }
+  const r = {id:String(Date.now()), date:today(), hours:'', purpose:'충전', note:''};
+  runs.push(r); saveMR(); renderFuel(); openMR('run', r.id);
 }
 
 // ----- 연락처 · 문서 -----
@@ -2755,6 +2879,7 @@ document.addEventListener('visibilitychange', ()=>{
         const rsnap = await getDocs(collection(fdb,'repair'));
         const vsnap = await getDocs(collection(fdb,'voyage'));
         const fsnap = await getDocs(collection(fdb,'fuel'));
+        const rnsnap = await getDocs(collection(fdb,'runs'));
         const csnap = await getDocs(collection(fdb,'contacts'));
         const dsnap = await getDocs(collection(fdb,'vdocs'));
         const ksnap = await getDocs(collection(fdb,'checkt'));
@@ -2767,6 +2892,7 @@ document.addEventListener('visibilitychange', ()=>{
           repair: rsnap.docs.map(d=>d.data()),
           voyage: vsnap.docs.map(d=>d.data()),
           fuel: fsnap.docs.map(d=>d.data()),
+          runs: rnsnap.docs.map(d=>d.data()),
           contacts: csnap.docs.map(d=>d.data()),
           vdocs: dsnap.docs.map(d=>d.data()),
           checkt: ksnap.docs.map(d=>d.data()),
@@ -2787,6 +2913,8 @@ document.addEventListener('visibilitychange', ()=>{
         (p.delV||[]).forEach(k=>ops.push(['del','voyage',k]));
         (p.setF||[]).forEach(i=>ops.push(['set','fuel',String(i.id),i]));
         (p.delF||[]).forEach(k=>ops.push(['del','fuel',k]));
+        (p.setRN||[]).forEach(i=>ops.push(['set','runs',String(i.id),i]));
+        (p.delRN||[]).forEach(k=>ops.push(['del','runs',k]));
         (p.setC||[]).forEach(i=>ops.push(['set','contacts',String(i.id),i]));
         (p.delC||[]).forEach(k=>ops.push(['del','contacts',k]));
         (p.setD||[]).forEach(i=>ops.push(['set','vdocs',String(i.id),i]));
