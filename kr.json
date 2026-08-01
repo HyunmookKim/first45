@@ -1,61 +1,45 @@
 {
- "updated": "2026-07-31T21:55:18.046Z",
+ "updated": "2026-08-01T21:41:43.207Z",
  "gov": [
   {
+   "title": "156명 탄 여객선, 독도 해상서 엔진 이상 발생…해경 \"전원, 건강 이상 없어\"",
+   "press": "kyeonggi.com",
+   "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE1FaGxlZ08yZmxsZXAyYUlWbG1PTzlpS3VlQU5jUDNFNTJvczBqb0dBMWF6TEU2QVFKZzNOMGhHQTBhdG04ekxoeTh0cHIxZS1fN0p6S3ljdC13S2s?oc=5",
+   "source": "해양정책",
+   "date": "2026-08-01T12:35:49.000Z",
+   "cat": "안전"
+  },
+  {
    "title": "여수해경, 본격 태풍 내습 대비 지역해양수색구조기술위원회 개최",
-   "press": "일간투데이",
-   "link": "https://news.google.com/rss/articles/CBMia0FVX3lxTE9jNGo5Y0xVamVQdVEweEk0ck1xMVlfSHc1LVpMZXlhUG01d0VjNlh4R1JyN1lPLTliVDVRS1JsNGJ4ODFiemFlR2NVR3ZudzNteDhfaFNZUnBvZXR1d1B0UXBGaU9EenpjQVEw?oc=5",
+   "press": "서울일보",
+   "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE12eWZTOWtaLThWOWZ3ZE1VMTY0M2laUHFGY0lwUHBpLUNVOHk1Rkl0M0JtRDBhdTNZWGFfRUVsRjdYdzBhUzVaYVF0dTJmRWRqUzFISzMtTlpqbklNTzFVRU5laDZuTndnZUJzWtIBb0FVX3lxTE5sbWx1TWRJcXZoUVJTZkYtZzhJdTJkWlpDYzVMc25iNVhoeUFZcDhtMHI5cDhQY3o4MldVV0NFRlVXMFZGcnE3LVJEX0FHVUlNMlFKdThiaEE1QUxNR0o0N21fYWJpd2cwRzh2QjVFQQ?oc=5",
    "source": "여수·요트",
-   "date": "2026-07-30T07:50:23.000Z",
+   "date": "2026-07-31T06:37:56.000Z",
    "cat": "안전"
   },
   {
-   "title": "어획물운반선 선원 1명 실종…태안해경 함정·항공기 긴급 투입",
-   "press": "해사신문",
-   "link": "https://news.google.com/rss/articles/CBMia0FVX3lxTE1fTmFCMGVEb3RJVDBaUzU1RFNud3BwOTVqRVh1aHdydkZSZFBnVERrc05fTHBldHpfeGRYM3NxOXJlM2tpR1hja1kyT1gtZnY3TjVmVW9VLWZqLS1MN2FFalRMNmEtM2NBRnJN?oc=5",
+   "title": "구명조끼 미착용·외국인 수탈 잡는다...‘8월 즉시’",
+   "press": "한국농어민신문",
+   "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE1oMzZfN2IxVlNGa3gyX0hWMThuU1k2Y2hwbFVuQ3I1V0FqOER4REFtYzV4VHZfZUlMX016aHRfU245YWszdkdqTEtBVlVQT2VSaVMzMXdQaXp3OTRqZ0g4NG9WNUY0UnMtUVlCZQ?oc=5",
    "source": "해양정책",
-   "date": "2026-07-31T11:59:47.000Z",
-   "cat": "안전"
-  },
-  {
-   "title": "서해해경청, 어선 구명조끼 미착용 일제 단속 실시",
-   "press": "일간투데이",
-   "link": "https://news.google.com/rss/articles/CBMia0FVX3lxTE0zQmwwQlJvZkdRRmVvQkc3UXpENDFhUm03MGJNYkRma3ZkcWlFdks1eDgwSlJCWXVyZkdKOWg2V2s2Z1RRUmluVTBRb3RVY0c0S000a0UzbXlHNVpqQUpwVHZCaVgzTUhRamM0?oc=5",
-   "source": "해양정책",
-   "date": "2026-07-30T09:37:43.000Z",
+   "date": "2026-07-31T10:09:14.000Z",
    "cat": "규정"
-  },
-  {
-   "title": "해수부·해운조합, ‘2026 연안선박 현대화 이차보전사업’ 2차 공모 실시",
-   "press": "해양한국",
-   "link": "https://news.google.com/rss/articles/CBMiekFVX3lxTFBWUGI2ZXFQU05pZnE5QU5XcjlXOEI4WHpQTDc3Tk41QVRieW9lcmVoSEh3bWxlV1lmcmN0VWNGQ3JnbnlZalBNUUgtaWc5TmtTZ1UwejBEbXhaQlVRVzZ1THFfWVBQeFRCTjk3V1Z5YXdldkYzOHhBN3pB?oc=5",
-   "source": "해양정책",
-   "date": "2026-07-30T06:44:09.000Z",
-   "cat": "규정"
-  },
-  {
-   "title": "\"피지컬 AI 항만 혁신, 광양항에서 시작한다\"...해수부, ‘항만자동화 테스트베드’ 구축사업 착공",
-   "press": "인공지능신문",
-   "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE1OOVZNTVlScGFnT2RvYmVlSUFpUEpRX3Q5dTJ4aG5FUWtUcFdjY3NjMS04YVVSZC1GMkt5NkdZR3Z2cmI5TEM4MEpzSVRuRDJHTEN5ZVV2YnF1cmduT1NfQnNEQVFvZDA?oc=5",
-   "source": "해양정책",
-   "date": "2026-07-31T09:38:26.000Z",
-   "cat": "항만"
   },
   {
    "title": "해양조사원, 8월 한 달 '여수·통영 해역 조류 관측' 나선다",
-   "press": "네이트",
-   "link": "https://news.google.com/rss/articles/CBMieEFVX3lxTFA1MG9JSnR6bWhvT29YY3VIRjVoeXZvajAwLU82TWZnMlVoUEk0STFWSUVDR1d5SGVTNEhUd0d6YkRTTVN6VnpLNzVDLVRaNjRLUmJLSWJ0MW9tUzl0U0c0bXRNaVlnUElyS3BKMGktcGhkdXZSRXcxWQ?oc=5",
+   "press": "뉴시스",
+   "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFBTeTFtMndYV05xc3JwM2dObkUtOTdCNEtqSlRQRUs2UVFYNjYxay0wdWVMMHVySDhVcG55WEhOTXpMVFVQRmxaNHkwRWc3TjZ4akNSMWNkbmRXZkJuY3pKLdIBeEFVX3lxTE9TNnlXRVI1cTd4T1Z6T1RLMXJFOTR5QV9IZ0VnRFFUdTVUYmZiQmM5UmRkUGgtWVl3LXBkSGJpem9rb0pSMHZnZmtzXzZlQ0pyUW5UWTY3ckdIdHgxTmQ5Z2JpeTN6TjN0NlJjWVM3c04zdS0tSTc2Zg?oc=5",
    "source": "여수·요트",
-   "date": "2026-07-31T08:14:00.000Z",
+   "date": "2026-07-31T08:13:50.000Z",
    "cat": "기상"
   },
   {
-   "title": "펄펄 끓기 시작한 여수바다, 고수온 심각 경보 켰다",
-   "press": "nhanews.com",
-   "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE5PRnM2NmNVZ3VhVEV1MjZmaEhWeTZ0M0d2UlFkemhSelY4Y3hCc0Z6T0JqdUdNQWtHX24zUlB5NnR0bGhnYmx4US1qS1lXQ3RsNkJ1TmJHZTY1bWJTWjZlRUZ1NjM4T2ps?oc=5",
+   "title": "여수시, 요트 국가대표 전지훈련 메카로 부상…72명 하계 합동훈련 돌입",
+   "press": "stnsports.co.kr",
+   "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTE5KR08yX1JyTVl5Skh6ZXd6N1V2LTNHYTk4ak1zeG1oYVFUVW9sV2k1bG9JS0N0b1NrbGZiU0JObzVjOG9PMUJfc3pRNVVaYUhXWV9BWkl0TlN3TkpGU09XcWtNVmNvUGRwNEFodHYwcw?oc=5",
    "source": "여수·요트",
-   "date": "2026-07-30T17:18:16.000Z",
-   "cat": "기상"
+   "date": "2026-07-31T06:28:02.000Z",
+   "cat": "지역"
   },
   {
    "title": "여수, 요트 국가대표 전지훈련 유치…아시안게임 대표팀도 참가",
@@ -64,10 +48,26 @@
    "source": "여수·요트",
    "date": "2026-07-31T05:43:28.000Z",
    "cat": "지역"
+  },
+  {
+   "title": "목포시, 물류·산업·관광 융합 서남권 핵심 거점항만 육성",
+   "press": "연합뉴스",
+   "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFBiMG1IWnVFVFRCUkFIampGcUl0UVdkTUEtbE94QVlWUmJDLWpOb0lER25taWtUbUhTSDBueGhXY1podEcxSV9jNGFoeEdPTVBiclcxYVNSLU1mZGZBU29wc9IBYEFVX3lxTFBiMG1IWnVFVFRCUkFIampGcUl0UVdkTUEtbE94QVlWUmJDLWpOb0lER25taWtUbUhTSDBueGhXY1podEcxSV9jNGFoeEdPTVBiclcxYVNSLU1mZGZBU29wcw?oc=5",
+   "source": "해양정책",
+   "date": "2026-07-31T05:22:37.000Z",
+   "cat": "항만"
+  },
+  {
+   "title": "[기획] AI가 항만을 스스로 움직인다… 광양항, 대한민국 첫 '피지컬 AI' 실험무대",
+   "press": "남도방송",
+   "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTE9rRUxtUUZkYkFveC1ROGRsdkYtR3laaF85eTR0emMtNE5ja1lhUXhnYVBQbHdKQ0NPWUY5Q2lJZlFzNGlCMEdZUEIwNjlzSVpHRVpIbVlfa3N5dlYtQjlhZUpldExRRzZURlM5dWZYc9IBb0FVX3lxTE9rRUxtUUZkYkFveC1ROGRsdkYtR3laaF85eTR0emMtNE5ja1lhUXhnYVBQbHdKQ0NPWUY5Q2lJZlFzNGlCMEdZUEIwNjlzSVpHRVpIbVlfa3N5dlYtQjlhZUpldExRRzZURlM5dWZYcw?oc=5",
+   "source": "해양정책",
+   "date": "2026-07-31T03:21:52.000Z",
+   "cat": "산업"
   }
  ],
  "wx": {
-  "src": "NEWS",
+  "src": "KMA",
   "active": [],
   "summary": "발효 중인 해상 특보 없음"
  }
