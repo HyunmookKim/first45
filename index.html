@@ -1614,7 +1614,10 @@ function openMR(t, id){
           ?`<input type="number" step="0.5" value="${esc(String(it.hours||''))}" style="width:70px" onchange="mrField('hours',this.value)"> 항해h
              <input type="number" step="0.5" value="${esc(String(it.engineH||''))}" style="width:70px" onchange="mrField('engineH',this.value)"> 엔진h`
           :`<b class="mrv">항해 ${it.hours||'—'}h · 엔진 ${it.engineH||'—'}h</b>`}</div>`
-      + tf('동승','crew',it.crew) + tf('날씨','weather',it.weather);
+      + tf('동승','crew',it.crew)
+      + wxRow('출항 날씨','wxOut', it.wxOut)
+      + wxRow('입항 날씨','wxIn',  it.wxIn)
+      + (it.weather ? tf('날씨(옛기록)','weather',it.weather) : '');
   } else if(t==='fuel'){
     body = tf('날짜','date',it.date,'date','')
       + `<div class="mrrow"><span class="mrlbl">주유량</span>${unlocked
@@ -1844,8 +1847,82 @@ function renderVoyage(){
 }
 function addVoyage(){
   if(!unlocked){ alert('읽기 전용 모드다. 잠금 해제 후 추가해라.'); return; }
-  const v = {id:String(Date.now()), date:today(), from:'', to:'', nm:'', hours:'', engineH:'', crew:'', weather:'', note:'', photos:[]};
+  const v = {id:String(Date.now()), date:today(), from:'', to:'', nm:'', hours:'', engineH:'', crew:'', weather:'', note:'', photos:[], wxOut:null, wxIn:null};
   voyage.push(v); saveMR(); renderVoyage(); openMR('voyage', v.id);
+  wxCapture('wxOut', v.id);          // 출항 날씨 자동 기록
+}
+
+// ===== 항해일지 날씨 기록 =====
+// 출항·입항 시점의 바람·파고·조위를 실제로 받아 항목에 박는다.
+function wxRow(label, key, w){
+  const val = w && w.text
+    ? `<b class="mrv" style="flex:1">${esc(w.text)}</b>`
+    : `<span class="mrv" style="flex:1;color:#7b8794">—</span>`;
+  const btn = unlocked
+    ? `<button class="mrbtn" onclick="wxCapture('${key}')">지금</button>` : '';
+  const sub = w && w.at
+    ? `<div class="mrm" style="padding:0 0 6px 74px">${esc(w.at)}${w.spot?' · '+esc(w.spot):''}</div>` : '';
+  return `<div class="mrrow"><span class="mrlbl">${label}</span>${val}${btn}</div>${sub}`;
+}
+
+// 지정 시각에 가장 가까운 예보 시간 인덱스
+function wxHourIndex(times, ts){
+  if(!times || !times.length) return -1;
+  let best=-1, bd=Infinity;
+  for(let i=0;i<times.length;i++){
+    const d = Math.abs(new Date(times[i]+':00+09:00').getTime() - ts);
+    if(d < bd){ bd=d; best=i; }
+  }
+  return bd <= 90*60e3 ? best : -1;   // 90분 넘게 벌어지면 쓰지 않는다
+}
+
+async function wxCapture(key, vid){
+  const id = vid || mrOpenId;
+  const it = voyage.find(x=>String(x.id)===String(id));
+  if(!it) return;
+  if(!wxCur){ alert('날씨 지점이 없다. 날씨탭에서 지점을 먼저 정해라.'); return; }
+  it[key] = { text:'받는 중…', at:'', spot:'' };
+  if(mrOpenType==='voyage' && String(mrOpenId)===String(id)) openMR('voyage', id);
+  try{
+    let d = (wxData && wxData.key === wxCur.lat+','+wxCur.lon) ? wxData : null;
+    if(!d){ d = { key: wxCur.lat+','+wxCur.lon, ...(await wxFetch(wxCur.lat, wxCur.lon)) }; wxData = d; }
+    const now = Date.now();
+    const H = d.w && d.w.hourly;
+    const i = H ? wxHourIndex(H.time, now) : -1;
+    if(i < 0) throw new Error('현재 시각의 예보가 없다');
+    const dir  = H.wind_direction_10m ? H.wind_direction_10m[i] : null;
+    const kt   = H.wind_speed_10m ? Math.round(H.wind_speed_10m[i]) : null;
+    const gust = H.wind_gusts_10m ? Math.round(H.wind_gusts_10m[i]) : null;
+    const temp = H.temperature_2m ? Math.round(H.temperature_2m[i]) : null;
+    let wave = null;
+    if(d.m && d.m.hourly){
+      const j = wxHourIndex(d.m.hourly.time, now);
+      if(j >= 0 && d.m.hourly.wave_height) wave = d.m.hourly.wave_height[j];
+    }
+    let tide = null, tspot = '';
+    try{
+      const src = tideSource();
+      if(src){ const t = tideAt(now, src.pts);
+        if(t != null){ tide = Math.round(t*100); tspot = src.spot && src.spot.name || ''; } }
+    }catch(e){}
+    const parts = [];
+    if(kt != null) parts.push((dir!=null?dirName(dir):'') + ' ' + kt + 'kt' + (gust!=null?'(돌풍 '+gust+')':''));
+    if(wave != null) parts.push('파고 ' + wave.toFixed(1) + 'm');
+    if(tide != null) parts.push('조위 ' + tide + 'cm');
+    if(temp != null) parts.push(temp + '℃');
+    const dt = new Date(now);
+    const pad = n => String(n).padStart(2,'0');
+    it[key] = {
+      text: parts.join(' · ') || '자료 없음',
+      at: `${dt.getFullYear()}-${pad(dt.getMonth()+1)}-${pad(dt.getDate())} ${pad(dt.getHours())}:${pad(dt.getMinutes())}`,
+      spot: wxCur.name || '',
+      dir, kt, gust, wave, tide, temp, tideSpot: tspot
+    };
+  }catch(e){
+    it[key] = { text:'기록 실패 — ' + (e.message||'인터넷 확인'), at:'', spot:'' };
+  }
+  saveMR(); renderVoyage();
+  if(mrOpenType==='voyage' && String(mrOpenId)===String(id)) openMR('voyage', id);
 }
 
 // ----- 연료 -----
@@ -2116,7 +2193,8 @@ function wxWaveColor(m){
 // ---------- 데이터 취득 ----------
 function fetchTimeout(url, ms){
   return Promise.race([
-    fetch(url),
+    // 날씨는 항상 새로 받는다 — 캐시되면 지난 예보가 최신인 척 나온다
+    fetch(url, {cache:'no-store'}),
     new Promise((_,rej)=>setTimeout(()=>rej(new Error('시간 초과')), ms||12000))
   ]);
 }
