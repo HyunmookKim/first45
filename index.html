@@ -1890,14 +1890,21 @@ async function wxCapture(key, vid){
     const H = d.w && d.w.hourly;
     const i = H ? wxHourIndex(H.time, now) : -1;
     if(i < 0) throw new Error('현재 시각의 예보가 없다');
-    const dir  = H.wind_direction_10m ? H.wind_direction_10m[i] : null;
-    const kt   = H.wind_speed_10m ? Math.round(H.wind_speed_10m[i]) : null;
-    const gust = H.wind_gusts_10m ? Math.round(H.wind_gusts_10m[i]) : null;
-    const temp = H.temperature_2m ? Math.round(H.temperature_2m[i]) : null;
+    // 값이 없을 때 undefined/NaN이 저장되면 Firestore 쓰기가 배치째 실패한다.
+    // 숫자로 확인된 것만 통과시키고 나머지는 전부 null로 떨군다.
+    const num = (a, k) => {
+      const v = a && a[k];
+      return (typeof v === 'number' && isFinite(v)) ? v : null;
+    };
+    const rnd = v => (v == null ? null : Math.round(v));
+    const dir  = num(H.wind_direction_10m, i);
+    const kt   = rnd(num(H.wind_speed_10m, i));
+    const gust = rnd(num(H.wind_gusts_10m, i));
+    const temp = rnd(num(H.temperature_2m, i));
     let wave = null;
     if(d.m && d.m.hourly){
       const j = wxHourIndex(d.m.hourly.time, now);
-      if(j >= 0 && d.m.hourly.wave_height) wave = d.m.hourly.wave_height[j];
+      if(j >= 0) wave = num(d.m.hourly.wave_height, j);
     }
     let tide = null, tspot = '';
     try{
