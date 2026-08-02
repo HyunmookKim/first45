@@ -1,4 +1,4 @@
-const CACHE = 'first45-v25';
+const CACHE = 'first45-v26';
 const TILES = 'first45-tiles';   // 지도 타일 전용 (버전 올려도 지우지 않는다)
 const ASSETS = ['./','./index.html','./manifest.webmanifest','./icon-192.png','./icon-512.png','./icon-180.png'];
 const TILE_HOSTS = ['tile.openstreetmap.org','tiles.openseamap.org'];

@@ -1862,7 +1862,11 @@ function dgFit(){
     const w = box.clientWidth || 1;
     const r = (img.naturalHeight && img.naturalWidth)
       ? img.naturalHeight / img.naturalWidth : 1.56;
-    box.style.height = Math.round(w * r) + 'px';
+    dgRatio = r;
+    // 도면 전체 높이가 화면을 넘으면 틀을 화면 크기로 제한하고 안에서 끌어 본다.
+    // (평면도는 비율이 3배라 그대로 두면 페이지가 하염없이 길어진다)
+    const cap = Math.round(Math.min(window.innerHeight * 0.62, 560));
+    box.style.height = Math.round(Math.min(w * r, cap)) + 'px';
     dgClamp(); dgApply();
   };
   if(img.complete && img.naturalWidth) set();
@@ -1881,11 +1885,17 @@ function dgApply(anim){
   pan.style.transformOrigin = '0 0';
   pan.style.transform = `translate(${dgV.x}px,${dgV.y}px) scale(${dgV.s})`;
 }
+// 판(도면)의 실제 크기. 틀 높이와 다르다 — 도면이 더 길 수 있다.
+let dgRatio = 1.56;
+function dgSize(){
+  const box = document.getElementById('mrMap');
+  const W = box ? box.clientWidth : 1, H = box ? box.clientHeight : 1;
+  return { W, H, pw: W*dgV.s, ph: W*dgRatio*dgV.s };   // 판 높이는 폭×비율
+}
 function dgClamp(){
   const box = document.getElementById('mrMap'); if(!box) return;
-  const W = box.clientWidth, H = box.clientHeight;
-  // 판이 화면보다 크면 빈 곳이 보이지 않게, 작으면 가운데로
-  const pw = W*dgV.s, ph = H*dgV.s;
+  const { W, H, pw, ph } = dgSize();
+  // 판이 틀보다 크면 빈 곳이 안 보이게, 작으면 가운데로
   dgV.x = pw <= W ? (W-pw)/2 : Math.min(0, Math.max(W-pw, dgV.x));
   dgV.y = ph <= H ? (H-ph)/2 : Math.min(0, Math.max(H-ph, dgV.y));
 }
@@ -1910,8 +1920,9 @@ function dgFocus(px, py, scale){
   const box = document.getElementById('mrMap'); if(!box) return;
   const W = box.clientWidth, H = box.clientHeight;
   dgV.s = Math.max(DG_MIN, Math.min(DG_MAX, scale || 2.6));
+  // 핀 좌표는 도면 기준 % — 판 크기(폭×비율)로 환산해야 맞는다
   dgV.x = W/2 - (px/100)*W*dgV.s;
-  dgV.y = H/2 - (py/100)*H*dgV.s;
+  dgV.y = H/2 - (py/100)*(W*dgRatio)*dgV.s;
   dgClamp(); dgApply(true);
 }
 // 끌기 · 두 손가락 확대
@@ -1927,7 +1938,9 @@ function dgBind(){
     drag = pt(e); moved = 0;
   });
   box.addEventListener('pointermove', e=>{
-    if(!drag || dgV.s <= 1) return;      // 원래 크기면 끌 필요가 없다
+    if(!drag || pinch) return;           // 두 손가락 중에는 끌지 않는다
+    const sz = dgSize();
+    if(sz.pw <= sz.W && sz.ph <= sz.H) return;   // 다 보이면 끌 것이 없다
     const q = pt(e), dx = q.x-drag.x, dy = q.y-drag.y;
     moved += Math.abs(dx)+Math.abs(dy);
     dgV.x += dx; dgV.y += dy; drag = q;
@@ -1940,6 +1953,7 @@ function dgBind(){
       const d = Math.hypot(e.touches[0].clientX-e.touches[1].clientX,
                            e.touches[0].clientY-e.touches[1].clientY);
       const r = box.getBoundingClientRect();
+      drag = null;   // 끌기와 확대가 겹치면 화면이 튄다
       pinch = { d, s:dgV.s,
         cx:(e.touches[0].clientX+e.touches[1].clientX)/2 - r.left,
         cy:(e.touches[0].clientY+e.touches[1].clientY)/2 - r.top };
@@ -1955,10 +1969,10 @@ function dgBind(){
       dgV.x = pinch.cx - (pinch.cx - dgV.x)*k;
       dgV.y = pinch.cy - (pinch.cy - dgV.y)*k;
       dgV.s = want;
-      dgClamp(); dgApply();
+      dgClamp(); dgApply(false);   // 전환 효과가 있으면 손가락보다 늦게 따라와 끊겨 보인다
     }
   }, {passive:false});
-  box.addEventListener('touchend', ()=>{ pinch=null; });
+  box.addEventListener('touchend', e=>{ if(e.touches.length < 2){ pinch=null; drag=null; } });
 }
 
 // 도면 핀 — 가까운 것끼리 묶고, 라벨은 누른 것만 띄운다
