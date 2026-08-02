@@ -13,7 +13,9 @@
 /* 타일층·겹침층 — 끄는 동안 이 두 층만 transform 으로 민다 */
 .mapbox .mtl,.mapbox .mol{position:absolute;left:0;top:0;width:100%;height:100%;
   will-change:transform;pointer-events:none}
-.mapbox img.mt{position:absolute;width:256px;height:256px;pointer-events:none}
+.mapbox img.mt{position:absolute;width:256px;height:256px;pointer-events:none;z-index:1}
+/* 새 타일이 실릴 때까지 뒤에 깔아두는 옛 타일 — 화면이 비지 않게 한다 */
+.mapbox img.mtold{z-index:0;transform-origin:center}
 .mapbox svg.mov{position:absolute;left:0;top:0;pointer-events:none}
 .mapbox .mdot{position:absolute;width:12px;height:12px;border-radius:50%;
   transform:translate(-50%,-50%);border:2px solid #0e1620;pointer-events:none}
@@ -157,7 +159,13 @@ body{padding-bottom:62px}
 .mrm{font-size:11px;color:#4a789e;margin-top:3px;padding-left:18px}
 .seedb{font-size:9px;color:#b58a3a;border:1px solid #7a5a20;border-radius:4px;padding:0 4px;vertical-align:1px}
 .mrnone{color:#2a4a6a;font-size:12px;text-align:center;margin-top:22px}
-#mrMap{position:relative;width:min(500px,100%);margin:0 auto}
+#mrMap{position:relative;width:min(500px,100%);margin:0 auto;overflow:hidden;
+  touch-action:none;user-select:none;-webkit-user-select:none}
+#mrPan{position:absolute;left:0;top:0;width:100%;will-change:transform}
+#mrPan img{width:100%;height:auto;display:block}
+.mrzoom{position:absolute;right:8px;top:8px;display:flex;flex-direction:column;gap:4px;z-index:5}
+.mrzoom button{width:32px;height:32px;border-radius:8px;border:1px solid #2A3B4C;
+  background:rgba(11,16,23,.82);color:#DFE6EE;font-size:16px;line-height:1;cursor:pointer}
 /* 도면 핀 — 배 안은 좁아 핀이 몰린다. 아이콘만 띄우고 라벨은 누를 때만. */
 .mpin{position:absolute;width:26px;height:26px;border-radius:50%;
   transform:translate(-50%,-50%);display:grid;place-items:center;
@@ -1824,7 +1832,8 @@ function mrPickPhoto(ev){
 }
 
 // ===== 도면 + 핀 =====
-function setMapKind(k){
+function setMapKind(k, keepView){
+  if(!keepView) dgV = { s:1, x:0, y:0 };
   mrMapKind = k;
   document.getElementById('kindSide').classList.toggle('on', k==='side');
   document.getElementById('kindPlan').classList.toggle('on', k==='plan');
@@ -1833,8 +1842,123 @@ function setMapKind(k){
   const pins = items.filter(i=>i.pin && i.pin.map===k);
   const src = k==='side' ? SIDEVIEW : FLOORPLAN;
   document.getElementById('mrMap').innerHTML =
-    `<img src="${src}" style="width:100%;display:block;opacity:.92" draggable="false">`
-    + pinLayer(pins, t);
+    `<div id="mrPan"><img src="${src}" style="width:100%;display:block;opacity:.92" draggable="false">`
+    + pinLayer(pins, t) + `</div>`
+    + `<div class="mrzoom"><button onclick="dgZoom(1.5)">+</button>`
+    + `<button onclick="dgZoom(1/1.5)">−</button>`
+    + `<button onclick="dgReset()" title="전체 보기">⤢</button></div>`;
+  dgFit();      // 이미지 비율에 맞춰 틀 높이를 잡는다
+  dgApply();
+  dgBind();
+}
+
+// 판에 transform 을 걸면 부모가 높이를 못 재므로 직접 지정한다.
+// 도면마다 비율이 다르다 (측면도 156% / 평면도 298%)
+function dgFit(){
+  const box = document.getElementById('mrMap');
+  const img = box && box.querySelector('#mrPan img');
+  if(!box || !img) return;
+  const set = ()=>{
+    const w = box.clientWidth || 1;
+    const r = (img.naturalHeight && img.naturalWidth)
+      ? img.naturalHeight / img.naturalWidth : 1.56;
+    box.style.height = Math.round(w * r) + 'px';
+    dgClamp(); dgApply();
+  };
+  if(img.complete && img.naturalWidth) set();
+  else img.addEventListener('load', set, {once:true});
+}
+
+// ===== 도면 확대·이동 =====
+// 핀이 몰린 곳을 손으로 넓혀 볼 수 있게 한다. 좌표는 이미지 기준 %라
+// 확대해도 핀 위치는 그대로 따라간다.
+let dgV = { s:1, x:0, y:0 };   // 배율, 이동(px)
+const DG_MIN = 1, DG_MAX = 6;
+
+function dgApply(anim){
+  const pan = document.getElementById('mrPan'); if(!pan) return;
+  pan.style.transition = anim ? 'transform .25s ease-out' : 'none';
+  pan.style.transformOrigin = '0 0';
+  pan.style.transform = `translate(${dgV.x}px,${dgV.y}px) scale(${dgV.s})`;
+}
+function dgClamp(){
+  const box = document.getElementById('mrMap'); if(!box) return;
+  const W = box.clientWidth, H = box.clientHeight;
+  // 판이 화면보다 크면 빈 곳이 보이지 않게, 작으면 가운데로
+  const pw = W*dgV.s, ph = H*dgV.s;
+  dgV.x = pw <= W ? (W-pw)/2 : Math.min(0, Math.max(W-pw, dgV.x));
+  dgV.y = ph <= H ? (H-ph)/2 : Math.min(0, Math.max(H-ph, dgV.y));
+}
+function dgZoom(mul, cx, cy){
+  const box = document.getElementById('mrMap'); if(!box) return;
+  const W = box.clientWidth, H = box.clientHeight;
+  if(cx==null){ cx = W/2; cy = H/2; }        // 지정 안 하면 화면 중앙 기준
+  const ns = Math.max(DG_MIN, Math.min(DG_MAX, dgV.s*mul));
+  if(ns === dgV.s) return;
+  const k = ns/dgV.s;
+  dgV.x = cx - (cx - dgV.x)*k;
+  dgV.y = cy - (cy - dgV.y)*k;
+  dgV.s = ns;
+  dgClamp(); dgApply(true);
+}
+function dgReset(anim){
+  dgV = { s:1, x:0, y:0 };
+  dgApply(anim !== false);
+}
+// 특정 핀(이미지 기준 %)을 화면 가운데에 놓고 확대한다
+function dgFocus(px, py, scale){
+  const box = document.getElementById('mrMap'); if(!box) return;
+  const W = box.clientWidth, H = box.clientHeight;
+  dgV.s = Math.max(DG_MIN, Math.min(DG_MAX, scale || 2.6));
+  dgV.x = W/2 - (px/100)*W*dgV.s;
+  dgV.y = H/2 - (py/100)*H*dgV.s;
+  dgClamp(); dgApply(true);
+}
+// 끌기 · 두 손가락 확대
+function dgBind(){
+  const box = document.getElementById('mrMap'); if(!box || box.__dg) return;
+  box.__dg = true;
+  window.addEventListener('resize', ()=>{ if(document.getElementById('mrPan')) dgFit(); });
+  let drag=null, moved=0, pinch=null;
+  const pt = e => { const r = box.getBoundingClientRect();
+    return { x:e.clientX-r.left, y:e.clientY-r.top }; };
+  box.addEventListener('pointerdown', e=>{
+    if(e.target.closest('.mrzoom')) return;
+    drag = pt(e); moved = 0;
+  });
+  box.addEventListener('pointermove', e=>{
+    if(!drag || dgV.s <= 1) return;      // 원래 크기면 끌 필요가 없다
+    const q = pt(e), dx = q.x-drag.x, dy = q.y-drag.y;
+    moved += Math.abs(dx)+Math.abs(dy);
+    dgV.x += dx; dgV.y += dy; drag = q;
+    dgClamp(); dgApply();
+  });
+  box.addEventListener('pointerup', ()=>{ drag=null; });
+  box.addEventListener('pointercancel', ()=>{ drag=null; });
+  box.addEventListener('touchstart', e=>{
+    if(e.touches.length===2){
+      const d = Math.hypot(e.touches[0].clientX-e.touches[1].clientX,
+                           e.touches[0].clientY-e.touches[1].clientY);
+      const r = box.getBoundingClientRect();
+      pinch = { d, s:dgV.s,
+        cx:(e.touches[0].clientX+e.touches[1].clientX)/2 - r.left,
+        cy:(e.touches[0].clientY+e.touches[1].clientY)/2 - r.top };
+    }
+  }, {passive:true});
+  box.addEventListener('touchmove', e=>{
+    if(pinch && e.touches.length===2){
+      e.preventDefault();
+      const d = Math.hypot(e.touches[0].clientX-e.touches[1].clientX,
+                           e.touches[0].clientY-e.touches[1].clientY);
+      const want = Math.max(DG_MIN, Math.min(DG_MAX, pinch.s * (d/pinch.d)));
+      const k = want/dgV.s;
+      dgV.x = pinch.cx - (pinch.cx - dgV.x)*k;
+      dgV.y = pinch.cy - (pinch.cy - dgV.y)*k;
+      dgV.s = want;
+      dgClamp(); dgApply();
+    }
+  }, {passive:false});
+  box.addEventListener('touchend', ()=>{ pinch=null; });
 }
 
 // 도면 핀 — 가까운 것끼리 묶고, 라벨은 누른 것만 띄운다
@@ -1881,12 +2005,12 @@ function pinLayer(pins, t){
 function pinTap(t, id){
   if(pinSel === String(id)){ pinSel = null; openMR(t, id); return; }
   pinSel = String(id);
-  setMapKind(mrMapKind);
+  setMapKind(mrMapKind, true);   // 보고 있던 배율·위치 유지
 }
 function pinCluster(gi){
   pinOpenClu = (pinOpenClu === gi) ? null : gi;
   pinSel = null;
-  setMapKind(mrMapKind);
+  setMapKind(mrMapKind, true);
 }
 function pinStart(){
   if(!unlocked) return;   // 잠금 시 버튼이 숨겨져 있다 — 조용히 무시
@@ -1903,12 +2027,17 @@ function pinRemove(){
 }
 function pinShow(){
   const it=getMR(mrOpenType,mrOpenId); if(!it||!it.pin) return;
-  const ty = mrOpenType;
+  const ty = mrOpenType, id = mrOpenId;
+  const px = it.pin.x, py = it.pin.y;
   mrMapKind = it.pin.map;
   if(ty==='repair') repairView='map'; else maintView='map';
   closeMR();
+  pinSel = String(id);          // 어느 핀인지 이름표로 알려준다
+  pinOpenClu = null;
   if(curTab==='maint' && mrSub!==ty) setMrSub(ty);
   else renderMR();
+  // 화면이 그려진 뒤에 그 자리로 확대한다
+  requestAnimationFrame(()=>{ dgBind(); dgFocus(px, py); });
 }
 function mrMapClick(e){
   if(!pinTarget) return;
@@ -1920,7 +2049,7 @@ function mrMapClick(e){
   const it = getMR(pinTarget.type, pinTarget.id); if(!it){ pinCancel(); return; }
   it.pin = {map:mrMapKind, x, y};
   const t=pinTarget.type, id=pinTarget.id;
-  pinCancel(); saveMR(); setMapKind(mrMapKind);
+  pinCancel(); saveMR(); setMapKind(mrMapKind, true);
   openMR(t,id);
 }
 
@@ -2209,9 +2338,9 @@ function mapPaint(full){
   const el = document.getElementById(S.elId); if(!el) return;
   const W = el.clientWidth || 320, H = el.clientHeight || 260;
 
-  // 층이 없으면 만든다 (확대·축소·처음 그릴 때만 통째로 새로 만든다)
+  // 층은 처음 한 번만 만든다. 확대·축소에서 지우면 화면이 비었다가 나타난다.
   let TL = el.querySelector('.mtl'), OL = el.querySelector('.mol');
-  if(!TL || !OL || full){
+  if(!TL || !OL){
     el.innerHTML = `<div class="mtl"></div><div class="mol"></div>`
       + `<div class="mzoom"><button onclick="mapZoom(1)">+</button><button onclick="mapZoom(-1)">−</button></div>`
       + `<div class="mattr">© OpenSeaMap · © OpenStreetMap</div>`;
@@ -2219,6 +2348,7 @@ function mapPaint(full){
     S.anchor = { cx:S.cx, cy:S.cy };   // 층을 채운 시점의 중심
     S.tiles = null;
   }
+  if(full) S.tiles = null;   // 배율이 달라졌다 → 타일을 새로 받아야 한다
 
   // 밀린 거리만큼 층을 옮긴다 — 여기까지가 끄는 동안 하는 일 전부
   const dx = S.anchor.cx - S.cx, dy = S.anchor.cy - S.cy;
@@ -2249,12 +2379,34 @@ function mapPaint(full){
                 style="left:${px}px;top:${py}px" alt="" draggable="false" onerror="this.style.display='none'">`;
       }
     }
-    TL.innerHTML = t;
+    // 옛 타일을 곧바로 지우면 새 타일이 올 때까지 화면이 빈다.
+    // 뒤에 남겨두고(.mtold) 새 타일이 실리면 치운다.
+    const oldTiles = TL.querySelectorAll('.mt:not(.mtold)');
+    oldTiles.forEach(im=>{
+      im.classList.add('mtold');
+      im.style.transform = `scale(${S.zoomK||1})`;
+    });
+    TL.insertAdjacentHTML('beforeend', t);
+    // 새 타일이 다 실리면 옛것을 치운다 (오래 걸리면 그냥 치운다)
+    const fresh = [...TL.querySelectorAll('.mt:not(.mtold)')];
+    let left2 = fresh.length;
+    const sweep = ()=>{ TL.querySelectorAll('.mtold').forEach(im=>im.remove()); };
+    if(!left2) sweep();
+    else{
+      let done = false;
+      const fin = ()=>{ if(!done && --left2 <= 0){ done = true; sweep(); } };
+      fresh.forEach(im=>{
+        if(im.complete) fin();
+        else { im.addEventListener('load', fin, {once:true});
+               im.addEventListener('error', fin, {once:true}); }
+      });
+      setTimeout(()=>{ if(!done){ done = true; sweep(); } }, 2500);
+    }
   }else{
     // 범위는 같고 위치만 달라진 경우 — 타일을 옮기기만 한다
     const off = S.tileLeft!=null ? {x:S.tileLeft-left, y:S.tileTop-top} : null;
     if(off && (off.x || off.y))
-      TL.querySelectorAll('.mt').forEach(im=>{
+      TL.querySelectorAll('.mt:not(.mtold)').forEach(im=>{
         im.style.left = (parseFloat(im.style.left)+off.x)+'px';
         im.style.top  = (parseFloat(im.style.top)+off.y)+'px';
       });
@@ -2293,7 +2445,25 @@ function mapZoom(d){
   const k = Math.pow(2, nz - S.z);
   S.cx *= k; S.cy *= k; S.z = nz;
   S.anchor = { cx:S.cx, cy:S.cy };
-  mapPaint(true);   // 배율이 달라졌으니 타일을 새로 받는다
+  mapZoomPaint(k);
+}
+
+// 확대·축소 — 옛 타일을 그 자리에서 배율만 키워 보여주고,
+// 새 타일이 도착하면 갈아 낀다. 화면이 비는 순간이 없다.
+function mapZoomPaint(k){
+  const S = mapS; if(!S) return;
+  const el = document.getElementById(S.elId); if(!el) return;
+  const TL = el.querySelector('.mtl');
+  if(TL){
+    const W = el.clientWidth || 320, H = el.clientHeight || 260;
+    // 화면 중심을 기준으로 옛 타일을 확대·축소한다
+    TL.style.transformOrigin = (W/2)+'px '+(H/2)+'px';
+    TL.style.transform = `scale(${k})`;
+  }
+  S.zoomK = k;
+  mapPaint(true);
+  S.zoomK = 1;
+  if(TL){ TL.style.transform = 'none'; TL.style.transformOrigin = ''; }
 }
 
 // 끌어서 이동 · 두 손가락 확대 · 눌러서 위치 지정
@@ -2351,7 +2521,7 @@ function mapBind(el){
       if(z2 !== mapS.z){ const k = Math.pow(2, z2-mapS.z);
         mapS.cx *= k; mapS.cy *= k; mapS.z = z2;
         mapS.anchor = { cx:mapS.cx, cy:mapS.cy };
-        mapPaint(true); }
+        mapZoomPaint(k); }
     }
   };
   el.ontouchend = ()=>{ pinch = null; };
