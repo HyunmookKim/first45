@@ -1,141 +1,141 @@
 {
- "updated": "2026-07-31T08:09:44.827Z",
- "candidates": 60,
+ "updated": "2026-08-02T21:53:29.235Z",
+ "candidates": 46,
  "items": [
   {
-   "title": "На камнях – и под воду",
-   "t_ko": "프랑스 브리타니 해역 세일링 요트 침몰, 선원 헬리콥터 구조",
-   "s_ko": "7월 22~23일 프랑스 핀스테르주 카프드라셰브르 암초에 할베르그래시(중앙 콕핏) 요트가 좌초돼 선체로 급속도로 침수되었다.\n구조대 도착 시 마스트와 태클만 남기고 침몰 중이었고, 수중암과 파도로 접근 불가능해 2시간 뒤 해군 헬리콥터 H160으로 인양했다.\n선주는 야간 항해 시 암초 해역 충돌의 위험을 고려하고 항로 사전 확인 및 야항 회피의 중요성을 재인식해야 한다.",
-   "cat": "안전",
-   "link": "https://yachtrussia.com/news/2026/07/31/20260731-na-kamnyah--i-pod-vodu.html",
-   "source": "Yacht Russia",
-   "date": "2026-07-31T00:00:00.000Z"
-  },
-  {
    "title": "Fixing rig failure mid-Pacific: ‘The mast groaned with every roll. It was physically and emotionally extremely stressful’",
-   "t_ko": "태평양 항해 중 마스트 손상 및 배터리 과열 - 긴급 수리 기록",
-   "s_ko": "태평양 횡단 중 4,100해리 중 2,800해리 지점에서 리깅 손상이 발생해 마스트가 모든 롤링마다 신음을 냈다.\n연료는 450해리분만 남아 있었고, 심각한 구조적 스트레스와 배터리 과열 문제가 동시 발생했다.\n복합 장비 고장 상황에서의 대응 절차와 원양 항해 중 리깅·전기 시스템의 선제적 진단의 중요성을 보여준다.",
-   "cat": "정비",
+   "t_ko": "태평양 횡단 중 마스트 손상과 배터리 과열 - 항해 중 긴급 대응",
+   "s_ko": "태평양 횡단 4,100해리 중 2,800해리 지점에서 마스트가 손상되고 배터리가 과열되는 사고 발생.\n연료는 추가로 450해리만 항행 가능한 상황에서 선장과 승무원이 물리적·정서적 스트레스 극복하며 안전한 항구로 복귀.\n마스트 손상 시 선체 롤로 인한 구조 응력 증가와 전기 시스템 점검의 중요성 시사.",
+   "cat": "사고",
    "link": "https://www.yachtingworld.com/bluewater-sailing/fixing-rig-failure-mid-pacific-the-mast-groaned-with-every-roll-it-was-physically-and-emotionally-extremely-stressful-163569",
    "source": "Yachting World",
    "date": "2026-07-29T05:00:07.000Z"
   },
   {
    "title": "One yacht sunk, three more damaged",
-   "t_ko": "스페인 북부 해역 범고래 공격으로 요트 침몰 및 손상 다발",
-   "s_ko": "7월 23일 스페인 북서부 에스타카데바레스 외 1.3해리 인근에서 수 시간 내 범고래 접촉 사건 4건이 연속 발생했다.\n\"Idem\" 요트는 범고래 군단으로부터 심각한 타손(舵損)을 입었고, 적어도 1척 침몰, 2척 이상 조종 불가 손상을 입었다.\n갈리시아 해역 항해 시 범고래 활동 계절과 지역 주의보를 확인하고 조우 시 선체 보호 절차를 숙지해야 한다.",
-   "cat": "안전",
+   "t_ko": "스페인 북부 해역 범고래 공격으로 요트 1척 침몰, 3척 손상",
+   "s_ko": "7월 23일 스페인 북서부 에스타카 데 바레스 외 1.3해리 지점에서 범고래 무리가 항해 요트들을 공격.\n요트 '아이뎀'은 선체 손상이 심각해 침몰, 2명 승무원 구조됨.\n같은 시간대 스페인 해양 구조대가 4건의 범고래 접촉 사건 기록 - 유럽 해역 범고래 활동 주의 필요.",
+   "cat": "사고",
    "link": "https://www.sailingscuttlebutt.com/2026/07/24/one-yacht-sunk-three-more-damaged/",
    "source": "Scuttlebutt",
    "date": "2026-07-24T23:38:19.000Z"
   },
   {
-   "title": "Косатки совсем озверели",
-   "t_ko": "갈리시아 해역 범고래 공격 사건 집중 - 단시간 4척 피해",
-   "s_ko": "에스타카데바레스 곶과 리아드비베이로 하구(갈리시아) 인근에서 범고래 공격이 집중했다.\n2020년 이후 문건화된 사건들이 증가했으나, 하루 내 4척의 요트 손상은 전례 없는 규모다.\n피레네 반도 연안 특정 계절 항해 시 범고래 위험도 평가와 항로 변경 검토가 필요하다.",
-   "cat": "안전",
-   "link": "https://yachtrussia.com/news/2026/07/28/20260728-kosatki-sovsem-ozvereli.html",
-   "source": "Yacht Russia",
-   "date": "2026-07-28T00:00:00.000Z"
-  },
-  {
-   "title": "Balancing offshore safety and complexity",
-   "t_ko": "원양 세일링 안전과 복잡도 균형 - 참여 진입장벽 상승",
-   "s_ko": "현대 원양 항해는 장비·교육 요구사항 증가로 인한 시간·비용 부담이 커지고 있다.\n참여 기준의 높아짐에 따라 전체 스포츠 참여도 감소 우려가 제기되고 있다.\n규정 변경 시 소수 고급 요트맨만 남지 않도록 선주 관점에서 진입 경로 다양화 필요성이 제시된다.",
-   "cat": "규정",
-   "link": "https://www.sailingscuttlebutt.com/2026/07/30/balancing-offshore-safety-and-complexity/",
-   "source": "Scuttlebutt",
-   "date": "2026-07-30T14:32:00.000Z"
-  },
-  {
-   "title": "Enthusiasm high for forecast scoring",
-   "t_ko": "뉴포트-버뮤다 레이스 기상예보 시정 시스템 도입 - 채점 혼란 해결",
-   "s_ko": "2026년 뉴포트-버뮤다 레이스에서 기상예보 기반 시정계수(FCT-F) 입력 오류로 3일 후 최종 우승팀 결정됐다.\n새 시스템은 성능곡선 채점 대비 공정성 통계적 개선을 입증했으나 정산 프로세스 강화 필요하다.\n원양 레이스 참여 선주는 기상예보 기반 채점 방식 적응과 공식 공지사항 추적이 필수다.",
-   "cat": "규정",
-   "link": "https://www.sailingscuttlebutt.com/2026/07/25/enthusiasm-high-for-forecast-scoring/",
-   "source": "Scuttlebutt",
-   "date": "2026-07-25T19:40:41.000Z"
-  },
-  {
-   "title": "How to gybe safely",
-   "t_ko": "세일링 선회(Gybe) 기술과 안전 - 돛의 종류별 기법",
-   "s_ko": "세일링 기법 교육 자료로서, 제대로 된 선회 실패 시 승무원 부상이나 선체 손상이 가능하다.\n선회는 태킹과 달리 신호가 불명확하고 붐의 급속 이동이 위험 요소다.\n45피트 요트 운항 시 승무원 소통 프로토콜과 돛 종류별(메인/지브) 선회 절차 재확인이 중요하다.",
-   "cat": "정비",
-   "link": "https://www.pbo.co.uk/seamanship/how-to-gybe-safely-105669",
-   "source": "PBO",
-   "date": "2026-07-28T04:10:49.000Z"
-  },
-  {
    "title": "Thank goodness for passing ships",
-   "t_ko": "캘리포니아~하와이 솔로 항해 중 마스트 손상 및 통신두절 - 선박 구조",
-   "s_ko": "39세 카이 사토가 6월 7일 캘리포니아에서 출항한 지 2주 만에 마스트가 절단되고 휴대폰이 침수돼 서비스 두절됐다.\n현대 위성통신 기술 대신 구식 방식으로 근처 통과선박에 신호를 보내 구조받았다.\n원양 단독항해 시 통신 백업(비상신호, EPIRB 등) 다중화와 마스트 건전성 사전 점검의 필수성이 강조된다.",
-   "cat": "정비",
+   "t_ko": "캘리포니아-하와이 항해 중 마스트 파손 후 선박으로 구조",
+   "s_ko": "39세 카이 사토가 6월 7일 캘리포니아에서 항해를 시작한 지 2주 만에 마스트 파손.\n휴대전화도 물로 인해 기능 상실, 수신 신호 없는 외해에서 구조선을 발견해 도움 요청.\n현대 긴급 통신 장비 없이 종래 해상 통행선박을 통한 응급 구조 활용 사례.",
+   "cat": "사고",
    "link": "https://www.sailingscuttlebutt.com/2026/07/26/thank-goodness-for-passing-ships/",
    "source": "Scuttlebutt",
    "date": "2026-07-26T21:29:29.000Z"
   },
   {
-   "title": "Keeping the SailGP League afloat",
-   "t_ko": "SailGP 시즌 6 탄소섬유 선체 손상 다발 - 뉴욕 대규모 충돌",
-   "s_ko": "2026 SailGP 시즌에 3건의 주요 사건이 발생했으며, 5월 뉴욕 스타트라인에서 이탈리아·브라질·미국 3척이 연쇄 접촉해 복합 손상이 발생했다.\n설계·혁신 센터 이사 조엘 마진슨은 3척 얽힘으로 인한 수리 복잡도가 역사상 최고라 평가했다.\n고속 경쟁 해역 항해 시 근접성 제어와 탄소 구조 손상 응급 평가 절차가 필수다.",
+   "title": "Biocide-free boat antifouling paint ‘works best’",
+   "t_ko": "해양 오염 없는 방오도료 성능 비교 연구",
+   "s_ko": "스톡홀름대학 독립 연구팀이 7가지 레저 요트 방오도료를 6개월간 테스트한 결과 생물독성물질 없는 실리콘 도료가 최고 성능 발휘.\n환경친화적으로 광고된 도료 중 일부는 오히려 극도로 높은 독성 수준 기록.\n요트 유지보수 시 도료 선택이 환경 및 성능에 미치는 영향 확인, 신중한 제품 선택 권고.",
    "cat": "정비",
-   "link": "https://www.sailingscuttlebutt.com/2026/07/24/keeping-the-sailgp-league-afloat/",
-   "source": "Scuttlebutt",
-   "date": "2026-07-24T20:23:39.000Z"
+   "link": "https://www.pbo.co.uk/gear/biocide-free-paint-works-best-says-new-antifouling-study-105819",
+   "source": "PBO",
+   "date": "2026-07-31T04:05:27.000Z"
   },
   {
-   "title": "4 new high-volume cruisers pushing interior limits",
-   "t_ko": "신형 고용량 크루징 요트 설계 트렌드 - 넓은 선실·워크스루 콕핏",
-   "s_ko": "현대 생산 요트는 풀길이 차인·벌어진 상부선체·넓은 트랜섬 설계로 광활한 선실을 달성하면서도 항해 성능 유지하고 있다.\n스텝 없는 데크, 접이식 헬름 패드, 가정용 아파트 레이아웃 등이 적용되고 있다.\n45피트 중고 요트 업그레이드 또는 신조 선택 시 현대식 설계 기능 평가 기준이 제시된다.",
-   "cat": "정비",
-   "link": "https://www.yachtingmonthly.com/yacht-reviews/4-new-high-volume-cruisers-pushing-interior-limits-105852",
-   "source": "Yachting Monthly",
-   "date": "2026-07-29T05:53:48.000Z"
+   "title": "How to gybe safely",
+   "t_ko": "세일 종류별 안전한 지브 방법과 기술",
+   "s_ko": "크루징 교관 벤 로윙스가 다양한 세일 타입(메인, 지브 등)에서 지브 시 발생 위험 요인 및 대응 방법 설명.\n강한 바람에서 잘못된 지브는 승무원 부상이나 선체 손상 초래 가능 - 사전 준비 및 팀 커뮤니케이션 강조.\n45피트 요트에서 안전한 지브 실행을 위한 실무 기술 가이드 제공.",
+   "cat": "항해술",
+   "link": "https://www.pbo.co.uk/seamanship/how-to-gybe-safely-105669",
+   "source": "PBO",
+   "date": "2026-07-28T04:10:49.000Z"
   },
   {
    "title": "Painting over varnished wood: Is it ever OK?",
-   "t_ko": "목재 니스 표면 페인트 코팅 - 1988년 무디 376 리모델링 사례",
-   "s_ko": "1988년식 35피트 요트 목재 선실에 전통 니스 대신 페인트 코팅을 적용해 밝은 내부와 습기 방지를 동시 달성했다.\n비전통적 내장 데코도 실용적 이점으로 인정받고 있다.\n노후 목재 선실 유지 관리 시 전통 방식 고집보다 현대적 코팅 기법 검토 가치가 있다.",
+   "t_ko": "목재 실내 도장 처리로 선실 내구성과 미관 개선",
+   "s_ko": "1988년식 무디 376 목재 선실을 도장으로 덮은 사례 - 전통 바니시 유지 대신 페인트 도장 선택.\n밝고 통풍이 잘되는 선실 공간 확보, 습기 및 곰팡이 문제 해결 가능.\n목재 선박 내부 마감재 선택 시 실용성과 거주 환경 개선 우선순위 제시.",
    "cat": "정비",
    "link": "https://www.pbo.co.uk/expert-advice/painting-over-varnished-wood-is-it-ever-ok-105654",
    "source": "PBO",
    "date": "2026-07-27T04:37:03.000Z"
   },
   {
-   "title": "‘Not in it for the spiritual experience,’ says Guy DeBoer ahead of the Golden Globe Race, ‘I’m a true competitor’",
-   "t_ko": "2026 골든글로브 레이스 대비 - 미국 프로 선수 독주 항해 준비",
-   "s_ko": "미국 프로 세일러 가이 드보어가 2026년 골든글로브 레이스(무정비·무보급·솔로)에 대비 중이며, 현재 라니냐 영향으로 대서양에서 어려운 기상 조건을 겪고 있다.\n영적 경험보다 경쟁성을 강조하고 있다.\n극단 항해의 리스크 구조와 기상 사이클 변동이 다양한 항해 프로필에 미치는 영향을 고려해야 한다.",
-   "cat": "기상",
-   "link": "https://www.yachtingmonthly.com/boat-events/golden-globe-race/not-in-it-for-the-spiritual-experience-says-guy-deboer-ahead-of-the-golden-globe-race-im-a-true-competitor-105883",
-   "source": "Yachting Monthly",
-   "date": "2026-07-31T05:55:18.000Z"
+   "title": "Balancing offshore safety and complexity",
+   "t_ko": "원양 항해 안전과 접근성 균형 문제",
+   "s_ko": "원양 항해 스포츠가 발전하면서 필요 장비와 교육 수준이 높아져 참여 진입장벽 증가.\n높은 비용과 시간 투자가 즐거움을 초과하면 선수들이 다른 활동으로 이탈 가능성.\n안전 향상의 중요성 인정하면서도 지나친 복잡성이 스포츠 참여 저해 요인이 될 수 있음 경고.",
+   "cat": "산업",
+   "link": "https://www.sailingscuttlebutt.com/2026/07/30/balancing-offshore-safety-and-complexity/",
+   "source": "Scuttlebutt",
+   "date": "2026-07-30T14:32:00.000Z"
+  },
+  {
+   "title": "Enthusiasm high for forecast scoring",
+   "t_ko": "2026 뉴포트-버뮤다 레이스 예보 기반 채점 시스템 검증",
+   "s_ko": "2026 뉴포트-버뮤다 레이스에서 예보 시간보정계수(FCT-F) 입력 오류로 최종 순위 결정에 3일 소요.\n기존 성능곡선 채점(Performance Curve Scoring)보다 예보 기반 채점의 공정성 우수성 확인됨.\n각 대회 기술위원회는 기상 예보, VPP, 항로 최적화 소프트웨어 등 최신 기술 활용으로 신뢰도 강화 계획.",
+   "cat": "산업",
+   "link": "https://www.sailingscuttlebutt.com/2026/07/25/enthusiasm-high-for-forecast-scoring/",
+   "source": "Scuttlebutt",
+   "date": "2026-07-25T19:40:41.000Z"
+  },
+  {
+   "title": "Enthusiasm low for forecast scoring",
+   "t_ko": "2026 태평양컵 레이스 예보 채점 시스템 문제점 노출",
+   "s_ko": "7월 6일, 7일, 10일 다단계 스타트로 진행된 2,070해리 샌프란시스코-카네오헤 태평양컵에서 예보 TCF 시스템 적용.\n최종 일정 스타트팀이 예보 기반 시간 조정으로 불리한 조건 처리 문제 발생.\n스태거드 스타트 레이스에서 예보 기반 채점 시스템의 공정성 한계 드러남.",
+   "cat": "산업",
+   "link": "https://www.sailingscuttlebutt.com/2026/07/25/enthusiasm-low-for-forecast-scoring/",
+   "source": "Scuttlebutt",
+   "date": "2026-07-25T19:23:37.000Z"
+  },
+  {
+   "title": "Keeping the SailGP League afloat",
+   "t_ko": "SailGP 시즌 6 다중 충돌로 인한 카본 보트 정비 과제",
+   "s_ko": "SailGP 2026 시즌에 3건의 주요 사고 발생, 5월 뉴욕 스타트라인에서 이탈리아·브라질·미국 보트 3척 연쇄 충돌.\n고속 F50 카타마란의 카본 파이버 손상 규모 증가로 설계혁신센터 정비 부담 급증.\n레이스 일정 및 선수 안전 관리 강화 필요성 부각.",
+   "cat": "사고",
+   "link": "https://www.sailingscuttlebutt.com/2026/07/24/keeping-the-sailgp-league-afloat/",
+   "source": "Scuttlebutt",
+   "date": "2026-07-24T20:23:39.000Z"
   },
   {
    "title": "Real food at sea, is it possible?",
-   "t_ko": "원양 항해 중 승무원 식사 관리 - 실제 음식 섭취의 심리적 영향",
-   "s_ko": "악천후 원양 레이스 중 신선 식빵 냄새가 승무원 정신력 회복에 구체적 영향을 미쳤다.\n장기 고강도 항해에서 燃料(칼로리) 공급과 정신적 안정을 위한 음식의 역할이 뚜렷하다.\n45피트 요트 다인 승무원 항해 시 장기 식량 계획과 고사기 식사 프로토콜 수립이 권장된다.",
-   "cat": "기타",
+   "t_ko": "원양 항해 중 식단 관리의 심리적·생리적 중요성",
+   "s_ko": "라운드 브리튼 앤드 아일랜드 레이스 중 S&S 34 목재 선박에서 신선한 식빵 조리로 승무원 사기 회복 사례.\n외해 25노트 강풍, 습한 환경에서 '연료 공급'이 아닌 '인간적 먹이기'의 중요성 강조.\n극한 항해 환경에서 심리 상태 관리와 식량 계획 연계 필요.",
+   "cat": "항해술",
    "link": "https://www.sailingscuttlebutt.com/2026/07/27/real-food-at-sea-is-it-possible/",
    "source": "Scuttlebutt",
    "date": "2026-07-27T13:31:59.000Z"
   },
   {
+   "title": "Helping develop future offshore racers",
+   "t_ko": "차세대 원양 항해 선수 양성: 유스 챌린지 프로그램 강화",
+   "s_ko": "아이다 루이스 요트클럽이 나라간셋만 및 인근 클럽들에 유스 챌린지·칼리지 챌린지 부문 참가 권유.\n8월 14일 24시간 코스로 진행되는 아이다 루이스 디스턴스 레이스, 청소년 선수의 원양 항해 경험 제공.\n유스 프로그램 참가자가 이후 원양 키릿 항해 지속 참여 및 기술 개발 추진하는 추세 확인.",
+   "cat": "산업",
+   "link": "https://www.sailingscuttlebutt.com/2026/07/31/helping-develop-future-offshore-racers/",
+   "source": "Scuttlebutt",
+   "date": "2026-07-31T14:09:55.000Z"
+  },
+  {
    "title": "Youth dominate Clipper Race 2025-26",
-   "t_ko": "클리퍼 레이스 2025-26 우승 - 26세 스키퍼·22세 퍼스트 메이트의 청년 주도",
-   "s_ko": "약 1년간 진행된 2025-26 클리퍼 라운드더월드 요트 레이스(14판)에서 10척의 70피트 보트 중 26세 올리 어빈 스키퍼와 22세 오토 쿠를로우 퍼스트 메이트가 우승했다.\n각 승무원은 아마추어 + 프로 2명으로 구성됐다.\n세계 최고 수준의 장거리 내구 경쟁에서 청년 리더십이 점점 강화되는 업계 추세를 보여준다.",
+   "t_ko": "클리퍼 2025-26 라운드 더 월드 요트 레이스 우승팀 26세 스키퍼 리더십",
+   "s_ko": "세계 최고 난이도 엔듀런스 챌린지인 클리퍼 레이스 14판이 거의 1년 항해 후 영국 포츠머스에서 종료.\n10척 70피트 동급선 중 26세 스키퍼 올리 어빈과 22세 퍼스트 메이트 오토 쿨로우 팀이 우승 - 청년 리더십 대두.\n아마추어 승무원 중심의 세계 일주 항해 프로그램으로 차세대 원양 항해 선수 양성.",
    "cat": "산업",
    "link": "https://www.sailingscuttlebutt.com/2026/07/27/youth-dominate-clipper-race-2025-26/",
    "source": "Scuttlebutt",
    "date": "2026-07-27T13:59:21.000Z"
   },
   {
-   "title": "Boat launches announced for Southampton Boat Show 2026",
-   "t_ko": "2026 사우스햄프턴 보트 쇼 신형 보트 출시 예정",
-   "s_ko": "드래곤플라이 40 카본, 윈디 SR40, 하이필드 ADV9, 나자드 451 AC 등 20척 이상 신형 및 쇼 데뷔 보트가 예정돼 있다.\n콕웰스 더치 45(45피트 모터요트)는 넓은 애프트 콕핏, 대형 창, 갤리, 더블 비폴드 도어 등 현대식 선실 설계를 특징으로 한다.\n45피트급 세일링·모터요트 시장의 신형 옵션 비교 검토 기회가 제공된다.",
+   "title": "4 new high-volume cruisers pushing interior limits",
+   "t_ko": "현대 고부피 크루징 요트의 설계 혁신과 거주성 확대",
+   "s_ko": "풀 차인, 외향 선수부, 넓은 트랜섬 등 해양건축학 발전으로 내부 공간 획기적 확대.\n계단 제거 갑판, 접이식 헬름 패드, 아파트형 실내 레이아웃으로 정박 시 편의성과 항해 성능 동시 추구.\n45피트급 크루징 요트의 거주 공간과 항해 효율성 양립 가능성 제시.",
+   "cat": "장비",
+   "link": "https://www.yachtingmonthly.com/yacht-reviews/4-new-high-volume-cruisers-pushing-interior-limits-105852",
+   "source": "Yachting Monthly",
+   "date": "2026-07-29T05:53:48.000Z"
+  },
+  {
+   "title": "Offshore racing comes to Olympic venue",
+   "t_ko": "2026 마르세유 올림픽 경기장 더블핸드 오프쇼어 월드챔피언십 개최",
+   "s_ko": "9월 24일-10월 2일 프랑스 마르세유 올림픽 경기장에서 2026 오프쇼어 더블핸드 월드챔피언십 개최.\n호주, 벨기에, 캐나다, 프랑스 등 13개국 19팀 참가 - 올림픽 선수, 오션레이스 경험자, 신진 원양 항해 선수 혼재.\n파리 2024 올림픽에서 혼합 오프쇼어 이벤트 제외 후 관련 월드챔피언십으로 재구성.",
    "cat": "산업",
-   "link": "https://www.pbo.co.uk/news/boat-launches-announced-for-southampton-boat-show-2026-105833",
-   "source": "PBO",
-   "date": "2026-07-24T07:49:34.000Z"
+   "link": "https://www.sailingscuttlebutt.com/2026/07/29/offshore-racing-comes-to-olympic-venue/",
+   "source": "Scuttlebutt",
+   "date": "2026-07-29T15:35:06.000Z"
   }
  ]
 }
