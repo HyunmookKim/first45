@@ -1616,7 +1616,8 @@ function openMR(t, id){
         :`<b class="mrv">${esc(it.grp||'—')}</b>`}</div>`;
   } else if(t==='voyage'){
     body = tf('날짜','date',it.date,'date','')
-      + tf('출발','from',it.from) + tf('도착','to',it.to)
+      + legRow('출발','from','timeOut','wxOut', it)
+      + legRow('도착','to','timeIn','wxIn', it)
       + `<div class="mrrow"><span class="mrlbl">거리</span>${unlocked
           ?`<input type="number" step="0.1" value="${esc(String(it.nm||''))}" style="width:90px" onchange="mrField('nm',this.value)"> NM`
           :`<b class="mrv">${it.nm?it.nm+' NM':'—'}</b>`}</div>`
@@ -1625,8 +1626,7 @@ function openMR(t, id){
              <input type="number" step="0.5" value="${esc(String(it.engineH||''))}" style="width:70px" onchange="mrField('engineH',this.value)"> 엔진h`
           :`<b class="mrv">항해 ${it.hours||'—'}h · 엔진 ${it.engineH||'—'}h</b>`}</div>`
       + tf('동승','crew',it.crew)
-      + wxRow('출항 날씨','wxOut', it.wxOut)
-      + wxRow('입항 날씨','wxIn',  it.wxIn)
+      + logRows(it)
       + (it.weather ? tf('날씨(옛기록)','weather',it.weather) : '');
   } else if(t==='run'){
     body = tf('날짜','date',it.date,'date','')
@@ -1860,38 +1860,76 @@ function voyStats(){
   const eh = arr.reduce((s,v)=>s+(parseFloat(v.engineH)||0),0);
   return {cnt:arr.length, nm, eh, y};
 }
+// 옛 기록 정리 — 출발/도착 칸에 시각만 적어둔 경우 시각 칸으로 옮긴다.
+// (예전엔 시각 칸이 없어서 지명 칸에 '1400' 처럼 적을 수밖에 없었다)
+let voyMigrated = false;
+function migrateVoyage(){
+  if(voyMigrated) return; voyMigrated = true;
+  let moved = 0;
+  voyage.forEach(v=>{
+    if(!Array.isArray(v.logs)) v.logs = [];
+    [['from','timeOut'], ['to','timeIn']].forEach(([pk, tk])=>{
+      if(v[tk]) return;                       // 이미 시각이 있으면 건드리지 않는다
+      const t = normTime(v[pk]);
+      if(t){ v[tk] = t; v[pk] = ''; moved++; }  // 지명 칸이 순수 시각일 때만
+    });
+  });
+  if(moved) saveMR();
+}
+
 function renderVoyage(){
+  migrateVoyage();
   const L = document.getElementById('voyageList');
   const st = voyStats();
   const head = `<div class="statrow"><div class="stat"><b>${st.cnt}</b><span>${st.y} 항해</span></div><div class="stat"><b>${fmtNum(st.nm)}</b><span>거리 NM</span></div><div class="stat"><b>${fmtNum(st.eh)}</b><span>엔진 h</span></div></div>`;
   const arr = [...voyage].sort((a,b)=>String(b.date||'').localeCompare(String(a.date||'')));
   L.innerHTML = head + (arr.map(v=>`<div class="mr" onclick="openMR('voyage','${v.id}')">
-      <div class="ct"><div class="cn">${esc(v.from||'—')} → ${esc(v.to||'—')}</div>
+      <div class="ct"><div class="cn">${esc(v.from || v.timeOut || '—')} → ${esc(v.to || v.timeIn || '—')}</div>
       <span class="chip nchip">${v.nm?fmtNum(parseFloat(v.nm))+' NM':'—'}</span></div>
-      <div class="mrm">${v.date||'—'}${v.engineH?' · 엔진 '+v.engineH+'h':''}${v.crew?' · '+esc(v.crew):''}${v.photos&&v.photos.length?' · 사진 '+v.photos.length:''}</div>
+      <div class="mrm">${v.date||'—'}${(v.timeOut&&v.from)?' · '+v.timeOut:''}${v.logs&&v.logs.length?' · 기록 '+v.logs.length:''}${v.engineH?' · 엔진 '+v.engineH+'h':''}${v.crew?' · '+esc(v.crew):''}${v.photos&&v.photos.length?' · 사진 '+v.photos.length:''}</div>
     </div>`).join('') || '<div class="mrnone">기록된 항해가 없다 — + 기록으로 시작</div>');
 }
 function addVoyage(){
   if(!unlocked){ alert('읽기 전용 모드다. 잠금 해제 후 추가해라.'); return; }
-  const v = {id:String(Date.now()), date:today(), from:'', to:'', nm:'', hours:'', engineH:'', crew:'', weather:'', note:'', photos:[], wxOut:null, wxIn:null};
+  const p = n => String(n).padStart(2,'0');
+  const now = new Date();
+  const v = {id:String(Date.now()), date:today(), from:'', to:'', nm:'', hours:'', engineH:'', crew:'',
+             timeOut: p(now.getHours())+':'+p(now.getMinutes()), timeIn:'',
+             logs:[], weather:'', note:'', photos:[], wxOut:null, wxIn:null};
   voyage.push(v); saveMR(); renderVoyage(); openMR('voyage', v.id);
-  wxCapture('wxOut', v.id);          // 출항 날씨 자동 기록
+  wxCapture('wxOut', v.id);          // 출항 시각 기준 날씨 자동 기록
 }
 
 // ===== 항해일지 날씨 기록 =====
-// 출항·입항 시점의 바람·파고·조위를 실제로 받아 항목에 박는다.
-function wxRow(label, key, w){
-  const val = w && w.text
-    ? `<b class="mrv" style="flex:1">${esc(w.text)}</b>`
-    : `<span class="mrv" style="flex:1;color:#7b8794">—</span>`;
-  const btn = unlocked
-    ? `<button class="mrbtn" onclick="wxCapture('${key}')">지금</button>` : '';
-  const sub = w && w.at
-    ? `<div class="mrm" style="padding:0 0 6px 74px">${esc(w.at)}${w.spot?' · '+esc(w.spot):''}</div>` : '';
-  return `<div class="mrrow"><span class="mrlbl">${label}</span>${val}${btn}</div>${sub}`;
+// 적어둔 시각을 기준으로 그 시점의 바람·파고·조위를 받아 박는다.
+// 시각을 고치면 다시 계산된다. 과거 자료는 받지 않으므로(예보 범위 밖)
+// 어제 이전 시각은 "자료 없음"으로 남는다.
+
+const LOG_KINDS = ['세일','기항','묘박','급유','고장','관측','기타'];
+
+// '1400' '14:00' '2:30 PM' 등을 HH:MM 으로 정규화. 못 읽으면 null
+function normTime(v){
+  const t = String(v||'').trim();
+  if(!t) return null;
+  let m = t.match(/^(\d{1,2})\s*[:시]\s*(\d{2})/);
+  if(m){ const h=+m[1], mi=+m[2]; return (h<24&&mi<60) ? String(h).padStart(2,'0')+':'+m[2] : null; }
+  m = t.match(/^(\d{3,4})$/);
+  if(m){ const n=m[1].padStart(4,'0'), h=+n.slice(0,2), mi=+n.slice(2);
+    return (h<24&&mi<60) ? n.slice(0,2)+':'+n.slice(2) : null; }
+  return null;
+}
+// 날짜(YYYY-MM-DD) + 시각(HH:MM) → 타임스탬프
+function tsOf(date, hhmm){
+  if(!date || !hhmm) return null;
+  const d = new Date(date+'T'+hhmm+':00+09:00');
+  return isNaN(d.getTime()) ? null : d.getTime();
+}
+function fmtWhen(ts){
+  const d = new Date(ts), p = n => String(n).padStart(2,'0');
+  return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`;
 }
 
-// 지정 시각에 가장 가까운 예보 시간 인덱스
+// 지정 시각에 가장 가까운 예보 시간 인덱스 (90분 넘게 벌어지면 쓰지 않는다)
 function wxHourIndex(times, ts){
   if(!times || !times.length) return -1;
   let best=-1, bd=Infinity;
@@ -1899,29 +1937,119 @@ function wxHourIndex(times, ts){
     const d = Math.abs(new Date(times[i]+':00+09:00').getTime() - ts);
     if(d < bd){ bd=d; best=i; }
   }
-  return bd <= 90*60e3 ? best : -1;   // 90분 넘게 벌어지면 쓰지 않는다
+  return bd <= 90*60e3 ? best : -1;
 }
 
+// 출발·도착 한 줄: 지명 + 시각 + 그 시각 날씨
+function legRow(label, placeKey, timeKey, wxKey, it){
+  const place = unlocked
+    ? `<input value="${esc(String(it[placeKey]||''))}" placeholder="지명" style="flex:1;min-width:60px" onchange="mrField('${placeKey}',this.value)">`
+    : `<b class="mrv" style="flex:1">${esc(it[placeKey]||'—')}</b>`;
+  const time = unlocked
+    ? `<input type="time" value="${esc(String(it[timeKey]||''))}" style="width:110px" onchange="voyTime('${timeKey}','${wxKey}',this.value)">`
+    : `<b class="mrv">${esc(it[timeKey]||'—')}</b>`;
+  return `<div class="mrrow"><span class="mrlbl">${label}</span>${place}${time}</div>`
+       + wxLine(it[wxKey], it[timeKey] ? `wxCapture('${wxKey}')` : '');
+}
+
+// 날씨 한 줄 (출발·도착·중간기록 공용)
+function wxLine(w, refetch){
+  if(!w || !w.text)
+    return `<div class="mrm" style="padding:0 0 6px 74px;color:#7b8794">날씨 —${
+      refetch && unlocked ? ` <a href="javascript:void(0)" onclick="${refetch}" style="color:#6FD9A0">받기</a>` : ''}</div>`;
+  return `<div class="mrm" style="padding:0 0 6px 74px"><b style="color:#dfe6ee">${esc(w.text)}</b>${
+    w.at ? ' · '+esc(w.at) : ''}${w.spot ? ' · '+esc(w.spot) : ''}${
+    refetch && unlocked ? ` <a href="javascript:void(0)" onclick="${refetch}" style="color:#6FD9A0">갱신</a>` : ''}</div>`;
+}
+
+// 시각을 고치면 그 시각 날씨를 다시 받는다
+function voyTime(timeKey, wxKey, v){
+  const it = getMR('voyage', mrOpenId); if(!it) return;
+  it[timeKey] = v; it.seed = false;
+  saveMR();
+  if(v) wxCapture(wxKey);
+  else { it[wxKey] = null; saveMR(); renderVoyage(); openMR('voyage', mrOpenId); }
+}
+
+// ── 중간 기록
+function logAdd(){
+  if(!unlocked) return;
+  const it = getMR('voyage', mrOpenId); if(!it) return;
+  if(!Array.isArray(it.logs)) it.logs = [];
+  const p = n => String(n).padStart(2,'0');
+  const now = new Date();
+  it.logs.push({ id:String(Date.now()), time:p(now.getHours())+':'+p(now.getMinutes()),
+                 kind:'세일', text:'', wx:null });
+  it.seed = false; saveMR(); openMR('voyage', mrOpenId);
+  wxCapture('log:' + it.logs[it.logs.length-1].id);
+}
+function logField(lid, k, v){
+  const it = getMR('voyage', mrOpenId); if(!it) return;
+  const g = (it.logs||[]).find(x=>x.id===lid); if(!g) return;
+  g[k] = v; it.seed = false; saveMR();
+  if(k === 'time'){
+    if(v) return wxCapture('log:'+lid);
+    g.wx = null; saveMR();
+  }
+  renderVoyage(); openMR('voyage', mrOpenId);
+}
+function logDel(lid){
+  const it = getMR('voyage', mrOpenId); if(!it) return;
+  it.logs = (it.logs||[]).filter(x=>x.id!==lid);
+  saveMR(); renderVoyage(); openMR('voyage', mrOpenId);
+}
+function logRows(it){
+  const arr = (it.logs||[]).slice().sort((a,b)=> String(a.time||'').localeCompare(String(b.time||'')));
+  const head = `<div class="mrrow"><span class="mrlbl">중간 기록</span>${
+    unlocked ? `<button class="mrbtn" onclick="logAdd()">+ 추가</button>` : ''}
+    <span style="flex:1"></span></div>`;
+  if(!arr.length)
+    return head + `<div class="mrm" style="padding:0 0 8px 74px;color:#7b8794">${
+      unlocked ? '항해 중 있었던 일을 시각과 함께 남겨라' : '기록 없음'}</div>`;
+  return head + arr.map(g=>{
+    const row = unlocked
+      ? `<div class="mrrow" style="gap:6px">
+           <input type="time" value="${esc(String(g.time||''))}" style="width:100px" onchange="logField('${g.id}','time',this.value)">
+           <select onchange="logField('${g.id}','kind',this.value)" style="width:88px">${
+             LOG_KINDS.map(x=>`<option value="${x}"${g.kind===x?' selected':''}>${x}</option>`).join('')}</select>
+           <input value="${esc(String(g.text||''))}" placeholder="내용" style="flex:1;min-width:60px" onchange="logField('${g.id}','text',this.value)">
+           <button class="mrbtn" onclick="logDel('${g.id}')">삭제</button>
+         </div>`
+      : `<div class="mrrow"><span class="mrlbl">${esc(g.time||'—')}</span>
+           <span class="chip">${esc(g.kind||'')}</span>
+           <b class="mrv" style="flex:1">${esc(g.text||'')}</b></div>`;
+    return row + wxLine(g.wx, g.time ? `wxCapture('log:${g.id}')` : '');
+  }).join('');
+}
+
+// ── 날씨 받아 박기. key는 'wxOut' | 'wxIn' | 'log:<id>'
 async function wxCapture(key, vid){
   const id = vid || mrOpenId;
   const it = voyage.find(x=>String(x.id)===String(id));
   if(!it) return;
+
+  // 대상 슬롯과 기준 시각을 정한다
+  const isLog = String(key).startsWith('log:');
+  const lg = isLog ? (it.logs||[]).find(x=>x.id===String(key).slice(4)) : null;
+  if(isLog && !lg) return;
+  const hhmm = isLog ? lg.time : (key === 'wxOut' ? it.timeOut : it.timeIn);
+  const put = w => { if(isLog) lg.wx = w; else it[key] = w; };
+
   if(!wxCur){ alert('날씨 지점이 없다. 날씨탭에서 지점을 먼저 정해라.'); return; }
-  it[key] = { text:'받는 중…', at:'', spot:'' };
+  const ts = tsOf(it.date, hhmm);
+  if(ts == null){ put({ text:'시각을 먼저 적어라', at:'', spot:'' }); saveMR(); renderVoyage(); openMR('voyage', id); return; }
+
+  put({ text:'받는 중…', at:'', spot:'' });
   if(mrOpenType==='voyage' && String(mrOpenId)===String(id)) openMR('voyage', id);
   try{
     let d = (wxData && wxData.key === wxCur.lat+','+wxCur.lon) ? wxData : null;
     if(!d){ d = { key: wxCur.lat+','+wxCur.lon, ...(await wxFetch(wxCur.lat, wxCur.lon)) }; wxData = d; }
-    const now = Date.now();
     const H = d.w && d.w.hourly;
-    const i = H ? wxHourIndex(H.time, now) : -1;
-    if(i < 0) throw new Error('현재 시각의 예보가 없다');
+    const i = H ? wxHourIndex(H.time, ts) : -1;
+    if(i < 0) throw new Error('그 시각 자료가 없다 (과거는 받지 않는다)');
     // 값이 없을 때 undefined/NaN이 저장되면 Firestore 쓰기가 배치째 실패한다.
-    // 숫자로 확인된 것만 통과시키고 나머지는 전부 null로 떨군다.
-    const num = (a, k) => {
-      const v = a && a[k];
-      return (typeof v === 'number' && isFinite(v)) ? v : null;
-    };
+    const num = (a, k) => { const v = a && a[k];
+      return (typeof v === 'number' && isFinite(v)) ? v : null; };
     const rnd = v => (v == null ? null : Math.round(v));
     const dir  = num(H.wind_direction_10m, i);
     const kt   = rnd(num(H.wind_speed_10m, i));
@@ -1929,13 +2057,13 @@ async function wxCapture(key, vid){
     const temp = rnd(num(H.temperature_2m, i));
     let wave = null;
     if(d.m && d.m.hourly){
-      const j = wxHourIndex(d.m.hourly.time, now);
+      const j = wxHourIndex(d.m.hourly.time, ts);
       if(j >= 0) wave = num(d.m.hourly.wave_height, j);
     }
     let tide = null, tspot = '';
     try{
       const src = tideSource();
-      if(src){ const t = tideAt(now, src.pts);
+      if(src){ const t = tideAt(ts, src.pts);
         if(t != null){ tide = Math.round(t*100); tspot = src.spot && src.spot.name || ''; } }
     }catch(e){}
     const parts = [];
@@ -1943,16 +2071,10 @@ async function wxCapture(key, vid){
     if(wave != null) parts.push('파고 ' + wave.toFixed(1) + 'm');
     if(tide != null) parts.push('조위 ' + tide + 'cm');
     if(temp != null) parts.push(temp + '℃');
-    const dt = new Date(now);
-    const pad = n => String(n).padStart(2,'0');
-    it[key] = {
-      text: parts.join(' · ') || '자료 없음',
-      at: `${dt.getFullYear()}-${pad(dt.getMonth()+1)}-${pad(dt.getDate())} ${pad(dt.getHours())}:${pad(dt.getMinutes())}`,
-      spot: wxCur.name || '',
-      dir, kt, gust, wave, tide, temp, tideSpot: tspot
-    };
+    put({ text: parts.join(' · ') || '자료 없음', at: fmtWhen(ts), spot: wxCur.name || '',
+          dir, kt, gust, wave, tide, temp, tideSpot: tspot });
   }catch(e){
-    it[key] = { text:'기록 실패 — ' + (e.message||'인터넷 확인'), at:'', spot:'' };
+    put({ text:'못 받음 — ' + (e.message||'인터넷 확인'), at:'', spot:'' });
   }
   saveMR(); renderVoyage();
   if(mrOpenType==='voyage' && String(mrOpenId)===String(id)) openMR('voyage', id);
