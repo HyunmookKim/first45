@@ -19,6 +19,31 @@ const MAX_AGE_DAYS = 10;
 const PICK = 15;
 const UA = { 'User-Agent': 'Mozilla/5.0 (First45 news reader)' };
 
+// 분류 — 이름만 나열하면 제목 속 단어에 반응해 엉뚱하게 붙는다.
+// (예: "마스트 손상"이 보이면 무조건 정비, "라니냐"가 보이면 무조건 기상)
+// 그래서 각 항목에 정의와 예시를 붙이고, 겹칠 때 우선순위를 준다.
+const CATS = ['사고','안전','정비','장비','항해술','산업','레이스','기타'];
+const CAT_GUIDE = `
+- 사고 : 실제로 일이 벌어진 것. 침몰·좌초·충돌·조난·구조·인명피해·범고래 공격.
+        고장이 원인이어도 사고가 났으면 "사고"다.
+        예) 브리타니 해역 요트 좌초 후 헬기 구조 → 사고
+        예) 태평양 횡단 중 리깅 파손으로 조난 → 사고
+- 안전 : 아직 사고는 안 났지만 위험을 다루는 것. 안전 권고·주의보·리콜·위험 해역 경고.
+        예) 특정 해역 범고래 활동 증가 경고 → 안전
+- 정비 : 배를 고치고 관리하는 방법. 수리 기법·도장·엔진 정비·부식 관리.
+        예) 목재 선실 페인트 코팅 시공 사례 → 정비
+- 장비 : 물건 자체. 신제품·장비 비교·리뷰·설치.
+        예) 새 오토파일럿 출시, 앵커 성능 비교 → 장비
+- 항해술 : 배를 다루는 기술. 세일 트림·선회·정박·항로 계획·악천후 대응 요령.
+        예) 지브 종류별 선회(Gybe) 절차 → 항해술  (정비 아님)
+- 산업 : 업계와 제도. 설계 동향·시장·조선소·규정 변화·자격 제도·참여 장벽.
+        예) 신형 크루징 요트 설계 트렌드 → 산업  (정비 아님)
+        예) 원양 참가 요건 강화로 진입장벽 상승 → 산업
+- 레이스 : 경기 자체. 대회 결과·채점·선수·레이스 준비.
+        예) 골든글로브 레이스 대비 훈련 → 레이스  (기상 아님)
+        예) 뉴포트-버뮤다 채점 방식 변경 → 레이스
+- 기타 : 위 어디에도 안 맞을 때만. 되도록 쓰지 마라.`;
+
 const strip = s => String(s||'').replace(/<[^>]*>/g,' ').replace(/&[a-z#0-9]+;/gi,' ').replace(/\s+/g,' ').trim();
 
 async function collectEN(){
@@ -96,6 +121,18 @@ function dedupe(items){
   });
 }
 
+// AI가 목록에 없는 이름을 지어내는 것을 막는다
+function normCat(v){
+  const s = String(v||'').trim();
+  if(CATS.includes(s)) return s;
+  const alias = { '규정':'산업', '제도':'산업', '기상':'안전', '날씨':'안전',
+                  '러시아':'기타', '지역':'기타', '기술':'항해술', '수리':'정비',
+                  '구조':'사고', '조난':'사고', '리뷰':'장비', '제품':'장비' };
+  if(alias[s]) return alias[s];
+  const hit = CATS.find(c => s.includes(c));
+  return hit || '기타';
+}
+
 async function selectAndTranslate(items){
   const key = process.env.ANTHROPIC_API_KEY;
   const fallback = () => items.slice(0, PICK).map(x=>({ ...x, t_ko:x.title, s_ko:'', cat:'' }));
@@ -109,13 +146,22 @@ async function selectAndTranslate(items){
 1) 최대 ${PICK}건을 골라 중요한 순서로 정렬해라.
    우선: 안전·사고, 규정·제도 변경, 정비·기술·장비, 기상·항로, 발트해·러시아·상트페테르부르크 관련, 한국 관련, 업계 동향
    후순위(웬만하면 제외): 레이스 결과 자체, 신형 요트 홍보성 리뷰, 럭셔리 슈퍼요트, 유명인 가십
+
 2) 각 선정 기사에:
    t_ko: 자연스러운 한국어 제목 (요트 용어는 통용 표기)
    s_ko: 한국어 3줄 요약(\\n 구분). 제목을 바꿔 말하지 말고, 본문에만 있는 구체적 정보를 담아라 —
         무엇이 언제 어디서 일어났는지, 원인/수치/조치, 선주가 취할 행동이나 시사점.
         "~에 대해 다룬다", "~을 설명한다" 같은 메타 서술 금지. 사실을 그대로 써라.
         본문 정보가 부족하면 아는 것만 1~2줄로 쓰고 지어내지 마라.
-   cat: 다음 중 하나 — 안전, 정비, 규정, 기상, 러시아, 산업, 레이스, 기타
+   cat: 아래 8개 중 하나. 반드시 이 목록의 단어를 그대로 써라. 새로 만들지 마라.
+${CAT_GUIDE}
+
+   분류 규칙:
+   · 기사 전체가 무엇에 관한 것인지로 판단해라. 제목에 특정 단어가 들어있다는 이유로 고르지 마라.
+     "마스트 손상"이 있다고 무조건 정비가 아니고, "라니냐"가 있다고 무조건 날씨 얘기가 아니다.
+   · 둘 이상 걸치면 이 순서로 정해라: 사고 > 안전 > 레이스 > 항해술 > 정비 > 장비 > 산업 > 기타
+   · 고장·파손이 나왔을 때: 그래서 조난·구조로 이어졌으면 사고, 고치는 방법이 본론이면 정비다.
+
 JSON 배열만 출력. 마크다운 금지.
 형식: [{"i":3,"t_ko":"...","s_ko":"...\\n...\\n...","cat":"정비"}]
 
@@ -132,11 +178,19 @@ ${JSON.stringify(payload)}`;
     const text = (data.content||[]).filter(c=>c.type==='text').map(c=>c.text).join('');
     const arr = JSON.parse(text.replace(/```json|```/g,'').trim());
     const picked = [];
+    const raw = {};
     arr.slice(0, PICK).forEach(a=>{
       const src = items[a.i]; if(!src) return;
-      picked.push({ ...src, t_ko:a.t_ko||src.title, s_ko:a.s_ko||'', cat:a.cat||'' });
+      const cat = normCat(a.cat);
+      if(a.cat && cat !== String(a.cat).trim()) raw[a.cat] = (raw[a.cat]||0)+1;
+      picked.push({ ...src, t_ko:a.t_ko||src.title, s_ko:a.s_ko||'', cat });
     });
     if(!picked.length) throw new Error('선별 결과 비어있음');
+    // 분류 분포를 로그로 남긴다 — 한쪽으로 쏠리면 안내문을 손봐야 한다
+    const dist = {};
+    picked.forEach(p=> dist[p.cat] = (dist[p.cat]||0)+1);
+    console.log('분류 분포:', JSON.stringify(dist, null, 0));
+    if(Object.keys(raw).length) console.log('목록 밖 분류 교정:', JSON.stringify(raw));
     return picked;
   }catch(e){ console.warn('AI 선별 실패 — 최신순 대체:', e.message); return fallback(); }
 }
