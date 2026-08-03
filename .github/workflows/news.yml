@@ -21,7 +21,9 @@ jobs:
         run: |
           git config user.name "news-bot"
           git config user.email "bot@users.noreply.github.com"
-          git add news.json
+          # news_seen.json 은 이미 내보낸 기사 목록이다.
+          # 이것도 함께 커밋해야 다음 회차에서 읽어 같은 기사를 거를 수 있다.
+          git add news.json news_seen.json
           git diff --cached --quiet && exit 0
           git commit -m "요트 뉴스 자동 수집"
           git pull --rebase origin main
