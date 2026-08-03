@@ -7,7 +7,7 @@ const FEEDS = [
   { name: 'Yachting Monthly', url: 'https://www.yachtingmonthly.com/feed' },
   { name: 'PBO',              url: 'https://www.pbo.co.uk/feed' },
   { name: 'Scuttlebutt',      url: 'https://www.sailingscuttlebutt.com/feed' },
-  { name: 'Sail-World',       url: 'https://www.sail-world.com/rss/index' },
+  { name: 'Sail-World',       url: 'https://www.sail-world.com/rss' },
 ];
 // Yacht Russia: RSS 없음 → 정적 목록 파싱 (장비 / 선장 조언 / 주요 소식)
 const YR_PAGES = [
@@ -64,8 +64,11 @@ async function collectEN(){
   return out;
 }
 
+// Yacht Russia — 2026-08 기준 자동 접근이 막혀 있다(robots).
+// 정책이 풀리면 저절로 다시 수집되도록 남겨두고, 실패는 한 줄로만 알린다.
 async function collectYR(){
   const out = [];
+  let yrFail = 0;
   for(const page of YR_PAGES){
     try{
       const r = await fetch(page, { headers: UA });
@@ -80,8 +83,9 @@ async function collectYR(){
           source: 'Yacht Russia', date: `${y}-${mo}-${d}T00:00:00.000Z`, desc: '' });
       }
       console.log('YR OK', page.slice(-2), out.length);
-    }catch(e){ console.warn('YR FAIL', page, e.message); }
+    }catch(e){ yrFail++; }
   }
+  if(yrFail) console.log('YR 건너뜀', yrFail, '개 (접근 차단 — 풀리면 자동 복구)');
   return out;
 }
 
@@ -112,6 +116,23 @@ async function enrich(items){
   return items;
 }
 
+// 지난 수집에서 내보낸 기사 링크. 다음 회차에는 뒤로 미룬다.
+// (아예 빼면 새 기사가 적은 주에 화면이 빈다)
+const SEEN_FILE = 'news_seen.json';
+const SEEN_KEEP = 200;          // 최근 200건까지 기억
+function loadSeen(){
+  try{
+    const j = JSON.parse(fs.readFileSync(SEEN_FILE,'utf8'));
+    return Array.isArray(j.links) ? j.links : [];
+  }catch(e){ return []; }
+}
+function saveSeen(prev, picked){
+  const now = picked.map(x=>x.link).filter(Boolean);
+  const merged = [...now, ...prev.filter(l=>!now.includes(l))].slice(0, SEEN_KEEP);
+  try{ fs.writeFileSync(SEEN_FILE, JSON.stringify({ updated:new Date().toISOString(), links:merged }, null, 1)); }
+  catch(e){ console.warn('seen 저장 실패', e.message); }
+}
+
 function dedupe(items){
   const seen = new Set();
   return items.filter(x=>{
@@ -133,12 +154,15 @@ function normCat(v){
   return hit || '기타';
 }
 
-async function selectAndTranslate(items){
+async function selectAndTranslate(items, seen){
   const key = process.env.ANTHROPIC_API_KEY;
   const fallback = () => items.slice(0, PICK).map(x=>({ ...x, t_ko:x.title, s_ko:'', cat:'' }));
+  // items 는 이미 '새 기사 먼저' 순서로 들어온다 — 폴백도 자연히 새 기사 우선이 된다.
   if(!key){ console.warn('API 키 없음 — 선별·번역 생략'); return fallback(); }
   if(!items.length) return [];
-  const payload = items.map((x,i)=>({ i, source:x.source, title:x.title, desc:(x.desc||'').slice(0,900) }));
+  const seenSet = new Set(seen||[]);
+  const payload = items.map((x,i)=>({ i, source:x.source, title:x.title,
+    desc:(x.desc||'').slice(0,900), old: seenSet.has(x.link) ? 1 : 0 }));
   const prompt = `아래는 최근 요트·세일링 뉴스 후보 목록이다(영어·러시아어 혼재).
 너는 45피트 세일링 요트를 직접 소유·정비하며 운항하는 한국인 선주를 위해 뉴스를 고르는 편집자다.
 
@@ -146,6 +170,10 @@ async function selectAndTranslate(items){
 1) 최대 ${PICK}건을 골라 중요한 순서로 정렬해라.
    우선: 안전·사고, 규정·제도 변경, 정비·기술·장비, 기상·항로, 발트해·러시아·상트페테르부르크 관련, 한국 관련, 업계 동향
    후순위(웬만하면 제외): 레이스 결과 자체, 신형 요트 홍보성 리뷰, 럭셔리 슈퍼요트, 유명인 가십
+
+   ★ old:1 은 지난번에 이미 보여준 기사다. 독자는 같은 기사를 또 보고 싶어하지 않는다.
+     old:0 (새 기사)을 먼저 채워라. 새 기사만으로 ${PICK}건이 안 되면 그때만 old:1 을 보태라.
+     새 기사가 ${PICK}건 이상이면 old:1 은 하나도 넣지 마라.
 
 2) 각 선정 기사에:
    t_ko: 자연스러운 한국어 제목 (요트 용어는 통용 표기)
@@ -202,11 +230,18 @@ ${JSON.stringify(payload)}`;
     .sort((a,b)=> new Date(b.date) - new Date(a.date));
   console.log('후보', all.length, '건 (최근 '+MAX_AGE_DAYS+'일)');
   // 1차: 제목만으로 후보 압축 → 2차: 본문 확보 → 3차: 선별·요약
-  const shortlist = all.slice(0, 45);
+  // 이미 보여준 기사는 뒤로 미뤄 새 기사가 먼저 후보에 들어가게 한다
+  const seen = loadSeen();
+  const fresh = all.filter(x=> !seen.includes(x.link));
+  const olds  = all.filter(x=>  seen.includes(x.link));
+  console.log('새 기사', fresh.length, '건 · 이미 본 것', olds.length, '건');
+  const shortlist = [...fresh, ...olds].slice(0, 45);
   await enrich(shortlist);
-  const picked = await selectAndTranslate(shortlist);
+  const picked = await selectAndTranslate(shortlist, seen);
   const news = { updated: new Date().toISOString(), candidates: all.length,
     items: picked.map(x=>({ title:x.title, t_ko:x.t_ko, s_ko:x.s_ko, cat:x.cat, link:x.link, source:x.source, date:x.date })) };
   fs.writeFileSync('news.json', JSON.stringify(news, null, 1));
-  console.log('news.json 저장:', picked.length, '건 선별');
+  saveSeen(seen, picked);
+  const newCnt = picked.filter(x=> !seen.includes(x.link)).length;
+  console.log('news.json 저장:', picked.length, '건 선별 (새 기사', newCnt, '건)');
 })().catch(e=>{ console.error(e); process.exit(1); });
